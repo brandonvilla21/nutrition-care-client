@@ -1,0 +1,31 @@
+import React from 'react';
+import { Route, IndexRoute } from 'react-router';
+import App from './containers/App';
+import NotFoundPage from './containers/NotFoundPage.js';
+import LoginPage from './containers/LoginPage';
+import FormPage from './containers/FormPage';
+import TablePage from './containers/TablePage';
+import Dashboard from './containers/DashboardPage';
+import FoodPage from './containers/admin/Food/FoodPage';
+import CreateFoodPage from './containers/admin/Food/CreateFoodPage';
+import ExercisePage from './containers/admin/Exercise/ExercisePage';
+import CreateExercisePage from './containers/admin/Exercise/CreateExercisePage';
+import UserInfoPage from './containers/user/UserInfo/UserInfoPage';
+
+export default (
+  <Route>
+    <Route path="login" component={LoginPage}/>
+    <Route path="/" component={App}>
+      <IndexRoute component={Dashboard}/>
+      <Route path="dashboard" component={Dashboard}/>
+      <Route path="form" component={FormPage}/>
+      <Route path="table" component={TablePage}/>
+      <Route path="food" component={FoodPage} />
+      <Route path="create-food" component={CreateFoodPage}/>
+      <Route path="exercises" component={ExercisePage}/>
+      <Route path="create-exercise" component={CreateExercisePage}/>
+      <Route path="user-info" component={UserInfoPage}/>
+      <Route path="*" component={NotFoundPage}/>
+    </Route>
+  </Route>
+);
