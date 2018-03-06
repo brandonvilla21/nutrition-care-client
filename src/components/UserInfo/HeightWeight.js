@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import { Divider } from 'material-ui';
 import {typography} from 'material-ui/styles';
 
 const HeightWeight = (props) => {
@@ -52,7 +51,7 @@ const styles = {
         fontWeight: typography.fontWeightLight,
         marginBottom: 20
     },
-}
+};
 HeightWeight.propTypes = {
     onChange: PropTypes.func,
     height: PropTypes.string,
