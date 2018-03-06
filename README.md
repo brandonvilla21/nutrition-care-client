@@ -1,4 +1,4 @@
-React Ui-Material Admin Template
+User interface for Nutrition Care App build with React Ui-Material Admin Template
 ================================
 
 
