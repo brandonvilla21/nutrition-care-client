@@ -8,8 +8,8 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
-import TextField from 'material-ui/TextField';
 import HeightWeight from '../../../components/UserInfo/HeightWeight';
+import FatPercentage from '../../../components/UserInfo/FatPercentage';
 
 class GeneralInfoPage extends Component {
     constructor(props) {
@@ -76,15 +76,10 @@ class GeneralInfoPage extends Component {
                 );
             case 1:
                 return (
-                    <div>
-                    <TextField style={{marginTop: 0}} floatingLabelText="Ad group name" />
-                    <p>
-                        Ad group status is different than the statuses for campaigns, ads, and keywords, though the
-                        statuses can affect each other. Ad groups are contained within a campaign, and each campaign can
-                        have one or more ad groups. Within each ad group are ads, keywords, and bids.
-                    </p>
-                    <p>Something something whatever cool</p>
-                    </div>
+                    <FatPercentage
+                        height={this.state.height}
+                        weight={this.state.weight}
+                     />                    
                 );
             case 2:
                 return (
