@@ -7,8 +7,12 @@ import Calculator from './Calculator';
 class FatPercentage extends Component {
     constructor(props) {
         super(props);
-        // Deurenberg formula
-        // (1.2 * 22.74) + ( 0.23 * 21) - (10.8 *1) - 5.4    
+        /**
+         * Deurenberg formula
+         * 
+         * (1.2 * 22.74) + ( 0.23 * 21) - (10.8 *1) - 5.4    
+         * NOTE: 1.2 - 0.23 - 10.8 - 5.4 = Are constants
+         */
         this.state = {
             fatPercentage: 0,
             gender: 0,
