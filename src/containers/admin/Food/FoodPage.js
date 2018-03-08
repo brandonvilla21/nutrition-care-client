@@ -2,11 +2,53 @@ import React, { Component } from 'react';
 import { green600 } from 'material-ui/styles/colors';
 import { Link } from 'react-router';
 import PageBase from '../../../components/PageBase';
-import { Table, TableRow, FloatingActionButton, TableHeader } from 'material-ui';
+import { Table, TableBody, TableRow, FloatingActionButton, TableHeader, TableRowColumn } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
+import urlConfig from '../../../url-config';
+import { grey500, grey200 } from 'material-ui/styles/colors';
+import ContentCreate from 'material-ui/svg-icons/content/create';
 
 class FoodPage extends Component {
+    constructor() {
+        super();
+        this.state = {
+            foods: []
+        }
+        this.renderRows = this.renderRows.bind(this);
+    }
+
+    getFoods() {
+        const url = `${urlConfig.baseUrl}/foods`;
+        return fetch(url)
+            .then( data => data.json())
+            .then( response => response.data)
+    }
+
+    componentDidMount() {
+        this.getFoods()
+            .then(foods => this.setState({foods}))
+    }
+    renderRows() {
+        return this.state.foods.map(food => 
+            <TableRow key={food.id}>
+                <TableRowColumn style={styles.columns.description} >{food.description}</TableRowColumn>
+                <TableRowColumn style={styles.columns.carbs} >{food.carbohydrates}</TableRowColumn>
+                <TableRowColumn style={styles.columns.proteins} >{food.proteins}</TableRowColumn>
+                <TableRowColumn style={styles.columns.fats} >{food.fats}</TableRowColumn>
+                <TableRowColumn style={styles.columns.calories} >{food.calories}</TableRowColumn>
+                <TableRowColumn style={styles.columns.edit}>
+                <Link className="button" to="/form">
+                    <FloatingActionButton zDepth={0}
+                                        mini={true}
+                                        backgroundColor={grey200}
+                                        iconStyle={styles.editButton}>
+                    <ContentCreate  />
+                    </FloatingActionButton>
+                </Link>
+                </TableRowColumn>
+            </TableRow>);
+    }
     render() {
         return(
             <PageBase
@@ -20,7 +62,7 @@ class FoodPage extends Component {
                 </Link>
 
                 <Table>
-                    <TableHeader
+                    <TableHeader 
                         displaySelectAll={false}
                         adjustForCheckbox={false}>
                         <TableRow>
@@ -29,11 +71,13 @@ class FoodPage extends Component {
                             <TableHeaderColumn style={styles.columns.proteins} >Proteínas</TableHeaderColumn>
                             <TableHeaderColumn style={styles.columns.fats} >Grasas</TableHeaderColumn>
                             <TableHeaderColumn style={styles.columns.calories} >Calorías</TableHeaderColumn>
+                            <TableHeaderColumn style={styles.columns.edit}></TableHeaderColumn>
                         </TableRow>
-                        {/* <TableBody>
-
-                        </TableBody> */}
                     </TableHeader>
+                        <TableBody
+                            displayRowCheckbox={false}>
+                            {this.renderRows()}
+                        </TableBody>
                 </Table>
                 </div>
                 
@@ -55,20 +99,26 @@ const styles = {
     },
     columns: {
         description: {
-          width: '20%'
+          width: '50%'
         },
         carbs: {
-          width: '20%'
+          width: '10%'
         },
         proteins: {
-          width: '20%'
+          width: '10%'
         },
         fats: {
-          width: '20%'
+          width: '10%'
         },
         calories: {
-          width: '20%'
+          width: '10%'
+        },
+        edit: {
+          width: '10%'
         }
-    }
+    },
+    editButton: {
+        fill: grey500
+    },
 };
 export default FoodPage;
