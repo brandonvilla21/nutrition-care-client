@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PageBase from '../../../components/PageBase';
 import { TextField } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
+import axios from 'axios';
+import urlConfig from '../../../url-config';
 
 class CreateFoodPage extends Component {
     constructor(props) {
@@ -29,6 +31,18 @@ class CreateFoodPage extends Component {
 
     handleSubmit( event ) {
         event.preventDefault();
+        const url = `${urlConfig.baseUrl}/foods`;
+        const config = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}
+        }
+        axios.post(url, this.state, config)
+            .then( response => {
+                if (response.status === 200) {
+                    
+                }
+            })
+            .catch(err => console.log('ERROR:  ' + err));
 
     }
 
@@ -38,7 +52,7 @@ class CreateFoodPage extends Component {
                 title="Registrar un alimento"
                 navigation="Alimentos / Registro">
                 
-                <form onSubmit={this.handleSubmit}>
+                <form id="food-form" onSubmit={this.handleSubmit}>
                 <TextField
                     hintText="Descripción"
                     floatingLabelText="Descripción"
