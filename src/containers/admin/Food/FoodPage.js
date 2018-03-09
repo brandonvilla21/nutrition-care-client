@@ -1,34 +1,34 @@
 import React, { Component } from 'react';
-import { green600 } from 'material-ui/styles/colors';
 import { Link } from 'react-router';
 import PageBase from '../../../components/PageBase';
 import { Table, TableBody, TableRow, FloatingActionButton, TableHeader, TableRowColumn } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
 import urlConfig from '../../../url-config';
-import { grey500, grey200 } from 'material-ui/styles/colors';
+import { grey500, grey200, green600 } from 'material-ui/styles/colors';
 import ContentCreate from 'material-ui/svg-icons/content/create';
 
 class FoodPage extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             foods: []
-        }
+        };
         this.renderRows = this.renderRows.bind(this);
+    }
+
+    componentDidMount() {
+        this.getFoods()
+            .then(foods => this.setState({foods}));
     }
 
     getFoods() {
         const url = `${urlConfig.baseUrl}/foods`;
         return fetch(url)
             .then( data => data.json())
-            .then( response => response.data)
+            .then( response => response.data);
     }
 
-    componentDidMount() {
-        this.getFoods()
-            .then(foods => this.setState({foods}))
-    }
     renderRows() {
         return this.state.foods.map(food => 
             <TableRow key={food.id}>
@@ -71,7 +71,7 @@ class FoodPage extends Component {
                             <TableHeaderColumn style={styles.columns.proteins} >Proteínas</TableHeaderColumn>
                             <TableHeaderColumn style={styles.columns.fats} >Grasas</TableHeaderColumn>
                             <TableHeaderColumn style={styles.columns.calories} >Calorías</TableHeaderColumn>
-                            <TableHeaderColumn style={styles.columns.edit}></TableHeaderColumn>
+                            <TableHeaderColumn style={styles.columns.edit} />
                         </TableRow>
                     </TableHeader>
                         <TableBody
