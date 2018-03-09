@@ -17,7 +17,7 @@ class FoodPage extends Component {
         this.renderRows = this.renderRows.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.getFoods()
             .then(foods => this.setState({foods}));
     }
