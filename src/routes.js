@@ -9,7 +9,7 @@ import Dashboard from './containers/DashboardPage';
 import FoodPage from './containers/admin/Food/FoodPage';
 import CreateFoodPage from './containers/admin/Food/CreateFoodPage';
 import ExercisePage from './containers/admin/Exercise/ExercisePage';
-import CreateExercisePage from './containers/admin/Exercise/CreateExercisePage';
+import CreateExercicePage from './containers/admin/Exercise/CreateExercicePage';
 import UserInfoPage from './containers/user/UserInfo/UserInfoPage';
 
 export default (
@@ -23,7 +23,7 @@ export default (
       <Route path="food" component={FoodPage} />
       <Route path="create-food" component={CreateFoodPage}/>
       <Route path="exercises" component={ExercisePage}/>
-      <Route path="create-exercise" component={CreateExercisePage}/>
+      <Route path="create-exercise" component={CreateExercicePage}/>
       <Route path="user-info" component={UserInfoPage}/>
       <Route path="*" component={NotFoundPage}/>
     </Route>
