@@ -1,20 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import PageBase from '../../components/PageBase';
 import { TextField } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
-import FileUpload from '../FileUpload';
+import FileBase64 from 'react-file-base64';
+import { typography } from 'material-ui/styles';
+import axios from 'axios';
+import urlConfig from '../../url-config';
 
 class ExerciceForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            image: '',
+            base64_image: '',
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleUpload = this.handleUpload.bind(this);
+        this.getFiles = this.getFiles.bind(this);
+        this.disableButton = this.disableButton.bind(this);
     }
 
     handleChange( event ) {
@@ -28,15 +32,35 @@ class ExerciceForm extends Component {
 
     handleSubmit( event ) {
         event.preventDefault();
-        // Send the information to API
+        const url = `${urlConfig.baseUrl}/exercises`;
+        const config = urlConfig.axiosConfig;
+        config.method = 'POST';
+
+        axios.post(url, this.state, config)
+            .then( response => {
+                if (response.status === 200) {
+                    this.props.onSubmitted(true);
+                    this.clearState();
+                } else
+                    this.props.onSubmitted(false);
+            })
+            .catch(() => this.props.onSubmitted(false));
     }
 
-    handleUpload( event ) {
-        /**
-         * For upload images:
-         *  https://gist.github.com/AshikNesin/e44b1950f6a24cfcd85330ffc1713513
-         */
-        this.setState({ image: event.target.files[0] });
+    getFiles( file ) {
+        this.setState({ base64_image: file.base64 });
+    }
+        
+    disableButton() {
+        return  this.state.name === '' 
+                || this.state.base64_image === '';
+    }
+    
+    clearState() {
+        this.setState({
+            name: '',
+            base64_image: ''
+        });
     }
 
     render() {
@@ -53,15 +77,17 @@ class ExerciceForm extends Component {
                     name="name"
                     onChange={this.handleChange}
                     fullWidth={true} />
-                
-                <FileUpload
-                    title="Agrega una imagen"
-                    onUpload={this.handleUpload} />
 
+                    <h3 style={styles.imageTitle}>Agrega una imagen</h3>
+                    <FileBase64 
+                        multiple={false}
+                        onDone={this.getFiles}
+                    />
                 <RaisedButton
                     label="Registrar ejercicio"
                     primary={true}
                     type="submit"
+                    disabled={this.disableButton()}
                     style={styles.button} />
                 </form>
 
@@ -69,13 +95,22 @@ class ExerciceForm extends Component {
         );
     }
 }
-
-export default ExerciceForm;
+ExerciceForm.propTypes = {
+    onSubmitted: PropTypes.func
+};
 
 const styles = {
     button: {
         margin: 10,
         float: 'right'
     },
+    imageTitle: {
+        fontSize: 20,
+        fontWeight: typography.fontWeightLight,
+        marginBottom: 20,
+        marginTop: 15
+    }
 
 };
+  
+export default ExerciceForm;
