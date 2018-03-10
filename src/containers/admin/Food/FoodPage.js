@@ -5,8 +5,7 @@ import { Table, TableBody, TableRow, FloatingActionButton, TableHeader, TableRow
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
 import urlConfig from '../../../url-config';
-import { grey500, grey200, green600 } from 'material-ui/styles/colors';
-import ContentCreate from 'material-ui/svg-icons/content/create';
+import { grey500, green600 } from 'material-ui/styles/colors';
 
 class FoodPage extends Component {
     constructor(props) {
@@ -37,16 +36,6 @@ class FoodPage extends Component {
                 <TableRowColumn style={styles.columns.proteins} >{food.proteins}</TableRowColumn>
                 <TableRowColumn style={styles.columns.fats} >{food.fats}</TableRowColumn>
                 <TableRowColumn style={styles.columns.calories} >{food.calories}</TableRowColumn>
-                <TableRowColumn style={styles.columns.edit}>
-                <Link className="button" to="/form">
-                    <FloatingActionButton zDepth={0}
-                                        mini={true}
-                                        backgroundColor={grey200}
-                                        iconStyle={styles.editButton}>
-                    <ContentCreate  />
-                    </FloatingActionButton>
-                </Link>
-                </TableRowColumn>
             </TableRow>);
     }
     render() {
@@ -71,7 +60,6 @@ class FoodPage extends Component {
                             <TableHeaderColumn style={styles.columns.proteins} >Proteínas</TableHeaderColumn>
                             <TableHeaderColumn style={styles.columns.fats} >Grasas</TableHeaderColumn>
                             <TableHeaderColumn style={styles.columns.calories} >Calorías</TableHeaderColumn>
-                            <TableHeaderColumn style={styles.columns.edit} />
                         </TableRow>
                     </TableHeader>
                         <TableBody
@@ -99,22 +87,27 @@ const styles = {
     },
     columns: {
         description: {
-          width: '50%'
+          width: '50%',
         },
         carbs: {
-          width: '10%'
+          width: '10%',
+          textAlign: 'center'
         },
         proteins: {
-          width: '10%'
+          width: '10%',
+          textAlign: 'center'
         },
         fats: {
-          width: '10%'
+          width: '10%',
+          textAlign: 'center'
         },
         calories: {
-          width: '10%'
+          width: '10%',
+          textAlign: 'center'
         },
         edit: {
-          width: '10%'
+          width: '10%',
+          textAlign: 'center'
         }
     },
     editButton: {
