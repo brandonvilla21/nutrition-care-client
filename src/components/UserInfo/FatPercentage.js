@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import { typography } from 'material-ui/styles';
-import Calculator from './Calculator';
 
 class FatPercentage extends Component {
     constructor(props) {
@@ -32,13 +31,15 @@ class FatPercentage extends Component {
                         hintText="% de grasa"
                         floatingLabelText="% de grasa"
                         type="number"                
-                        name="fat"
+                        name="fatPercentage"
+                        value={this.props.fatPercentage}
+                        onChange={this.props.onChange}
                     />
 
-                    <Calculator 
+                    {/* <Calculator 
                         bmi={this.state.bmi}
                         age={this.state.age}
-                    />
+                    /> */}
                 </div>
     
             </div>
@@ -60,7 +61,9 @@ const styles = {
 };
 FatPercentage.propTypes = {
     height: PropTypes.string,
-    weight: PropTypes.string
+    weight: PropTypes.string,
+    fatPercentage: PropTypes.string,
+    onChange: PropTypes.func
 };
 
 export default FatPercentage;
