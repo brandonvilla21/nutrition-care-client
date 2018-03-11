@@ -10,6 +10,11 @@ import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import HeightWeight from '../../../components/UserInfo/HeightWeight';
 import FatPercentage from '../../../components/UserInfo/FatPercentage';
+import UserProgress from '../../../components/UserInfo/UserProgress';
+import { Link } from 'react-router';
+import Moment from 'react-moment';
+import axios from 'axios';
+import urlConfig from '../../../url-config';
 
 class GeneralInfoPage extends Component {
     constructor(props) {
@@ -20,7 +25,10 @@ class GeneralInfoPage extends Component {
             stepIndex: 0,
 
             height: '',
-            weight: ''
+            weight: '',
+            fatPercentage: '',
+            fatKg: '',
+            muscleKg: ''
         };
         this.dummyAsync = this.dummyAsync.bind(this);
         this.handleNext = this.handleNext.bind(this);
@@ -43,10 +51,28 @@ class GeneralInfoPage extends Component {
                 loading: false,
                 stepIndex: stepIndex + 1,
                 finished: stepIndex >= 2,
-            }));
+            }, this.sendData));
         }
     }
     
+    sendData() {
+        const { finished, weight, fatPercentage, fatKg, muscleKg } = this.state;
+        const url = `${urlConfig.baseUrl}/userprogresses`;
+        const data = {
+            weight: parseFloat(weight),
+            fat_percentage: parseFloat(fatPercentage),
+            fat_kilogram: parseFloat(fatKg),
+            muscle_kilogram: parseFloat(muscleKg),
+        };
+        const config = urlConfig.axiosConfig;
+        config.method = 'POST';
+        if ( finished ) {
+            axios.post(url, data, config)
+                .then( result => console.log(result))
+                .catch(err => console.log(err))
+        }
+    }
+
     handlePrev() {
         const {stepIndex} = this.state;
         if (!this.state.loading) {
@@ -62,7 +88,17 @@ class GeneralInfoPage extends Component {
         
         this.setState({
             [name]: value
-        });
+        }, this.completeState);
+    }
+
+    completeState() {
+        const { fatPercentage, weight } = this.state;
+
+        if ( fatPercentage !== '' ) {
+            const fatKg = (weight * (fatPercentage / 100)) + '';
+            const muscleKg = (weight - fatKg) + '';
+            this.setState({ fatKg, muscleKg });
+        }
     }
     getStepContent( stepIndex ) {
         switch ( stepIndex ) {
@@ -77,17 +113,22 @@ class GeneralInfoPage extends Component {
             case 1:
                 return (
                     <FatPercentage
+                        onChange={this.handleInputChange}
+                        fatPercentage={this.state.fatPercentage}
                         height={this.state.height}
                         weight={this.state.weight}
                      />                    
                 );
             case 2:
                 return (
-                    <p>
-                    Try out different ad text to see what brings in the most customers, and learn how to
-                    enhance your ads using features like ad extensions. If you run into any problems with your
-                    ads, find out how to tell if they're running and how to resolve approval issues.
-                    </p>
+                    <UserProgress
+                        date={<Moment format="DD/MM/YYYY" />}
+                        weight={this.state.weight}
+                        height={this.state.height}
+                        fatPercentage={this.state.fatPercentage}
+                        fatKg={this.state.fatKg}
+                        muscleKg={this.state.muscleKg}
+                    />
                 );
             default:
                 return 'You\'re a long way from home sonny jim!';
@@ -102,20 +143,12 @@ class GeneralInfoPage extends Component {
             return (
                 <div style={contentStyle}>
                     <p>
-                    <a
-                        href="#"
-                        onClick={(event) => {
-                        event.preventDefault();
-                        this.setState({stepIndex: 0, finished: false});
-                        }}
-                    >
-                        Click here
-                    </a> to reset the example.
+                        Su información ha sido guardada con éxito. <Link to="/">Volver</Link>
                     </p>
                 </div>
             );
         }
-    
+        
         return (
           <div style={contentStyle}>
             <div>{this.getStepContent(stepIndex)}</div>
@@ -135,6 +168,7 @@ class GeneralInfoPage extends Component {
           </div>
         );
     }
+    
     
     render() {
         const {loading, stepIndex} = this.state;
