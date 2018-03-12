@@ -12,7 +12,6 @@ const NutritionCareLogo = () => {
             top: '200px',
             left: '-30px',
             zIndex: '1000',
-            height: '50px !important',
             overflow: 'hidden',
             height: '200px',
             // margin: 'auto'
@@ -26,7 +25,7 @@ const NutritionCareLogo = () => {
             backgroundColor: 'white',
             // boxShadow: '5px 10px #888888'
         }
-    }
+    };
     return(
         <div style={styles.container}>
             <img style={styles.img} src="../images/nutrition_care.png" />
