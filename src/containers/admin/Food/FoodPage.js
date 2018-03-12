@@ -56,10 +56,10 @@ class FoodPage extends Component {
                         adjustForCheckbox={false}>
                         <TableRow>
                             <TableHeaderColumn style={styles.columns.description} >Descripción</TableHeaderColumn>
-                            <TableHeaderColumn style={styles.columns.carbs} >Carbohidratos</TableHeaderColumn>
-                            <TableHeaderColumn style={styles.columns.proteins} >Proteínas</TableHeaderColumn>
-                            <TableHeaderColumn style={styles.columns.fats} >Grasas</TableHeaderColumn>
-                            <TableHeaderColumn style={styles.columns.calories} >Calorías</TableHeaderColumn>
+                            <TableHeaderColumn style={styles.columns.carbs} >Carbohidratos (gr)</TableHeaderColumn>
+                            <TableHeaderColumn style={styles.columns.proteins} >Proteínas (gr)</TableHeaderColumn>
+                            <TableHeaderColumn style={styles.columns.fats} >Grasas (gr)</TableHeaderColumn>
+                            <TableHeaderColumn style={styles.columns.calories} >Calorías (kcal)</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                         <TableBody
