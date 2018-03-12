@@ -30,7 +30,7 @@ class TypeRoutinePage extends Component {
     renderRows() {
         return this.state.typeRoutines.map( typeRoutine => 
             <TableRow key={typeRoutine.id}>
-                <TableRowColumn style={{...styles.columns.name, ...styles.biggerFont}} >{typeRoutine.name}</TableRowColumn>
+                <TableRowColumn style={{...styles.columns.description, ...styles.biggerFont}} >{typeRoutine.description}</TableRowColumn>
                 <TableRowColumn style={{...styles.columns.date, ...styles.biggerFont}} >{typeRoutine.created_at.date.substring(0,11)}</TableRowColumn>
             </TableRow>
         );
@@ -43,7 +43,7 @@ class TypeRoutinePage extends Component {
                 navigation="Aplicación / Tipos de rutinas">
                 
                 <div>
-                    <Link to="/create-typeroutine" >
+                    <Link to="/create-type-routine" >
                         <FloatingActionButton style={styles.floatingActionButton} backgroundColor={green600}>
                             <ContentAdd />
                         </FloatingActionButton>
@@ -54,7 +54,7 @@ class TypeRoutinePage extends Component {
                             displaySelectAll={false}
                             adjustForCheckbox={false}>
                             <TableRow>
-                                <TableHeaderColumn style={styles.columns.name}>Nombre</TableHeaderColumn>
+                                <TableHeaderColumn style={styles.columns.description}>Descripción</TableHeaderColumn>
                                 <TableHeaderColumn style={styles.columns.date}>Fecha de creación</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
@@ -81,12 +81,12 @@ const styles = {
         fontSize: '1.3em'
     },
     columns: {
-        name: {
-            width: '35%',
+        description: {
+            width: '50%',
             textAlign: 'center'
         },
         date: {
-            width: '35%',
+            width: '50%',
             textAlign: 'center'
         }
     },
