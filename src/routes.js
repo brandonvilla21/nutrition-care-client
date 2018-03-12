@@ -11,6 +11,7 @@ import CreateFoodPage from './containers/admin/Food/CreateFoodPage';
 import ExercisePage from './containers/admin/Exercise/ExercisePage';
 import CreateExercicePage from './containers/admin/Exercise/CreateExercicePage';
 import UserInfoPage from './containers/user/UserInfo/UserInfoPage';
+import TypeRoutinePage from './containers/admin/TypeRoutine/TypeRoutinePage';
 
 export default (
   <Route>
@@ -25,6 +26,7 @@ export default (
       <Route path="exercises" component={ExercisePage}/>
       <Route path="create-exercise" component={CreateExercicePage}/>
       <Route path="user-info" component={UserInfoPage}/>
+      <Route path="type-routines" component={TypeRoutinePage}/>
       <Route path="*" component={NotFoundPage}/>
     </Route>
   </Route>

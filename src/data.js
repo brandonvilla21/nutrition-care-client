@@ -12,6 +12,7 @@ const data = {
   menus: [
     { text: 'Alimentos', icon: <Assessment/>, link: '/food' },
     { text: 'Ejercicios', icon: <Assessment/>, link: '/exercises' },
+    { text: 'Tipos de rutinas', icon: <Assessment/>, link: '/type-routines' },
     { text: 'Mi Informacion', icon: <Assessment/>, link: '/user-info' },
     // { text: 'Inicio', icon: <Assessment/>, link: '/dashboard' },
     // { text: 'Mis datos', icon: <PermIdentity/>, link: '/my-info' },

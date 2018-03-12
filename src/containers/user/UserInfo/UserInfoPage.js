@@ -68,8 +68,8 @@ class GeneralInfoPage extends Component {
         config.method = 'POST';
         if ( finished ) {
             axios.post(url, data, config)
-                .then( result => console.log(result))
-                .catch(err => console.log(err))
+                .then( result => result)
+                .catch(err => err);
         }
     }
 
