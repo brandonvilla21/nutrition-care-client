@@ -97,9 +97,14 @@ class GeneralInfoPage extends Component {
         if ( fatPercentage !== '' ) {
             const fatKg = (weight * (fatPercentage / 100)) + '';
             const muscleKg = (weight - fatKg) + '';
-            this.setState({ fatKg, muscleKg });
+            this.setState({ fatKg: this.fixNumber(fatKg), muscleKg: this.fixNumber(muscleKg) });
         }
     }
+
+    fixNumber( number ) {
+        return Number.parseFloat(number).toFixed(2);
+    }
+    
     getStepContent( stepIndex ) {
         switch ( stepIndex ) {
             case 0:
