@@ -63,6 +63,7 @@ class GeneralInfoPage extends Component {
             fat_percentage: parseFloat(fatPercentage),
             fat_kilogram: parseFloat(fatKg),
             muscle_kilogram: parseFloat(muscleKg),
+            progress_date: this.getDate()
         };
         const config = urlConfig.axiosConfig;
         config.method = 'POST';
@@ -73,6 +74,10 @@ class GeneralInfoPage extends Component {
         }
     }
 
+    getDate() {
+        const date = new Date();
+        return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+    }
     handlePrev() {
         const {stepIndex} = this.state;
         if (!this.state.loading) {
