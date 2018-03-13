@@ -7,7 +7,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
 import urlConfig from '../../../url-config';
 
-class TypeRoutinePage extends Component {
+class BodyAreaPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -94,4 +94,4 @@ const styles = {
         fill: grey500
     },
 };
-export default TypeRoutinePage;
+export default BodyAreaPage;
