@@ -16,6 +16,7 @@ import RegisterPage from './containers/session/RegisterPage';
 // import CreateTypeRoutinePage from './containers/admin/TypeRoutine/CreateTypeRoutinePage';
 import CreateBodyAreaPage from './containers/admin/BodyArea/CreateBodyAreaPage';
 import BodyAreaPage from './containers/admin/BodyArea/BodyAreaPage';
+import CreateRutinePage from './containers/user/Rutine/CreateRutinePage';
 
 export default (
   <Route>
@@ -33,6 +34,7 @@ export default (
       <Route path="user-info" component={UserInfoPage}/>
       <Route path="body-areas" component={BodyAreaPage}/>
       <Route path="create-body-areas" component={CreateBodyAreaPage}/>
+      <Route path="create-rutine" component={CreateRutinePage}/>
       {/* <Route path="type-routines" component={TypeRoutinePage}/> */}
       {/* <Route path="create-type-routine" component={CreateTypeRoutinePage}/> */}
       <Route path="*" component={NotFoundPage}/>
