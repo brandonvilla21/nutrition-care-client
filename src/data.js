@@ -12,7 +12,8 @@ const data = {
   menus: [
     { text: 'Alimentos', icon: <Restaurant/>, link: '/food' },
     { text: 'Ejercicios', icon: <FitnessCenter/>, link: '/exercises' },
-    { text: 'Tipos de rutinas', icon: <Accessibility/>, link: '/type-routines' },
+    // { text: 'Tipos de rutinas', icon: <Accessibility/>, link: '/type-routines' },
+    { text: 'Áreas del cuerpo', icon: <Accessibility/>, link: '/body-areas' },
     { text: 'Mi Informacion', icon: <PermIdentity/>, link: '/user-info' },
     // { text: 'Inicio', icon: <Assessment/>, link: '/dashboard' },
     // { text: 'Mis datos', icon: <PermIdentity/>, link: '/my-info' },
