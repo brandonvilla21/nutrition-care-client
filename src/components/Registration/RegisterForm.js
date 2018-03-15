@@ -31,7 +31,9 @@ class RegisterForm extends Component {
     handleSubmit( event ) {
         event.preventDefault();
         const url = `${urlConfig.baseUrl}/auth/register`;
-        Axios.post(url, this.state, urlConfig.axiosConfig)
+        const config = urlConfig.axiosConfig;
+        config.method = 'POST';
+        Axios.post(url, this.state, config)
             .then( res => {
                 if ( res.status == 200 )
                     this.props.isSubmitted(true);
