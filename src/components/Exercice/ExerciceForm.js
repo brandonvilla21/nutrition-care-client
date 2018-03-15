@@ -20,6 +20,9 @@ class ExerciceForm extends Component {
         this.state = {
             name: '',
             base64_image: '',
+            bodyAreas: [],
+            selected: {},
+            selection: []
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -27,6 +30,7 @@ class ExerciceForm extends Component {
         this.getFiles = this.getFiles.bind(this);
         this.disableButton = this.disableButton.bind(this);
     }
+
 
     handleChange( event ) {
         const name = event.target.name;
@@ -37,6 +41,25 @@ class ExerciceForm extends Component {
         });
     }
 
+
+    handleSubmit( event ) {
+      event.preventDefault();
+      const url = `${urlConfig.baseUrl}/exercises`;
+      const config = urlConfig.axiosConfig;
+      config.method = 'POST';
+
+      axios.post(url, this.state, config)
+          .then( response => {
+              if (response.status === 200) {
+                  this.props.onSubmitted(true);
+                  this.clearState();
+              } else
+                  this.props.onSubmitted(false);
+          })
+          .catch(() => this.props.onSubmitted(false));
+    }
+
+
     componentWillMount() {
       this.getBodyAreas()
           .then(bodyAreas => {
@@ -45,6 +68,7 @@ class ExerciceForm extends Component {
           });
     }
 
+
     getBodyAreas() {
         const url = `${urlConfig.baseUrl}/bodyareas`;
         return fetch(url)
@@ -52,38 +76,63 @@ class ExerciceForm extends Component {
             .then( response => response.data);
     }
 
-    handleSubmit( event ) {
-        event.preventDefault();
-        const url = `${urlConfig.baseUrl}/exercises`;
-        const config = urlConfig.axiosConfig;
-        config.method = 'POST';
-
-        axios.post(url, this.state, config)
-            .then( response => {
-                if (response.status === 200) {
-                    this.props.onSubmitted(true);
-                    this.clearState();
-                } else
-                    this.props.onSubmitted(false);
-            })
-            .catch(() => this.props.onSubmitted(false));
-    }
 
     getFiles( file ) {
         this.setState({ base64_image: file.base64 });
     }
-        
+    
+    
     disableButton() {
         return  this.state.name === '' 
                 || this.state.base64_image === ''
                 || this.state.bodyAreas === [];
     }
     
+
     clearState() {
         this.setState({
             name: '',
-            base64_image: ''
+            base64_image: '',
+            bodyAreas: [],
+            selection: [],
+            selected: {}
         });
+    }
+
+    toggleRow(original) {
+      
+      let selection = [
+        ...this.state.selection
+      ];
+      const elementIndex = selection.findIndex( element => element.id == original.id )
+      // check to see if the key exists
+      if (elementIndex >= 0) {
+        // it does exist so we will remove it using destructing
+        selection = [
+          ...selection.slice(0, elementIndex),
+          ...selection.slice(elementIndex + 1)
+        ]
+      } else {
+        // it does not exist so add it
+        selection.push(original);
+      }
+      // update the state
+      this.setState({ selection });
+
+
+      const newSelected = Object.assign({}, this.state.selected);
+      newSelected[original.id] = !this.state.selected[original.id];
+      this.setState({
+        selected: newSelected,
+      });
+
+
+    }
+
+    logSomething(event) {
+      event.preventDefault();
+      console.log('this.state.selected: ', this.state.selected);
+      console.log('selection: ', this.state.selection);
     }
 
     render() {
@@ -94,7 +143,9 @@ class ExerciceForm extends Component {
                 title="Registrar un ejercicio"
                 navigation="Alimentos / Registro">
                 
+
                 <form onSubmit={this.handleSubmit}>
+                <button onClick={event => this.logSomething(event)}>Ira men</button>
                 <TextField
                     hintText="Nombre"
                     floatingLabelText="Nombre"
@@ -117,6 +168,23 @@ class ExerciceForm extends Component {
                         style={{width: '100%'}}
                         data={bodyAreas}
                         columns={[
+                          {
+                            id: "checkbox",
+                            accessor: "",
+                            filterable: false,
+                            sortable: false,
+                            Cell: ({ original }) => {
+                              return (
+                                <input
+                                  type="checkbox"
+                                  className="checkbox"
+                                  checked={this.state.selected[original.id] === true}
+                                  onChange={() => this.toggleRow(original)}
+                                />
+                              );
+                            },
+                            width: 45
+                          },
                           {
                             Header: "ID",
                             accessor: "id",
