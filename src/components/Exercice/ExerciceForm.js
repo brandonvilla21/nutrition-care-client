@@ -14,6 +14,7 @@ import { Tabs, Tab } from "material-ui/";
 import { blue500 } from 'material-ui/styles/colors';
 import filterCaseInsensitive from '../../shared/tableFiltering';
 import Subheader from 'material-ui/Subheader';
+import Checkbox from 'material-ui/Checkbox';
 
 class ExerciceForm extends Component {
     constructor(props) {
@@ -91,7 +92,7 @@ class ExerciceForm extends Component {
     disableButton() {
         return  this.state.name === '' 
                 || this.state.base64_image === ''
-                || this.state.selectedBodyAreas === [];
+                || this.state.selectedBodyAreas.length === 0;
     }
     
 
@@ -179,11 +180,10 @@ class ExerciceForm extends Component {
                                 sortable: false,
                                 Cell: ({ original }) => {
                                   return (
-                                    <input
-                                      type="checkbox"
-                                      className="checkbox"
+                                    <Checkbox
                                       checked={this.state.selected[original.id] === true}
-                                      onChange={() => this.toggleRow(original)}
+                                      onCheck={() => this.toggleRow(original)}
+                                      style={styles.checkbox}
                                     />
                                   );
                                 },
