@@ -7,6 +7,7 @@ import {cyan600, pink600, purple600} from 'material-ui/styles/colors';
 import ExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import ExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
+import DirectionsRun from 'material-ui/svg-icons/maps/directions-run';
 
 const data = {
   menus: [
@@ -15,6 +16,7 @@ const data = {
     // { text: 'Tipos de rutinas', icon: <Accessibility/>, link: '/type-routines' },
     { text: 'Áreas del cuerpo', icon: <Accessibility/>, link: '/body-areas' },
     { text: 'Mi Informacion', icon: <PermIdentity/>, link: '/user-info' },
+    { text: 'Crear rutina', icon: <DirectionsRun/>, link: '/create-rutine' },
     // { text: 'Inicio', icon: <Assessment/>, link: '/dashboard' },
     // { text: 'Mis datos', icon: <PermIdentity/>, link: '/my-info' },
     // { text: 'Agregar alimento', icon: <Web/>, link: '/form' },
