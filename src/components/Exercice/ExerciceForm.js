@@ -12,7 +12,7 @@ import 'react-table/react-table.css';
 import Moment from 'moment';
 import { Tabs, Tab } from "material-ui/";
 import { blue500 } from 'material-ui/styles/colors';
-// var moment = require('moment');
+import filterCaseInsensitive from '../../shared/tableFiltering';
 
 class ExerciceForm extends Component {
     constructor(props) {
@@ -113,6 +113,7 @@ class ExerciceForm extends Component {
 
                       <ReactTable
                         filterable
+                        defaultFilterMethod={filterCaseInsensitive}
                         style={{width: '100%'}}
                         data={bodyAreas}
                         columns={[
