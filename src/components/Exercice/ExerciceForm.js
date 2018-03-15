@@ -23,7 +23,7 @@ class ExerciceForm extends Component {
             base64_image: '',
             bodyAreas: [],
             selected: {},
-            selection: []
+            selectedBodyAreas: []
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -48,6 +48,11 @@ class ExerciceForm extends Component {
       const url = `${urlConfig.baseUrl}/exercises`;
       const config = urlConfig.axiosConfig;
       config.method = 'POST';
+
+
+      const { name, base64_image, selectedBodyAreas } = this.state;
+      let data = { name, base64_image, selectedBodyAreas };
+
 
       axios.post(url, this.state, config)
           .then( response => {
@@ -86,7 +91,7 @@ class ExerciceForm extends Component {
     disableButton() {
         return  this.state.name === '' 
                 || this.state.base64_image === ''
-                || this.state.bodyAreas === [];
+                || this.state.selectedBodyAreas === [];
     }
     
 
@@ -94,31 +99,31 @@ class ExerciceForm extends Component {
         this.setState({
             name: '',
             base64_image: '',
-            bodyAreas: [],
-            selection: [],
+            // bodyAreas: [],
+            selectedBodyAreas: [],
             selected: {}
         });
     }
 
     toggleRow(original) {
       
-      let selection = [
-        ...this.state.selection
+      let selectedBodyAreas = [
+        ...this.state.selectedBodyAreas
       ];
-      const elementIndex = selection.findIndex( element => element.id == original.id )
+      const elementIndex = selectedBodyAreas.findIndex( element => element.id == original.id )
       // check to see if the key exists
       if (elementIndex >= 0) {
         // it does exist so we will remove it using destructing
-        selection = [
-          ...selection.slice(0, elementIndex),
-          ...selection.slice(elementIndex + 1)
+        selectedBodyAreas = [
+          ...selectedBodyAreas.slice(0, elementIndex),
+          ...selectedBodyAreas.slice(elementIndex + 1)
         ]
       } else {
         // it does not exist so add it
-        selection.push(original);
+        selectedBodyAreas.push(original);
       }
       // update the state
-      this.setState({ selection });
+      this.setState({ selectedBodyAreas });
 
 
       const newSelected = Object.assign({}, this.state.selected);
@@ -130,14 +135,9 @@ class ExerciceForm extends Component {
 
     }
 
-    logSomething(event) {
-      event.preventDefault();
-      console.log('this.state.selected: ', this.state.selected);
-      console.log('selection: ', this.state.selection);
-    }
 
     render() {
-        const { bodyAreas, selection } = this.state;
+        const { bodyAreas, selectedBodyAreas } = this.state;
 
         return(
             <PageBase
@@ -146,7 +146,6 @@ class ExerciceForm extends Component {
                 
 
                 <form onSubmit={this.handleSubmit}>
-                <button onClick={event => this.logSomething(event)}>Ira men</button>
                 <TextField
                     hintText="Nombre"
                     floatingLabelText="Nombre"
@@ -217,7 +216,7 @@ class ExerciceForm extends Component {
                         sortable={false}
                         // defaultFilterMethod={filterCaseInsensitive}
                         style={{width: '100%'}}
-                        data={selection}
+                        data={selectedBodyAreas}
                         columns={[
                           {
                             Header: <Subheader inset={true}>ÁREAS DEL CUERPO SELECCIONADAS</Subheader>,
