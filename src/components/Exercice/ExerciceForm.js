@@ -13,6 +13,7 @@ import Moment from 'moment';
 import { Tabs, Tab } from "material-ui/";
 import { blue500 } from 'material-ui/styles/colors';
 import filterCaseInsensitive from '../../shared/tableFiltering';
+import Subheader from 'material-ui/Subheader';
 
 class ExerciceForm extends Component {
     constructor(props) {
@@ -136,7 +137,7 @@ class ExerciceForm extends Component {
     }
 
     render() {
-        const { bodyAreas } = this.state;
+        const { bodyAreas, selection } = this.state;
 
         return(
             <PageBase
@@ -168,37 +169,79 @@ class ExerciceForm extends Component {
                         style={{width: '100%'}}
                         data={bodyAreas}
                         columns={[
+
                           {
-                            id: "checkbox",
-                            accessor: "",
-                            filterable: false,
-                            sortable: false,
-                            Cell: ({ original }) => {
-                              return (
-                                <input
-                                  type="checkbox"
-                                  className="checkbox"
-                                  checked={this.state.selected[original.id] === true}
-                                  onChange={() => this.toggleRow(original)}
-                                />
-                              );
-                            },
-                            width: 45
-                          },
-                          {
-                            Header: "ID",
-                            accessor: "id",
-                            maxWidth: 100
-                          },
-                          {
-                            Header: "Descripción",
-                            accessor: "description"
+                            Header: <Subheader inset={true}>SELECCIONA AL MENOS UN ÁREA DEL CUERPO</Subheader>,
+                            columns: [
+                              {
+                                id: "checkbox",
+                                accessor: "",
+                                filterable: false,
+                                sortable: false,
+                                Cell: ({ original }) => {
+                                  return (
+                                    <input
+                                      type="checkbox"
+                                      className="checkbox"
+                                      checked={this.state.selected[original.id] === true}
+                                      onChange={() => this.toggleRow(original)}
+                                    />
+                                  );
+                                },
+                                width: 45
+                              },
+                              {
+                                Header: "ID",
+                                accessor: "id",
+                                maxWidth: 100
+                              },
+                              {
+                                Header: "Descripción",
+                                accessor: "description"
+                              }
+                            ]
                           }
+
+                          
                         ]}
                         defaultPageSize={10}
                         className="-striped -highlight"
+                        noDataText="No hay datos ahora mismo, intentalo más tarde :("
                       />
 
+                      <br/>
+                      <br/>
+                      
+                      <ReactTable
+                        filterable={false}
+                        sortable={false}
+                        // defaultFilterMethod={filterCaseInsensitive}
+                        style={{width: '100%'}}
+                        data={selection}
+                        columns={[
+                          {
+                            Header: <Subheader inset={true}>ÁREAS DEL CUERPO SELECCIONADAS</Subheader>,
+                            columns: [
+                                {
+                                  Header: "ID",
+                                  accessor: "id",
+                                  maxWidth: 100
+                                },
+                                {
+                                  Header: "Descripción",
+                                  accessor: "description"
+                                }
+                            ]
+                          }
+                        ]
+                          
+
+                          }
+                        defaultPageSize={5}
+                        className="-striped -highlight"
+                        noDataText="Selecciona una celda en la otra tabla :)"
+                        
+                      />
                     </div>
                   </Tab>
                   <Tab style={styles.tab} label="Seleccionar imagen" >
@@ -219,10 +262,6 @@ class ExerciceForm extends Component {
                     </div>
                   </Tab>
                 </Tabs>
-                        
-                    {/* </div> */}
-
-                {/* <Divider/> */}
 
                 <RaisedButton
                     label="Registrar ejercicio"
