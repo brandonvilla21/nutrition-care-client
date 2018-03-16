@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactTable from 'react-table';
 import { Subheader, Checkbox } from 'material-ui';
-import filterCaseInsensitive from '../../shared/tableFiltering';
+import filterCaseInsensitive from '../shared/tableFiltering';
 
 
 class SelectableTable extends Component {
