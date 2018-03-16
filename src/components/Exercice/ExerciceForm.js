@@ -9,7 +9,8 @@ import urlConfig from '../../url-config';
 import 'react-table/react-table.css';
 import { blue500 } from 'material-ui/styles/colors';
 import SelectableTable from './SelectableTable';
-
+import MapsPersonPin from 'material-ui/svg-icons/maps/person-pin';
+import Photo from 'material-ui/svg-icons/image/photo';
 
 class ExerciceForm extends Component {
     constructor(props) {
@@ -145,8 +146,15 @@ class ExerciceForm extends Component {
 
                 <Tabs style={styles.tabs}>
 
-                  <Tab style={styles.tab} label="Datos generales" >
+                  <Tab 
+                    icon={<MapsPersonPin />}
+                    style={styles.tab} label="Datos generales" 
+
+                  >
                     <div>
+
+                      <br/>
+                      
                       <SelectableTable 
                         elements={bodyAreas}
                         selectedElements={selectedBodyAreas}
@@ -161,7 +169,9 @@ class ExerciceForm extends Component {
                       
                     </div>
                   </Tab>
-                  <Tab style={styles.tab} label="Seleccionar imagen" >
+                  <Tab style={styles.tab} label="Seleccionar imagen"
+                  icon={<Photo style={styles.iconStyles} color={blue500} />}
+                       >
                     <div>
                       
                       <h3 style={styles.imageTitle}>Agrega una imagen</h3>
@@ -228,16 +238,17 @@ const styles = {
     },
     tab: {
       backgroundColor: blue500,
+      inkBarStyle: {
+        backgroundColor: 'white'
+      }
     },
     tabs: {
+      borderRadius: '10px red',
       paddingTop: '18px'
+    },
+    iconStyles: {
+      marginRight: 24,
     }
-    // imageStyle: {
-    //   width: ''
-    // },
-    // rowContainer: {
-    //   display: 'flex'
-    // }
 
 };
   
