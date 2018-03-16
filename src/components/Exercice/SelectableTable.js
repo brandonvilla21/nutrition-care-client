@@ -17,7 +17,6 @@ class SelectableTable extends Component {
   }
 
   handleStateCheckboxs(original) {
-    console.log('original: ', original);
       
     const newSelected = Object.assign({}, this.state.selected);
     newSelected[original.id] = !this.state.selected[original.id];
@@ -34,8 +33,8 @@ class SelectableTable extends Component {
     const { 
       elements, selectedElements, mainTableHeader,
       secondaryTableHeader, defaultPageSize, noDataTextMainTable,
-      columns, noDataTextSecondaryTable, onToggleRow,
-    } = this.props;
+      columns, noDataTextSecondaryTable
+     } = this.props;
 
     return (
       <div>
@@ -59,7 +58,7 @@ class SelectableTable extends Component {
                     return (
                       <Checkbox
                         checked={this.state.selected[original.id] === true}
-                        onCheck={ () => this.handleStateCheckboxs(original) }
+                        onCheck={() => this.handleStateCheckboxs(original)}
                         style={styles.checkbox}
                       />
                     );
@@ -76,7 +75,7 @@ class SelectableTable extends Component {
           ]}
           defaultPageSize={defaultPageSize}
           className="-striped -highlight"
-          noDataText={ noDataTextMainTable }
+          noDataText={noDataTextMainTable}
         />
 
         <br />
@@ -101,7 +100,7 @@ class SelectableTable extends Component {
           }
           defaultPageSize={5}
           className="-striped -highlight"
-          noDataText={ noDataTextSecondaryTable }
+          noDataText={noDataTextSecondaryTable}
 
         />
       </div>

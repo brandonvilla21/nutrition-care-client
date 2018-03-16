@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import PageBase from '../../components/PageBase';
-import { TextField } from 'material-ui';
+import { TextField, Tabs, Tab } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
 import FileBase64 from 'react-file-base64';
 import { typography } from 'material-ui/styles';
 import axios from 'axios';
 import urlConfig from '../../url-config';
 import 'react-table/react-table.css';
-import { Tabs, Tab } from "material-ui/";
 import { blue500 } from 'material-ui/styles/colors';
 import SelectableTable from './SelectableTable';
 
@@ -37,6 +36,7 @@ class ExerciceForm extends Component {
           });
     }
 
+
     handleChange( event ) {
       const name = event.target.name;
       const value = event.target.value;
@@ -58,7 +58,7 @@ class ExerciceForm extends Component {
       let data = { name, base64_image, selectedBodyAreas };
 
 
-      axios.post(url, this.state, config)
+      axios.post(url, data, config)
           .then( response => {
               if (response.status === 200) {
                   this.props.onSubmitted(true);
@@ -105,14 +105,15 @@ class ExerciceForm extends Component {
       let selectedBodyAreas = [
         ...this.state.selectedBodyAreas
       ];
-      const elementIndex = selectedBodyAreas.findIndex( element => element.id == original.id )
+      const elementIndex = selectedBodyAreas.findIndex( element => element.id == original.id );
       // check to see if the key exists
       if (elementIndex >= 0) {
         // it does exist so we will remove it using destructing
         selectedBodyAreas = [
           ...selectedBodyAreas.slice(0, elementIndex),
           ...selectedBodyAreas.slice(elementIndex + 1)
-        ]
+        ];
+
       } else {
         // it does not exist so add it
         selectedBodyAreas.push(original);
@@ -206,7 +207,7 @@ const columns = [
     Header: "Descripción",
     accessor: "description"
   }
-]
+];
 
 const styles = {
     button: {
