@@ -42,7 +42,6 @@ class SelectableTable extends Component {
         <ReactTable
           filterable
           defaultFilterMethod={filterCaseInsensitive}
-          style={{ width: '100%' }}
           data={elements}
           columns={[
 
@@ -59,7 +58,6 @@ class SelectableTable extends Component {
                       <Checkbox
                         checked={this.state.selected[original.id] === true}
                         onCheck={() => this.handleStateCheckboxs(original)}
-                        style={styles.checkbox}
                       />
                     );
                   },
@@ -84,8 +82,6 @@ class SelectableTable extends Component {
         <ReactTable
           filterable={false}
           sortable={false}
-          // defaultFilterMethod={filterCaseInsensitive}
-          style={{ width: '100%' }}
           data={selectedElements}
           columns={[
             {
@@ -118,38 +114,6 @@ SelectableTable.propTypes = {
   noDataTextSecondaryTable: PropTypes.string.isRequired,
   columns:                  PropTypes.array.isRequired,
   onToggleRow:              PropTypes.func.isRequired
-};
-
-const styles = {
-  button: {
-    margin: 10,
-    float: 'right'
-  },
-  imageTitle: {
-    fontSize: 20,
-    fontWeight: typography.fontWeightLight,
-    marginBottom: 20,
-    marginTop: 15
-  },
-  imageDisplay: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 'auto 0'
-  },
-  tab: {
-    backgroundColor: blue500,
-  },
-  tabs: {
-    paddingTop: '18px'
-  }
-  // imageStyle: {
-  //   width: ''
-  // },
-  // rowContainer: {
-  //   display: 'flex'
-  // }
-
 };
 
 export default SelectableTable;
