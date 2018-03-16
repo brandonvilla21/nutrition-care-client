@@ -8,7 +8,7 @@ import axios from 'axios';
 import urlConfig from '../../url-config';
 import 'react-table/react-table.css';
 import { blue500 } from 'material-ui/styles/colors';
-import SelectableTable from './SelectableTable';
+import SelectableTable from '../SelectableTable';
 import MapsPersonPin from 'material-ui/svg-icons/maps/person-pin';
 import Photo from 'material-ui/svg-icons/image/photo';
 

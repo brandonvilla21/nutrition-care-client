@@ -2,9 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import ReactTable from 'react-table';
 import { Subheader, Checkbox } from 'material-ui';
 import filterCaseInsensitive from '../../shared/tableFiltering';
-import { typography } from 'material-ui/styles';
-import { blue500 } from 'material-ui/styles/colors';
-
 
 
 class SelectableTable extends Component {
