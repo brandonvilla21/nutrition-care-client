@@ -6,15 +6,11 @@ import FileBase64 from 'react-file-base64';
 import { typography } from 'material-ui/styles';
 import axios from 'axios';
 import urlConfig from '../../url-config';
-import ReactTable from 'react-table';
-import Divider from 'material-ui/Divider';
 import 'react-table/react-table.css';
-import Moment from 'moment';
 import { Tabs, Tab } from "material-ui/";
 import { blue500 } from 'material-ui/styles/colors';
-import filterCaseInsensitive from '../../shared/tableFiltering';
-import Subheader from 'material-ui/Subheader';
-import Checkbox from 'material-ui/Checkbox';
+import SelectableTable from './SelectableTable';
+
 
 class ExerciceForm extends Component {
     constructor(props) {
@@ -23,7 +19,6 @@ class ExerciceForm extends Component {
             name: '',
             base64_image: '',
             bodyAreas: [],
-            selected: {},
             selectedBodyAreas: []
         };
 
@@ -31,16 +26,24 @@ class ExerciceForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getFiles = this.getFiles.bind(this);
         this.disableButton = this.disableButton.bind(this);
+        this.toggleRow = this.toggleRow.bind(this);
     }
 
 
-    handleChange( event ) {
-        const name = event.target.name;
-        const value = event.target.value;
+    componentWillMount() {
+      this.getBodyAreas()
+          .then(bodyAreas => {
+            this.setState({ bodyAreas });
+          });
+    }
 
-        this.setState({
-            [name]: value
-        });
+    handleChange( event ) {
+      const name = event.target.name;
+      const value = event.target.value;
+
+      this.setState({
+          [name]: value
+      });
     }
 
 
@@ -64,15 +67,6 @@ class ExerciceForm extends Component {
                   this.props.onSubmitted(false);
           })
           .catch(() => this.props.onSubmitted(false));
-    }
-
-
-    componentWillMount() {
-      this.getBodyAreas()
-          .then(bodyAreas => {
-            console.log(bodyAreas);
-            this.setState({ bodyAreas })
-          });
     }
 
 
@@ -126,14 +120,6 @@ class ExerciceForm extends Component {
       // update the state
       this.setState({ selectedBodyAreas });
 
-
-      const newSelected = Object.assign({}, this.state.selected);
-      newSelected[original.id] = !this.state.selected[original.id];
-      this.setState({
-        selected: newSelected,
-      });
-
-
     }
 
 
@@ -158,89 +144,20 @@ class ExerciceForm extends Component {
 
                 <Tabs style={styles.tabs}>
 
-                  <Tab style={styles.tab} label="Seleccionar datos generales" >
+                  <Tab style={styles.tab} label="Datos generales" >
                     <div>
-
-                      <br/>
-
-                      <ReactTable
-                        filterable
-                        defaultFilterMethod={filterCaseInsensitive}
-                        style={{width: '100%'}}
-                        data={bodyAreas}
-                        columns={[
-
-                          {
-                            Header: <Subheader inset={true}>SELECCIONA AL MENOS UN ÁREA DEL CUERPO</Subheader>,
-                            columns: [
-                              {
-                                id: "checkbox",
-                                accessor: "",
-                                filterable: false,
-                                sortable: false,
-                                Cell: ({ original }) => {
-                                  return (
-                                    <Checkbox
-                                      checked={this.state.selected[original.id] === true}
-                                      onCheck={() => this.toggleRow(original)}
-                                      style={styles.checkbox}
-                                    />
-                                  );
-                                },
-                                width: 45
-                              },
-                              {
-                                Header: "ID",
-                                accessor: "id",
-                                maxWidth: 100
-                              },
-                              {
-                                Header: "Descripción",
-                                accessor: "description"
-                              }
-                            ]
-                          }
-
-                          
-                        ]}
-                        defaultPageSize={10}
-                        className="-striped -highlight"
-                        noDataText="No hay datos ahora mismo, intentalo más tarde :("
-                      />
-
-                      <br/>
-                      <br/>
-                      
-                      <ReactTable
-                        filterable={false}
-                        sortable={false}
-                        // defaultFilterMethod={filterCaseInsensitive}
-                        style={{width: '100%'}}
-                        data={selectedBodyAreas}
-                        columns={[
-                          {
-                            Header: <Subheader inset={true}>ÁREAS DEL CUERPO SELECCIONADAS</Subheader>,
-                            columns: [
-                                {
-                                  Header: "ID",
-                                  accessor: "id",
-                                  maxWidth: 100
-                                },
-                                {
-                                  Header: "Descripción",
-                                  accessor: "description"
-                                }
-                            ]
-                          }
-                        ]
-                          
-
-                          }
+                      <SelectableTable 
+                        elements={bodyAreas}
+                        selectedElements={selectedBodyAreas}
+                        mainTableHeader="SELECCIONA UN ÁREA DEL CUERPO"
+                        secondaryTableHeader="ÁREAS DEL CUERPO SELECCIONADAS"
                         defaultPageSize={5}
-                        className="-striped -highlight"
-                        noDataText="Selecciona una celda en la otra tabla :)"
-                        
+                        noDataTextMainTable="No hay datos actualmente :("
+                        noDataTextSecondaryTable="Selecciona un elemento de la otra tabla ;)"
+                        columns={columns}
+                        onToggleRow={this.toggleRow}
                       />
+                      
                     </div>
                   </Tab>
                   <Tab style={styles.tab} label="Seleccionar imagen" >
@@ -278,6 +195,18 @@ class ExerciceForm extends Component {
 ExerciceForm.propTypes = {
     onSubmitted: PropTypes.func
 };
+
+const columns = [
+  {
+    Header: "ID",
+    accessor: "id",
+    maxWidth: 100
+  },
+  {
+    Header: "Descripción",
+    accessor: "description"
+  }
+]
 
 const styles = {
     button: {
