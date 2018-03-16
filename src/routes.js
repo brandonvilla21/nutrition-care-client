@@ -11,6 +11,7 @@ import CreateFoodPage from './containers/admin/Food/CreateFoodPage';
 import ExercisePage from './containers/admin/Exercise/ExercisePage';
 import CreateExercicePage from './containers/admin/Exercise/CreateExercicePage';
 import UserInfoPage from './containers/user/UserInfo/UserInfoPage';
+import RegisterPage from './containers/session/RegisterPage';
 // import TypeRoutinePage from './containers/admin/TypeRoutine/TypeRoutinePage';
 // import CreateTypeRoutinePage from './containers/admin/TypeRoutine/CreateTypeRoutinePage';
 import CreateBodyAreaPage from './containers/admin/BodyArea/CreateBodyAreaPage';
@@ -19,6 +20,7 @@ import BodyAreaPage from './containers/admin/BodyArea/BodyAreaPage';
 export default (
   <Route>
     <Route path="login" component={LoginPage}/>
+    <Route path="register" component={RegisterPage}/>
     <Route path="/" component={App}>
       <IndexRoute component={Dashboard}/>
       <Route path="dashboard" component={Dashboard}/>
