@@ -4,6 +4,7 @@ import InfoOutline from 'material-ui/svg-icons/action/info-outline';
 import FitnessCenter from 'material-ui/svg-icons/places/fitness-center';
 import CheckCirlce from 'material-ui/svg-icons/action/check-circle';
 import GeneralInfo from './GeneralInfo';
+import MyRutine from '../../components/Rutine/MyRutine';
 
 class TabsRutine extends Component {
     constructor(props) {
@@ -47,7 +48,7 @@ class TabsRutine extends Component {
                 value={1}
             >
                 <div style={styles.container}>
-                    
+                    <MyRutine />
                 </div>
             </Tab>
             <Tab
