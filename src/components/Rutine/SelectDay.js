@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { SelectField, MenuItem } from 'material-ui';
 
 class SelectDay extends Component {
@@ -9,23 +9,23 @@ class SelectDay extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.menuItems = this.menuItems.bind(this);
     }
 
     handleChange(event, index, value) {
-        this.setState({ value });
+        this.setState({ value }, () => this.props.addDay(event, index, value));
     }
 
-    // menuItems(values) {
-    //   return names.map((name) => (
-    //     <MenuItem
-    //       key={name}
-    //       insetChildren={true}
-    //       checked={values && values.indexOf(name) > -1}
-    //       value={name}
-    //       primaryText={name}
-    //     />
-    //   ));
-    // }
+    menuItems() {
+      return days.map( day => (
+        <MenuItem
+          key={day}
+          insetChildren={true}
+          value={day}
+          primaryText={day}
+        />
+      ));
+    }
 
     render() {
         const { value } = this.state;
@@ -36,15 +36,25 @@ class SelectDay extends Component {
                     value={value}
                     onChange={this.handleChange}
                 >
-                    <MenuItem value={1} primaryText="Never" />
-                    <MenuItem value={2} primaryText="Every Night" />
-                    <MenuItem value={3} primaryText="Weeknights" />
-                    <MenuItem value={4} primaryText="Weekends" />
-                    <MenuItem value={5} primaryText="Weekly" />
+                    {this.menuItems()}
                 </SelectField>
             </div>
         );
     }
 }
+
+const days = [
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+    "Domingo",
+];
+
+SelectDay.propTypes = {
+    addDay: PropTypes.func
+};
 
 export default SelectDay;
