@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TabsRutine from '../../../components/Rutine/TabsRutine';
+import TabsRoutine from '../../../components/Rutine/TabsRoutine';
 import PageBase from '../../../components/PageBase';
 
 class CreateRutinePage extends Component {
@@ -10,7 +10,9 @@ class CreateRutinePage extends Component {
             days: []
         };
         this.handleInput = this.handleInput.bind(this);
+        this.addDay = this.addDay.bind(this);
     }
+
     handleInput( event ) {
         const name = event.target.name;
         const value = event.target.value;
@@ -19,20 +21,21 @@ class CreateRutinePage extends Component {
             [name]: value
         });
     }
-    
-    addDay( day ) {
+
+    addDay( event, index, value ) {
         const { days } = this.state;
         this.setState({
-            days: [...days, day]
+            days: [...days, value]
         });
     }
+
     render() {
       return (
         <div>
             <PageBase
                 navigation="Aplicación / Crear Rutina">
 
-                <TabsRutine
+                <TabsRoutine
                     addDay={this.addDay}
                     description={this.state.description}
                     handleInput={this.handleInput} />
