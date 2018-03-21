@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TabsRutine from '../../../components/Rutine/TabsRutine';
+import PageBase from '../../../components/PageBase';
 
 class CreateRutinePage extends Component {
     constructor() {
@@ -28,10 +29,15 @@ class CreateRutinePage extends Component {
     render() {
       return (
         <div>
-            <TabsRutine
-                addDay={this.addDay}
-                description={this.state.description}
-                handleInput={this.handleInput} />
+            <PageBase
+                navigation="Aplicación / Crear Rutina">
+
+                <TabsRutine
+                    addDay={this.addDay}
+                    description={this.state.description}
+                    handleInput={this.handleInput} />
+
+            </PageBase>
         </div>
       );
     }
