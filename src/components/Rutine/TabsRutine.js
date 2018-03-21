@@ -5,6 +5,7 @@ import FitnessCenter from 'material-ui/svg-icons/places/fitness-center';
 import CheckCirlce from 'material-ui/svg-icons/action/check-circle';
 import GeneralInfo from './GeneralInfo';
 import MyRutine from '../../components/Rutine/MyRutine';
+import { blue500 } from 'material-ui/styles/colors';
 
 class TabsRutine extends Component {
     constructor(props) {
@@ -33,6 +34,7 @@ class TabsRutine extends Component {
                 icon={<InfoOutline />}
                 label="Info general"
                 value={0}
+                style={styles.tab}
             >
                 <div style={styles.container}>
                     <GeneralInfo
@@ -46,6 +48,7 @@ class TabsRutine extends Component {
                 icon={<FitnessCenter />}
                 label="Mi rutina"
                 value={1}
+                style={styles.tab}
             >
                 <div style={styles.container}>
                     <MyRutine />
@@ -55,6 +58,7 @@ class TabsRutine extends Component {
                 icon={<CheckCirlce />}
                 label="Finalizar"
                 value={2}
+                style={styles.tab}
             >
                 <div style={styles.container}>
                     3
@@ -67,7 +71,13 @@ class TabsRutine extends Component {
 const styles = {
     container: {
         padding: '1rem'
-    }
+    },
+    tab: {
+        backgroundColor: blue500,
+        inkBarStyle: {
+          backgroundColor: 'white'
+        }
+    },
 };
 
 TabsRutine.propTypes = {
