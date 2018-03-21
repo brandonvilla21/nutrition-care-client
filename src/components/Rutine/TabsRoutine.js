@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import InfoOutline from 'material-ui/svg-icons/action/info-outline';
 import FitnessCenter from 'material-ui/svg-icons/places/fitness-center';
 import CheckCirlce from 'material-ui/svg-icons/action/check-circle';
 import GeneralInfo from './GeneralInfo';
-import MyRutine from '../../components/Rutine/MyRutine';
+import MyRoutine from '../../components/Rutine/MyRoutine';
 import { blue500 } from 'material-ui/styles/colors';
 
-class TabsRutine extends Component {
+class TabsRoutine extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +51,9 @@ class TabsRutine extends Component {
                 style={styles.tab}
             >
                 <div style={styles.container}>
-                    <MyRutine />
+                    <MyRoutine
+                        addDay={this.props.addDay} 
+                    />
                 </div>
             </Tab>
             <Tab
@@ -80,8 +82,9 @@ const styles = {
     },
 };
 
-TabsRutine.propTypes = {
+TabsRoutine.propTypes = {
     description: PropTypes.string,
-    handleInput: PropTypes.func
+    handleInput: PropTypes.func,
+    addDay: PropTypes.func
 };
-export default TabsRutine;
+export default TabsRoutine;
