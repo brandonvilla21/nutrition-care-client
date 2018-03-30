@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import SelectDay from '../../components/Rutine/SelectDay';
-import moduleName from '../../componets/Routine/RoutineDays';
+import RoutineDays from './RoutineDays';
+
 class MyRoutine extends Component {
     render() {
       return (

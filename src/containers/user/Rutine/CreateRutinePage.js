@@ -39,7 +39,7 @@ class CreateRutinePage extends Component {
                     addDay={this.addDay}
                     description={this.state.description}
                     handleInput={this.handleInput} />
-
+                    
             </PageBase>
         </div>
       );
