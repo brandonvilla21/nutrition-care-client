@@ -67,7 +67,8 @@ a:hover {
   cursor: pointer;
   text-align: center;
   border: 1px solid #EEEEEE;
-
+  text-transform: uppercase;
+  
   &:after {
     font-family: 'FontAwesome';
     content: '\f107';
