@@ -1,23 +1,35 @@
 import React, { Component, PropTypes } from 'react';
 import SelectDay from '../../components/Rutine/SelectDay';
-import RoutineDays from './RoutineDays';
+import RoutineDay from './RoutineDay';
 
 class MyRoutine extends Component {
-    render() {
+  constructor(props) {
+    super(props);
+    
+  }
+
+  render() {
       return (
         <div>
           <SelectDay
-            addDay={this.props.addDay}
+            days={this.props.days}
+            selectedDays={this.props.selectedDays}
+            removedDay={this.props.removedDay}
+            clearRemovedDay={this.props.clearRemovedDay}
           />
-
-          <RoutineDays />
+          {this.props.days.map((day, index) =>
+              <RoutineDay removeDay={this.props.removeDay} key={index} day={day} />)}
         </div>
       );
-    }
+  }
 }
 
 MyRoutine.propTypes = {
-  addDay: PropTypes.func
+  selectedDays: PropTypes.func,
+  days: PropTypes.array,
+  removeDay: PropTypes.func,
+  removedDay: PropTypes.object,
+  clearRemovedDay: PropTypes.func
 };
 
 export default MyRoutine;
