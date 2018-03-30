@@ -7,10 +7,13 @@ class CreateRutinePage extends Component {
         super();
         this.state = {
             description: '',
-            days: []
+            days: [],
+            removedDay: null
         };
         this.handleInput = this.handleInput.bind(this);
-        this.addDay = this.addDay.bind(this);
+        this.selectedDays = this.selectedDays.bind(this);
+        this.removeDay = this.removeDay.bind(this);
+        this.clearRemovedDay = this.clearRemovedDay.bind(this);
     }
 
     handleInput( event ) {
@@ -21,12 +24,25 @@ class CreateRutinePage extends Component {
             [name]: value
         });
     }
-
-    addDay( event, index, value ) {
-        const { days } = this.state;
+    
+    selectedDays( days ) {
         this.setState({
-            days: [...days, value]
+            days: [...days]
         });
+    }
+
+    removeDay( day ) {
+        const { days } = this.state;
+        const newDays = days.filter( element => element.id !== day.id );
+        this.setState({
+            days: [...newDays]
+        });
+        this.setState({ removedDay: day});
+
+    }
+
+    clearRemovedDay() {
+        this.setState({ removedDay: null });
     }
 
     render() {
@@ -36,7 +52,11 @@ class CreateRutinePage extends Component {
                 navigation="Aplicación / Crear Rutina">
 
                 <TabsRoutine
-                    addDay={this.addDay}
+                    selectedDays={this.selectedDays}
+                    days={this.state.days}
+                    removedDay={this.state.removedDay}
+                    removeDay={this.removeDay}
+                    clearRemovedDay={this.clearRemovedDay}
                     description={this.state.description}
                     handleInput={this.handleInput} />
 
@@ -45,4 +65,5 @@ class CreateRutinePage extends Component {
       );
     }
 }
+
 export default CreateRutinePage;
