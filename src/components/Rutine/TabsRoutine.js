@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import InfoOutline from 'material-ui/svg-icons/action/info-outline';
 import FitnessCenter from 'material-ui/svg-icons/places/fitness-center';
-import CheckCirlce from 'material-ui/svg-icons/action/check-circle';
 import GeneralInfo from './GeneralInfo';
 import MyRoutine from '../../components/Rutine/MyRoutine';
 import { blue500 } from 'material-ui/styles/colors';
@@ -56,7 +55,7 @@ class TabsRoutine extends Component {
                     />
                 </div>
             </Tab>
-            <Tab
+            {/* <Tab
                 icon={<CheckCirlce />}
                 label="Finalizar"
                 value={2}
@@ -65,8 +64,9 @@ class TabsRoutine extends Component {
                 <div style={styles.container}>
                     3
                 </div>
-            </Tab>
+            </Tab> */}
         </Tabs>
+        
       );
     }
 }
