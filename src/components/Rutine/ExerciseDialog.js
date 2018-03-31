@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import DialogContent from './DialogContent';
 
 class ExerciseDialog extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class ExerciseDialog extends Component {
                     modal={true}
                     open={this.props.open}
                 >
-                    This dialog spans the entire width of the screen.
+                    <DialogContent />
                 </Dialog>
             </div>
         );
