@@ -9,6 +9,7 @@ import Axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
 class LoginForm extends Component {
+
     constructor(props) {
         super(props);
 
@@ -20,6 +21,7 @@ class LoginForm extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
     handleInputChange( event ) {
         const name = event.target.name;
         const value = event.target.value;
@@ -37,17 +39,29 @@ class LoginForm extends Component {
         Axios.post(url, this.state, config)
             .then( res => {
                 if ( res.status == 200 ) {
-                    localStorage.setItem('access_token', JSON.stringify(res.data.access_token));
-                    
-                    const user_id = jwtDecode(res.data.access_token).user_id;
-                    localStorage.setItem('user_id', JSON.stringify(user_id));
-                    
+                    this.setLoginLocalStorage(res.data);
                     this.props.isLoggedIn(true);
                 } else
                     this.props.isLoggedIn(false);
             })
             .catch( () => this.props.isLoggedIn(false));
     }
+
+    setLoginLocalStorage( data ) {
+
+      localStorage.setItem('access_token', JSON.stringify(data.access_token));
+                    
+      const decode = jwtDecode(data.access_token);
+      const user = {
+        id: decode.user_id,
+        name: decode.user_name,
+        email: decode.user_email
+      }
+
+      localStorage.setItem('user', JSON.stringify(user));
+
+    }
+
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
