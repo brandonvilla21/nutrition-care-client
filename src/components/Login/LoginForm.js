@@ -6,6 +6,7 @@ import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import TextField from 'material-ui/TextField';
 import urlConfig from '../../url-config';
 import Axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 class LoginForm extends Component {
     constructor(props) {
@@ -37,6 +38,10 @@ class LoginForm extends Component {
             .then( res => {
                 if ( res.status == 200 ) {
                     localStorage.setItem('access_token', JSON.stringify(res.data.access_token));
+                    
+                    const user_id = jwtDecode(res.data.access_token).user_id;
+                    localStorage.setItem('user_id', JSON.stringify(user_id));
+                    
                     this.props.isLoggedIn(true);
                 } else
                     this.props.isLoggedIn(false);
@@ -66,7 +71,7 @@ class LoginForm extends Component {
 
                 <div>
                 <RaisedButton
-                    label="Inicar Sesión"
+                    label="Iniciar Sesión"
                     primary={true}
                     type="submit"
                     style={styles.loginBtn}/>
