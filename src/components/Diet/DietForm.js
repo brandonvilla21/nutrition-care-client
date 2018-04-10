@@ -212,6 +212,8 @@ class ExerciceForm extends Component {
                         }
                       ]}
                       defaultPageSize={5}
+                      noDataText="SELECCIONA LOS ALIMENTOS EN LA TABLA ANTERIOR PARA CONTINUAR ;)"
+                      
                     />
                     </div>
                   </Tab>
@@ -243,22 +245,28 @@ const selectableFoodColumns = [
   {
     Header: "Descripción",
     accessor: "description",
+    style: { whiteSpace: 'normal' }    
   },
   {
     Header: "Proteínas por g.",
-    accessor: "proteins"
+    accessor: "proteins",
+    maxWidth: 150    
+    
   },
   {
     Header: "Carbohídratos por g.",
-    accessor: "carbohydrates"
+    accessor: "carbohydrates",
+    maxWidth: 150    
   },
   {
     Header: "Grasas por g.",
-    accessor: "fats"
+    accessor: "fats",
+    maxWidth: 150    
   },
   {
     Header: "Calorías por g.",
-    accessor: "calories"
+    accessor: "calories",
+    maxWidth: 150    
   }
 ];
 
