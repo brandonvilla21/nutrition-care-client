@@ -18,7 +18,11 @@ class MyRoutine extends Component {
             clearRemovedDay={this.props.clearRemovedDay}
           />
           {this.props.days.map((day, index) =>
-              <RoutineDay removeDay={this.props.removeDay} key={index} day={day} />)}
+              <RoutineDay
+                key={index}
+                addExerciseToDay={this.props.addExerciseToDay}
+                removeDay={this.props.removeDay}
+                day={day} />)}
         </div>
       );
   }
@@ -29,7 +33,8 @@ MyRoutine.propTypes = {
   days: PropTypes.array,
   removeDay: PropTypes.func,
   removedDay: PropTypes.object,
-  clearRemovedDay: PropTypes.func
+  clearRemovedDay: PropTypes.func,
+  addExerciseToDay: PropTypes.func,
 };
 
 export default MyRoutine;
