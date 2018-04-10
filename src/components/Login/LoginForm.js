@@ -56,7 +56,7 @@ class LoginForm extends Component {
         id: decode.user_id,
         name: decode.user_name,
         email: decode.user_email
-      }
+      };
 
       localStorage.setItem('user', JSON.stringify(user));
 

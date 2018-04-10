@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import DietForm from '../../../components/Diet/DietForm';
 
 class CreateDietPage extends Component {
     constructor(props) {
@@ -41,8 +42,8 @@ class CreateDietPage extends Component {
             >
               El ejercicio ha sido registrado con éxito.
             </Dialog>
-          {/* <ExerciceForm onSubmitted={this.isSubmitted} /> */}
-          <p>It worked</p>
+          
+          <DietForm onSubmitted={this.isSubmitted} />
         </div>
       );
     }
