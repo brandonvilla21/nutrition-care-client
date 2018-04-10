@@ -21,7 +21,7 @@ class SelectExercise extends Component {
             }
           </SelectField>
         </div>
-      )
+      );
     }
 }
 
@@ -29,5 +29,6 @@ SelectExercise.propTypes = {
     bodyAreas: PropTypes.obj,
     value: PropTypes.obj,
     onChange: PropTypes.func,
-}
+};
+
 export default SelectExercise;
