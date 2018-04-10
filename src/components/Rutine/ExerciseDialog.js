@@ -5,23 +5,16 @@ import DialogContent from './DialogContent';
 
 class ExerciseDialog extends Component {
     constructor(props) {
-        super(props);
-
-        this.handleResponse = this.handleResponse.bind(this);
-        
-    }
-
-    handleResponse(response) {
-        console.log(response)
-        this.props.handleClose();
+        super(props);        
     }
 
     render() {
+        const { handleClose, onResponse, open } = this.props;
         const actions = [
             <FlatButton
                 key={0}
                 label="Cancelar"
-                onClick={this.props.handleClose}
+                onClick={handleClose}
             />,
         ];
 
@@ -31,10 +24,10 @@ class ExerciseDialog extends Component {
                     title="Selecciona un ejercicio"
                     actions={actions}
                     modal={true}
-                    open={this.props.open}
+                    open={open}
                     autoScrollBodyContent={true}
                 >
-                    <DialogContent onReponse={this.handleResponse} />
+                    <DialogContent onResponse={onResponse} />
                 </Dialog>
             </div>
         );
@@ -43,7 +36,8 @@ class ExerciseDialog extends Component {
 
 ExerciseDialog.propTypes = {
     open: PropTypes.bool,
-    handleClose: PropTypes.func
+    handleClose: PropTypes.func,
+    onResponse: PropTypes.func
 };
 
 export default ExerciseDialog;
