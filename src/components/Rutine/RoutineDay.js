@@ -14,6 +14,8 @@ class RoutineDay extends Component {
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.deleteDay = this.deleteDay.bind(this);
+        this.handleResponse = this.handleResponse.bind(this);
+        
     }
 
     handleOpen() {
@@ -24,6 +26,11 @@ class RoutineDay extends Component {
         this.setState({open: false});
     }
 
+    handleResponse( exercise ) {
+        this.props.addExerciseToDay(this.props.day, exercise);
+        this.setState({open: false});
+    }
+    
     deleteDay() {
         this.props.removeDay(this.props.day);
     }
@@ -33,7 +40,8 @@ class RoutineDay extends Component {
         <div>
             <ExerciseDialog
                 open={this.state.open}
-                handleClose={this.handleClose}/>
+                handleClose={this.handleClose}
+                onResponse={this.handleResponse}/>
             
             <Collapsible style={styles.collapsible} trigger={this.props.day.name}>
                 <p>Well it worked</p>
@@ -63,7 +71,8 @@ const styles = {
 
 RoutineDay.propTypes = {
     day: PropTypes.object,
-    removeDay: PropTypes.func
+    removeDay: PropTypes.func,
+    addExerciseToDay: PropTypes.func,
 };
 
 export default RoutineDay;
