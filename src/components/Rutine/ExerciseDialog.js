@@ -29,7 +29,7 @@ class ExerciseDialog extends Component {
         return (
             <div>
                 <Dialog
-                    title="Dialog With Custom Width"
+                    title="Selecciona un ejercicio"
                     actions={actions}
                     modal={true}
                     open={this.props.open}
