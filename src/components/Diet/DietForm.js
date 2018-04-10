@@ -10,6 +10,9 @@ import 'react-table/react-table.css';
 import SelectableTable from '../SelectableTable';
 import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
+import ReactTable from 'react-table';
+import { Subheader } from 'material-ui';
+
 
 class ExerciceForm extends Component {
     constructor(props) {
@@ -31,8 +34,7 @@ class ExerciceForm extends Component {
     componentWillMount() {
       this.getFoods()
           .then(foods => {
-            console.log('foods: ', foods);
-            console.log('keys', Object.keys(foods[0]))
+            foods.forEach( food => food.grams = 0);
             this.setState({ foods });
           });
     }
@@ -71,6 +73,19 @@ class ExerciceForm extends Component {
     }
 
 
+    onChangeGrams(original, event) {
+
+      const value = event.target.value;
+      const selectedFoods = [ ...this.state.selectedFoods ];
+      const index = selectedFoods.findIndex( element => element.id == original.id );
+
+      selectedFoods[index].grams = Number(value);
+
+      this.setState({ selectedFoods });
+      
+    }
+
+
     getFoods() {
         const url = `${urlConfig.baseUrl}/foods`;
         return fetch(url)
@@ -80,7 +95,7 @@ class ExerciceForm extends Component {
 
     
     disableButton() {
-        return  true;
+        return true;
     }
     
 
@@ -93,6 +108,7 @@ class ExerciceForm extends Component {
           selected: {}
         });
     }
+
 
     toggleRow(original) {
       
@@ -115,7 +131,7 @@ class ExerciceForm extends Component {
       // update the state
       this.setState({ selectedFoods });
 
-    }
+    } 
 
 
     render() {
@@ -141,7 +157,7 @@ class ExerciceForm extends Component {
 
                   <Tab 
                     icon={<ActionShoppingBasket />}
-                    style={styles.tab} label="Seleccione los alimentos que desea agregar a su dieta" 
+                    style={styles.tab} label="Alimentos disponibles" 
 
                   >
                     <div>
@@ -156,17 +172,47 @@ class ExerciceForm extends Component {
                         defaultPageSize={10}
                         noDataTextMainTable="No hay datos actualmente :("
                         noDataTextSecondaryTable="Selecciona un elemento de la otra tabla ;)"
-                        columns={columns}
+                        columns={selectableFoodColumns}
                         onToggleRow={this.toggleRow}
                       />
                       
                     </div>
                   </Tab>
-                  <Tab style={styles.tab} label="Introduce los gramos de cada uno de los alimentos que seleccionaste :)"
+                  <Tab style={styles.tab} label="Estos son tus alimentos seleccionados :)"
                   icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}
                        >
                     <div>
-                      <p>Siguiente tab</p>
+                    <ReactTable
+                      data={selectedFoods}
+                      columns={[
+
+                        {
+                          Header: <Subheader inset={true}>INTRODUCE LOS GRAMOS DE CADA UNO DE LOS ALIMENTOS QUE SELECCIONASTE</Subheader>,
+                          columns: [
+                            ...selectableFoodColumns,
+                            {
+                              Header: "Gramos",
+                              id: "checkbox",
+                              accessor: "",
+                              filterable: false,
+                              sortable: false,
+                              Cell: ({ original }) => {
+                                return (
+                                  <input 
+                                    type="number" 
+                                    value={original.grams} 
+                                    onChange={this.onChangeGrams.bind(this, original)}
+                                  />
+                                );
+                              },
+                              width: 200
+                            },
+                      
+                          ]
+                        }
+                      ]}
+                      defaultPageSize={5}
+                    />
                     </div>
                   </Tab>
                 </Tabs>
@@ -188,7 +234,7 @@ ExerciceForm.propTypes = {
     onSubmitted: PropTypes.func
 };
 
-const columns = [
+const selectableFoodColumns = [
   {
     Header: "ID",
     accessor: "id",
@@ -196,7 +242,7 @@ const columns = [
   },
   {
     Header: "Descripción",
-    accessor: "description"
+    accessor: "description",
   },
   {
     Header: "Proteínas por g.",
