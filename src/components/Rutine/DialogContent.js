@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
 import urlConfig from '../../url-config';
 import SelectExercise from './SelectExercise';
@@ -29,16 +29,14 @@ class DialogContent extends Component {
     const url = `${urlConfig.baseUrl}/exercises`;
     const config = urlConfig.config;
     axios.get(url, config)
-      .then( response => this.setState({ dataSource: response.data.data }))
-      .catch( err => console.log(err));
+      .then( response => this.setState({ dataSource: response.data.data }));
   }
 
   fetchBodyAreas() {
     const url = `${urlConfig.baseUrl}/bodyareas`;
     const config = urlConfig.config;
     axios.get(url, config)
-      .then( response => {console.log('response: ', response); this.setState({ bodyAreas: response.data.data })})
-      .catch( err => console.log(err));
+      .then( response => this.setState({ bodyAreas: response.data.data }));
   } 
 
   handleSelectChange(event, index, value){
@@ -73,12 +71,11 @@ class DialogContent extends Component {
           noDataText="Aún no existen ejercicios para esta área"
           getTrProps={(state, rowInfo) => {
               return {
-                onClick: (e) => this.props.onReponse(rowInfo.original)
-              }
+                onClick: () => this.props.onResponse(rowInfo.original)
+              };
             }
           }
-        >
-        </ReactTable>
+        />
       </div>
     );
   }
@@ -110,6 +107,8 @@ const styles = {
   }
 };
 
-
+DialogContent.propTypes = {
+  onResponse: PropTypes.func
+};
 
 export default DialogContent;
