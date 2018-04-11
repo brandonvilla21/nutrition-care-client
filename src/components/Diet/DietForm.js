@@ -34,7 +34,7 @@ class ExerciceForm extends Component {
     componentWillMount() {
       this.getFoods()
           .then(foods => {
-            foods.forEach( food => food.grams = 0);
+            foods.forEach( food => food.grams = 0 );
             this.setState({ foods });
           });
     }
@@ -83,6 +83,18 @@ class ExerciceForm extends Component {
 
       this.setState({ selectedFoods });
       
+    }
+
+    onChangeCalories(original, event) {
+
+      const value = event.target.value;
+      const selectedFoods = [ ...this.state.selectedFoods ];
+      const index = selectedFoods.findIndex( element => element.id == original.id );
+
+      selectedFoods[index].calories = Number(value);
+
+      this.setState({ selectedFoods });
+
     }
 
 
@@ -189,10 +201,10 @@ class ExerciceForm extends Component {
                         {
                           Header: <Subheader inset={true}>INTRODUCE LOS GRAMOS DE CADA UNO DE LOS ALIMENTOS QUE SELECCIONASTE</Subheader>,
                           columns: [
-                            ...selectableFoodColumns,
+                            ...selectedFoodColumns,
                             {
                               Header: "Gramos",
-                              id: "checkbox",
+                              id: "text",
                               accessor: "",
                               filterable: false,
                               sortable: false,
@@ -207,14 +219,34 @@ class ExerciceForm extends Component {
                               },
                               width: 200
                             },
+                            {
+                              Header: "Calorías",
+                              id: "text",
+                              accessor: "",
+                              filterable: false,
+                              sortable: false,
+                              Cell: ({ original }) => {
+                                return (
+                                  <input 
+                                    type="number" 
+                                    value={original.calories} 
+                                    onChange={this.onChangeCalories.bind(this, original)}
+                                  />
+                                );
+                              },
+                              width: 200
+                            },
                       
                           ]
-                        }
+                        },
                       ]}
                       defaultPageSize={5}
                       noDataText="SELECCIONA LOS ALIMENTOS EN LA TABLA ANTERIOR PARA CONTINUAR ;)"
-                      
                     />
+                    <br/>
+                    <h1>
+                      PONER TOTALES AQUÍ O EN OTRA TAB
+                    </h1>
                     </div>
                   </Tab>
                 </Tabs>
@@ -245,7 +277,7 @@ const selectableFoodColumns = [
   {
     Header: "Descripción",
     accessor: "description",
-    style: { whiteSpace: 'normal' }    
+    style: { whiteSpace: 'normal' }
   },
   {
     Header: "Proteínas por g.",
@@ -267,6 +299,35 @@ const selectableFoodColumns = [
     Header: "Calorías por g.",
     accessor: "calories",
     maxWidth: 150    
+  }
+];
+
+const selectedFoodColumns = [
+  {
+    Header: "ID",
+    accessor: "id",
+    maxWidth: 100
+  },
+  {
+    Header: "Descripción",
+    accessor: "description",
+    style: { whiteSpace: 'normal' }
+  },
+  {
+    Header: "Proteínas",
+    accessor: "proteins",
+    maxWidth: 100    
+    
+  },
+  {
+    Header: "Carbohídratos",
+    accessor: "carbohydrates",
+    maxWidth: 115    
+  },
+  {
+    Header: "Grasas",
+    accessor: "fats",
+    maxWidth: 100    
   }
 ];
 
