@@ -6,6 +6,7 @@ import CheckCirlce from 'material-ui/svg-icons/action/check-circle';
 import GeneralInfo from './GeneralInfo';
 import MyRoutine from '../../components/Rutine/MyRoutine';
 import { blue500 } from 'material-ui/styles/colors';
+import RoutineResume from './RoutineResume';
 
 class TabsRoutine extends Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class TabsRoutine extends Component {
         };
 
         this.nextIndex = this.nextIndex.bind(this);
+        this.prevIndex = this.prevIndex.bind(this);
     }
     
     nextIndex() {
@@ -59,6 +61,9 @@ class TabsRoutine extends Component {
                         clearRemovedDay={this.props.clearRemovedDay}
                         addExerciseToDay={this.props.addExerciseToDay}
                         onChangeField={this.props.onChangeField}
+                        nextIndex={this.nextIndex}
+                        prevIndex={this.prevIndex}
+                        
                     />
                 </div>
             </Tab>
@@ -69,7 +74,10 @@ class TabsRoutine extends Component {
                 style={styles.tab}
             >
                 <div style={styles.container}>
-                    3
+                    <RoutineResume
+                        days={this.props.days}
+                        onSubmitRoutine={this.props.onSubmitRoutine}
+                        prevIndex={this.prevIndex} />
                 </div>
             </Tab>
         </Tabs>
@@ -99,5 +107,6 @@ TabsRoutine.propTypes = {
     clearRemovedDay: PropTypes.func,
     addExerciseToDay: PropTypes.func,
     onChangeField: PropTypes.func,
+    onSubmitRoutine: PropTypes.func,
 };
 export default TabsRoutine;
