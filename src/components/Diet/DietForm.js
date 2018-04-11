@@ -2,16 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import PageBase from '../../components/PageBase';
 import { Tabs, Tab } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
-import { typography } from 'material-ui/styles';
-import axios from 'axios';
+// import axios from 'axios';
 import urlConfig from '../../url-config';
 import { blue500 } from 'material-ui/styles/colors';
 import 'react-table/react-table.css';
 import SelectableTable from '../SelectableTable';
 import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
-import ReactTable from 'react-table';
-import { Subheader } from 'material-ui';
+import DietTableCalculator from './DietTableCalculator';
 
 
 class ExerciceForm extends Component {
@@ -19,16 +17,17 @@ class ExerciceForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user_id: '',
-            foods: [],
-            dietState: '',
-            selectedFoods: []
+          user_id: '',
+          foods: [],
+          dietState: 'ACTIVO',
+          selectedFoods: []
         };
-
+        
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.disableButton = this.disableButton.bind(this);
         this.toggleRow = this.toggleRow.bind(this);
+        this.onChangeDataTableFields = this.onChangeDataTableFields.bind(this);
     }
 
 
@@ -71,19 +70,6 @@ class ExerciceForm extends Component {
       //             this.props.onSubmitted(false);
       //     })
       //     .catch(() => this.props.onSubmitted(false));
-    }
-
-
-    onChangeDataTableFields(original, accessor, event) {
-
-      const value = event.target.value;
-      const selectedFoods = [ ...this.state.selectedFoods ];
-      const index = selectedFoods.findIndex( element => element.id == original.id );
-
-      selectedFoods[index][accessor] = Number(value);
-
-      this.setState({ selectedFoods });
-
     }
 
 
@@ -135,6 +121,19 @@ class ExerciceForm extends Component {
     } 
 
 
+    onChangeDataTableFields(original, accessor, event) {
+
+      const value = event.target.value;
+      const selectedFoods = [ ...this.state.selectedFoods ];
+      const index = selectedFoods.findIndex( element => element.id == original.id );
+
+      selectedFoods[index][accessor] = Number(value);
+
+      this.setState({ selectedFoods });
+
+    }
+
+
     render() {
         const { foods, selectedFoods } = this.state;
 
@@ -145,22 +144,12 @@ class ExerciceForm extends Component {
                 
 
                 <form onSubmit={this.handleSubmit}>
-                {/* <TextField
-                    hintText="Nombre"
-                    floatingLabelText="Nombre"
-                    value={this.state.name}
-                    name="name"
-                    onChange={this.handleChange}
-                    fullWidth={true} /> */}
-
-
+                
                 <Tabs style={styles.tabs}>
 
                   <Tab 
                     icon={<ActionShoppingBasket />}
-                    style={styles.tab} label="Alimentos disponibles" 
-
-                  >
+                    style={styles.tab} label="Alimentos disponibles">
                     <div>
 
                       <br/>
@@ -180,59 +169,13 @@ class ExerciceForm extends Component {
                     </div>
                   </Tab>
                   <Tab style={styles.tab} label="Estos son tus alimentos seleccionados :)"
-                  icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}
+                    icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}
                        >
                     <div>
-                    <ReactTable
-                      data={selectedFoods}
-                      columns={[
-
-                        {
-                          Header: <Subheader inset={true}>INTRODUCE LOS GRAMOS DE CADA UNO DE LOS ALIMENTOS QUE SELECCIONASTE</Subheader>,
-                          columns: [
-                            ...selectedFoodColumns,
-                            {
-                              Header: "Gramos",
-                              id: "text",
-                              accessor: "",
-                              filterable: false,
-                              sortable: false,
-                              Cell: ({ original }) => {
-                                return (
-                                  <input 
-                                    type="number" 
-                                    value={original.grams} 
-                                    onChange={this.onChangeDataTableFields.bind(this, original, EDITABLE_PROPERTY_ACCESORS.GRAMS)}
-                                  />
-                                );
-                              },
-                              width: 200
-                            },
-                            {
-                              Header: "Calorías",
-                              id: "text",
-                              accessor: "",
-                              filterable: false,
-                              sortable: false,
-                              Cell: ({ original }) => {
-                                return (
-                                  <input 
-                                    type="number" 
-                                    value={original.calories} 
-                                    onChange={this.onChangeDataTableFields.bind(this, original, EDITABLE_PROPERTY_ACCESORS.CALORIES)}
-                                  />
-                                );
-                              },
-                              width: 200
-                            },
-                      
-                          ]
-                        },
-                      ]}
-                      defaultPageSize={5}
-                      noDataText="SELECCIONA LOS ALIMENTOS EN LA TABLA ANTERIOR PARA CONTINUAR ;)"
-                    />
-                    <br/>
+                      <DietTableCalculator 
+                        selectedFoods={selectedFoods}
+                        onChangeTable={this.onChangeDataTableFields}
+                       />
                     <h1>
                       PONER TOTALES AQUÍ O EN OTRA TAB
                     </h1>
@@ -291,51 +234,10 @@ const selectableFoodColumns = [
   }
 ];
 
-const selectedFoodColumns = [
-  {
-    Header: "ID",
-    accessor: "id",
-    maxWidth: 100
-  },
-  {
-    Header: "Descripción",
-    accessor: "description",
-    style: { whiteSpace: 'normal' }
-  },
-  {
-    Header: "Proteínas",
-    accessor: "proteins",
-    maxWidth: 100    
-    
-  },
-  {
-    Header: "Carbohídratos",
-    accessor: "carbohydrates",
-    maxWidth: 115    
-  },
-  {
-    Header: "Grasas",
-    accessor: "fats",
-    maxWidth: 100    
-  }
-];
-
 const styles = {
     button: {
         margin: 10,
         float: 'right'
-    },
-    imageTitle: {
-        fontSize: 20,
-        fontWeight: typography.fontWeightLight,
-        marginBottom: 20,
-        marginTop: 15
-    },
-    imageDisplay: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 'auto 0'  
     },
     tab: {
       backgroundColor: blue500,
@@ -353,9 +255,4 @@ const styles = {
 
 };
 
-const EDITABLE_PROPERTY_ACCESORS = {
-  GRAMS: 'grams',
-  CALORIES: 'calories'
-};
-  
 export default ExerciceForm;
