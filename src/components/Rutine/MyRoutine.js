@@ -22,7 +22,8 @@ class MyRoutine extends Component {
                 key={index}
                 addExerciseToDay={this.props.addExerciseToDay}
                 removeDay={this.props.removeDay}
-                day={day} />)}
+                day={day}
+                onChangeField={this.props.onChangeField} />)}
         </div>
       );
   }
@@ -35,6 +36,7 @@ MyRoutine.propTypes = {
   removedDay: PropTypes.object,
   clearRemovedDay: PropTypes.func,
   addExerciseToDay: PropTypes.func,
+  onChangeField: PropTypes.func,
 };
 
 export default MyRoutine;
