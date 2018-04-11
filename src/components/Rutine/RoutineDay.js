@@ -35,7 +35,7 @@ class RoutineDay extends Component {
     }
 
     handleCloseConfirm( event, confirmed ) {
-        this.setState({openConfirm: confirmed}, () =>
+        this.setState({openConfirm: false}, () =>
             confirmed ? this.deleteDay() : null);
     }
 
@@ -47,10 +47,11 @@ class RoutineDay extends Component {
         this.props.addExerciseToDay(this.props.day, exercise);
         this.setState({open: false});
     }
-    
+
     deleteDay() {
         this.props.removeDay(this.props.day);
     }
+
     renderExercises() {
         if (this.props.day.exercises) {
             return this.props.day.exercises.map( exercise => 
@@ -63,7 +64,7 @@ class RoutineDay extends Component {
         } else
             return null;
     }
-    
+
     render() {
       return (
         <div>
@@ -71,6 +72,7 @@ class RoutineDay extends Component {
                 open={this.state.open}
                 handleClose={this.handleClose}
                 onResponse={this.handleResponse}/>
+
             <ConfirmDialog
                 title="Eliminar día"
                 message="¿Estas seguro que deseas eliminar este día?, se perderán todos los ejercicios guardados."
