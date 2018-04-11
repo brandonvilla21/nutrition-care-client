@@ -15,6 +15,7 @@ import { Subheader } from 'material-ui';
 
 
 class ExerciceForm extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -73,25 +74,13 @@ class ExerciceForm extends Component {
     }
 
 
-    onChangeGrams(original, event) {
+    onChangeDataTableFields(original, accessor, event) {
 
       const value = event.target.value;
       const selectedFoods = [ ...this.state.selectedFoods ];
       const index = selectedFoods.findIndex( element => element.id == original.id );
 
-      selectedFoods[index].grams = Number(value);
-
-      this.setState({ selectedFoods });
-      
-    }
-
-    onChangeCalories(original, event) {
-
-      const value = event.target.value;
-      const selectedFoods = [ ...this.state.selectedFoods ];
-      const index = selectedFoods.findIndex( element => element.id == original.id );
-
-      selectedFoods[index].calories = Number(value);
+      selectedFoods[index][accessor] = Number(value);
 
       this.setState({ selectedFoods });
 
@@ -213,7 +202,7 @@ class ExerciceForm extends Component {
                                   <input 
                                     type="number" 
                                     value={original.grams} 
-                                    onChange={this.onChangeGrams.bind(this, original)}
+                                    onChange={this.onChangeDataTableFields.bind(this, original, EDITABLE_PROPERTY_ACCESORS.GRAMS)}
                                   />
                                 );
                               },
@@ -230,7 +219,7 @@ class ExerciceForm extends Component {
                                   <input 
                                     type="number" 
                                     value={original.calories} 
-                                    onChange={this.onChangeCalories.bind(this, original)}
+                                    onChange={this.onChangeDataTableFields.bind(this, original, EDITABLE_PROPERTY_ACCESORS.CALORIES)}
                                   />
                                 );
                               },
@@ -362,6 +351,11 @@ const styles = {
       marginRight: 24,
     }
 
+};
+
+const EDITABLE_PROPERTY_ACCESORS = {
+  GRAMS: 'grams',
+  CALORIES: 'calories'
 };
   
 export default ExerciceForm;
