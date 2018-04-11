@@ -25,7 +25,7 @@ class ExerciceForm extends Component {
         };
         
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        // this.handleSubmit = this.handleSubmit.bind(this);
         this.disableButton = this.disableButton.bind(this);
         this.toggleRow = this.toggleRow.bind(this);
         this.onChangeDataTableFields = this.onChangeDataTableFields.bind(this);
@@ -183,7 +183,7 @@ class ExerciceForm extends Component {
                   <CardHeader
                     title="Aviso"
                     subtitle="Hola, aquí unas recomendaciones :D"
-                    avatar={<ActionHelp style={{marginTop: 10}}/>}
+                    avatar={<ActionHelp style={{ marginTop: 10, color: grey700 }}/>}
                     // actAsExpander={true}
                     // showExpandableButton={true}
                   />
