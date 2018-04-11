@@ -30,8 +30,40 @@ class SelectableTable extends Component {
     const { 
       elements, selectedElements, mainTableHeader,
       secondaryTableHeader, defaultPageSize, noDataTextMainTable,
-      columns, noDataTextSecondaryTable
+      columns, noDataTextSecondaryTable, enableSecondaryTable
      } = this.props;
+
+    let secondaryTable = null;
+
+    if(enableSecondaryTable) {
+      secondaryTable = (
+       <div>
+        <br />
+        <br />
+        <ReactTable
+          filterable={false}
+          sortable={false}
+          data={selectedElements}
+          columns={[
+            {
+              Header: <Subheader inset={true}>{secondaryTableHeader}</Subheader>,
+              columns: [
+                ...columns
+              ]
+            }
+          ]
+
+
+          }
+          defaultPageSize={5}
+          className="-striped -highlight"
+          noDataText={noDataTextSecondaryTable}
+
+        />
+       </div>
+      )
+       
+    }
 
     return (
       <div>
@@ -73,29 +105,8 @@ class SelectableTable extends Component {
           noDataText={noDataTextMainTable}
         />
 
-        <br />
-        <br />
+        {secondaryTable}
 
-        <ReactTable
-          filterable={false}
-          sortable={false}
-          data={selectedElements}
-          columns={[
-            {
-              Header: <Subheader inset={true}>{secondaryTableHeader}</Subheader>,
-              columns: [
-                ...columns
-              ]
-            }
-          ]
-
-
-          }
-          defaultPageSize={5}
-          className="-striped -highlight"
-          noDataText={noDataTextSecondaryTable}
-
-        />
       </div>
     );
   }
@@ -110,7 +121,8 @@ SelectableTable.propTypes = {
   noDataTextMainTable:      PropTypes.string.isRequired,
   noDataTextSecondaryTable: PropTypes.string.isRequired,
   columns:                  PropTypes.array.isRequired,
-  onToggleRow:              PropTypes.func.isRequired
+  onToggleRow:              PropTypes.func.isRequired,
+  enableSecondaryTable:     PropTypes.bool.isRequired
 };
 
 export default SelectableTable;

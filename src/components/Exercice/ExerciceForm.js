@@ -165,6 +165,7 @@ class ExerciceForm extends Component {
                         noDataTextSecondaryTable="Selecciona un elemento de la otra tabla ;)"
                         columns={columns}
                         onToggleRow={this.toggleRow}
+                        enableSecondaryTable={true}
                       />
                       
                     </div>
