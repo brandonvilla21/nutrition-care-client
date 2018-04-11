@@ -7,18 +7,22 @@ import { blue500 } from 'material-ui/styles/colors';
 import ExerciseDialog from './ExerciseDialog';
 import ExerciseCard from './ExerciseCard';
 import { RaisedButton } from 'material-ui';
+import ConfirmDialog from '../ConfirmDialog';
 
 class RoutineDay extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false
+            open: false,
+            openConfirm: false,
         };
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.deleteDay = this.deleteDay.bind(this);
         this.handleResponse = this.handleResponse.bind(this);
         this.renderExercises = this.renderExercises.bind(this);
+        this.handleCloseConfirm = this.handleCloseConfirm.bind(this);
+        this.handleOpenConfirm = this.handleOpenConfirm.bind(this);
         
     }
 
@@ -28,6 +32,15 @@ class RoutineDay extends Component {
 
     handleClose() {
         this.setState({open: false});
+    }
+
+    handleCloseConfirm( event, confirmed ) {
+        this.setState({openConfirm: confirmed}, () =>
+            confirmed ? this.deleteDay() : null);
+    }
+
+    handleOpenConfirm() {
+        this.setState({openConfirm: true});
     }
 
     handleResponse( exercise ) {
@@ -58,14 +71,19 @@ class RoutineDay extends Component {
                 open={this.state.open}
                 handleClose={this.handleClose}
                 onResponse={this.handleResponse}/>
-            
+            <ConfirmDialog
+                title="Eliminar día"
+                message="¿Estas seguro que deseas eliminar este día?, se perderán todos los ejercicios guardados."
+                open={this.state.openConfirm}
+                onClose={this.handleCloseConfirm}/>
+
             <Collapsible style={styles.collapsible} trigger={this.props.day.name}>
                 {this.renderExercises()}
                 <RaisedButton
                     secondary={true}
                     icon={<Delete />}
                     style={styles.raisedButton}
-                    onClick={this.deleteDay}
+                    onClick={this.handleOpenConfirm}
                     label="Eliminar día"
                 />
                 <FloatingActionButton 
