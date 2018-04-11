@@ -26,8 +26,8 @@ class SelectExercise extends Component {
 }
 
 SelectExercise.propTypes = {
-    bodyAreas: PropTypes.obj,
-    value: PropTypes.obj,
+    bodyAreas: PropTypes.array,
+    value: PropTypes.number,
     onChange: PropTypes.func,
 };
 
