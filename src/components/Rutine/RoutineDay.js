@@ -6,7 +6,7 @@ import Delete from 'material-ui/svg-icons/action/delete';
 import { blue500 } from 'material-ui/styles/colors';
 import ExerciseDialog from './ExerciseDialog';
 import ExerciseCard from './ExerciseCard';
-import { RaisedButton, FontIcon } from 'material-ui';
+import { RaisedButton } from 'material-ui';
 
 class RoutineDay extends Component {
     constructor(props) {
@@ -46,7 +46,7 @@ class RoutineDay extends Component {
                     exercise={exercise}
                     day={this.props.day}
                     onChangeField={this.props.onChangeField} />
-            )
+            );
         } else
             return null;
     }

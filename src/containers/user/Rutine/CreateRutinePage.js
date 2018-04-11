@@ -44,7 +44,7 @@ class CreateRutinePage extends Component {
 
     removeExercisesFromDay( day ) {
         if( day.exercises )
-            delete day.exercises
+            delete day.exercises;
         this.setState({ removedDay: day});
     }
 
@@ -80,8 +80,6 @@ class CreateRutinePage extends Component {
     }
 
     onChangeField(event, day, exercise ) {
-        console.log(event.target.name)
-        console.log(event.target.value)
         const { name, value } = event.target;
         const { days } = this.state;
         let index = days.indexOf(day);
@@ -90,7 +88,6 @@ class CreateRutinePage extends Component {
         const exerciseToChange = dayToChange.exercises[index];
 
         exerciseToChange[name] = value;
-        console.log(this.state.days)
     }
 
     render() {

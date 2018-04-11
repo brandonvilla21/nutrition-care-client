@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {
     Card,
-    CardHeader,
     CardMedia,
-    CardTitle,
     CardText,
     TextField } from 'material-ui';
 import urlConfig from '../../url-config';
@@ -15,7 +13,7 @@ class ExerciseCard extends Component {
     }
 
     render() {
-        const { day, exercise } = this.props
+        const { day, exercise } = this.props;
         const { srcImage, name } = exercise;
         const urlImage = `${urlConfig.imageDir}/${srcImage}`;
       return (
@@ -69,7 +67,7 @@ class ExerciseCard extends Component {
             </div>
             </Card>
         </div>
-      )
+      );
     }
 }
 const styles = {
@@ -87,7 +85,10 @@ const styles = {
 };
 
 ExerciseCard.propTypes = {
-    onChangeField: PropTypes.func
-}
+    onChangeField: PropTypes.func,
+    day: PropTypes.obj,
+    exercise: PropTypes.obj,
+};
+
 export default ExerciseCard;
 
