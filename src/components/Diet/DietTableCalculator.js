@@ -39,8 +39,9 @@ class DietTableCalculator extends Component {
                       Cell: ({ original }) => {
                         return (
                           <input
+                            min="0"
                             type="number"
-                            value={original.grams}
+                            value={original[EDITABLE_PROPERTY_ACCESORS.GRAMS]}
                             onChange={onChangeTable.bind(this, original, EDITABLE_PROPERTY_ACCESORS.GRAMS)}
                           />
                         );
@@ -56,8 +57,9 @@ class DietTableCalculator extends Component {
                       Cell: ({ original }) => {
                         return (
                           <input
+                            min="0"
                             type="number"
-                            value={original.calories}
+                            value={original[EDITABLE_PROPERTY_ACCESORS.CALORIES]}
                             onChange={onChangeTable.bind(this, original, EDITABLE_PROPERTY_ACCESORS.CALORIES)}
                           />
                         );
@@ -95,25 +97,25 @@ const selectedFoodColumns = [
   },
   {
     Header: "Proteínas",
-    accessor: "proteins",
+    accessor: "desiredProteins",
     maxWidth: 100    
     
   },
   {
     Header: "Carbohídratos",
-    accessor: "carbohydrates",
+    accessor: "desiredCarbohydrates",
     maxWidth: 115    
   },
   {
     Header: "Grasas",
-    accessor: "fats",
+    accessor: "desiredFats",
     maxWidth: 100    
   }
 ];
 
 const EDITABLE_PROPERTY_ACCESORS = {
-  GRAMS: 'grams',
-  CALORIES: 'calories'
+  GRAMS: 'desiredGrams',
+  CALORIES: 'desiredCalories'
 };
   
 export default DietTableCalculator;

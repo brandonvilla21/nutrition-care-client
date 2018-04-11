@@ -34,7 +34,13 @@ class ExerciceForm extends Component {
     componentWillMount() {
       this.getFoods()
           .then(foods => {
-            foods.forEach( food => food.grams = 0 );
+            foods.forEach( food => {
+              food.desiredGrams = INITIAL_GRAMS;
+              food.desiredProteins = food.proteins;
+              food.desiredFats = food.fats;
+              food.desiredCarbohydrates = food.carbohydrates;
+              food.desiredCalories = food.calories;
+            });
             this.setState({ foods });
           });
     }
@@ -127,9 +133,38 @@ class ExerciceForm extends Component {
       const selectedFoods = [ ...this.state.selectedFoods ];
       const index = selectedFoods.findIndex( element => element.id == original.id );
 
+
       selectedFoods[index][accessor] = Number(value);
 
+      //Calculate remaining columns.
+      const current = selectedFoods[index];
+
+      this.calculateDataTableData( current, accessor );
+      
       this.setState({ selectedFoods });
+
+    }
+
+    
+    calculateDataTableData( current, accessor ) {
+
+      function round( num ) { return Math.round(num * 100) / 100; };
+
+      if( accessor === 'desiredCalories' ) {
+
+        current.desiredProteins = round((current.proteins / current.calories) * current[accessor]);
+        current.desiredCarbohydrates = round((current.carbohydrates / current.calories) * current[accessor]);
+        current.desiredFats = round((current.fats / current.calories) * current[accessor]);
+        current.desiredGrams = round((INITIAL_GRAMS / current.calories) * current[accessor]);
+
+      } else {//accessor is equals to desiredGrams
+        
+        current.desiredProteins = current.proteins * current[accessor];
+        current.desiredFats = current.fats * current[accessor];
+        current.desiredCarbohydrates = current.carbohydrates * current[accessor];
+        current.desiredCalories = current.calories * current.desiredGrams;
+      
+      }
 
     }
 
@@ -168,17 +203,18 @@ class ExerciceForm extends Component {
                       
                     </div>
                   </Tab>
+
                   <Tab style={styles.tab} label="Estos son tus alimentos seleccionados :)"
-                    icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}
-                       >
+                    icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}>
                     <div>
+
                       <DietTableCalculator 
                         selectedFoods={selectedFoods}
                         onChangeTable={this.onChangeDataTableFields}
                        />
-                    <h1>
-                      PONER TOTALES AQUÍ O EN OTRA TAB
-                    </h1>
+                       
+                      <h1> PONER TOTALES AQUÍ O EN OTRA TAB </h1>
+
                     </div>
                   </Tab>
                 </Tabs>
@@ -254,5 +290,7 @@ const styles = {
     }
 
 };
+
+const INITIAL_GRAMS = 1;
 
 export default ExerciceForm;
