@@ -58,6 +58,7 @@ class TabsRoutine extends Component {
                         removedDay={this.props.removedDay}
                         clearRemovedDay={this.props.clearRemovedDay}
                         addExerciseToDay={this.props.addExerciseToDay}
+                        onChangeField={this.props.onChangeField}
                     />
                 </div>
             </Tab>
@@ -97,5 +98,6 @@ TabsRoutine.propTypes = {
     removedDay: PropTypes.object,
     clearRemovedDay: PropTypes.func,
     addExerciseToDay: PropTypes.func,
+    onChangeField: PropTypes.func,
 };
 export default TabsRoutine;
