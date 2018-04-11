@@ -116,13 +116,23 @@ SelectableTable.propTypes = {
   elements:                 PropTypes.array.isRequired,
   selectedElements:         PropTypes.array.isRequired,
   mainTableHeader:          PropTypes.string.isRequired,
-  secondaryTableHeader:     PropTypes.string.isRequired,
   defaultPageSize:          PropTypes.number.isRequired,
   noDataTextMainTable:      PropTypes.string.isRequired,
-  noDataTextSecondaryTable: PropTypes.string.isRequired,
   columns:                  PropTypes.array.isRequired,
   onToggleRow:              PropTypes.func.isRequired,
-  enableSecondaryTable:     PropTypes.bool.isRequired
+  
+  enableSecondaryTable:     PropTypes.bool.isRequired,
+  secondaryTableHeader:     PropTypes.string.isRequired,
+  noDataTextSecondaryTable: function(props, propName, componentName) {
+    if ((props['enableSecondaryTable'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
+        return new Error('Please provide a noDataTextSecondaryTable value!');
+    }
+  },
+  secondaryTableHeader: function(props, propName, componentName) {
+    if ((props['secondaryTableHeader'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
+        return new Error('Please provide a secondaryTableHeader value!');
+    }
+  },
 };
 
 export default SelectableTable;
