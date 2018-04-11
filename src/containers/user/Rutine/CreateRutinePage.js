@@ -16,6 +16,7 @@ class CreateRutinePage extends Component {
         this.clearRemovedDay = this.clearRemovedDay.bind(this);
         this.addExerciseToDay = this.addExerciseToDay.bind(this);
         this.onChangeField = this.onChangeField.bind(this);
+        this.onSubmitRoutine = this.onSubmitRoutine.bind(this);
     }
 
     handleInput( event ) {
@@ -90,6 +91,10 @@ class CreateRutinePage extends Component {
         exerciseToChange[name] = value;
     }
 
+    onSubmitRoutine() {
+        console.log(this.state.days);
+    }
+
     render() {
       return (
         <div>
@@ -105,7 +110,8 @@ class CreateRutinePage extends Component {
                     description={this.state.description}
                     handleInput={this.handleInput}
                     addExerciseToDay={this.addExerciseToDay}
-                    onChangeField={this.onChangeField} />
+                    onChangeField={this.onChangeField} 
+                    onSubmitRoutine={this.onSubmitRoutine} />
             </PageBase>
         </div>
       );
