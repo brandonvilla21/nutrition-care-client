@@ -2,15 +2,16 @@ import React, { Component, PropTypes } from 'react';
 import PageBase from '../../components/PageBase';
 import { Tabs, Tab } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
 // import axios from 'axios';
 import urlConfig from '../../url-config';
-import { blue500 } from 'material-ui/styles/colors';
+import { blue500, grey700 } from 'material-ui/styles/colors';
 import 'react-table/react-table.css';
 import SelectableTable from '../SelectableTable';
 import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
+import ActionHelp from 'material-ui/svg-icons/action/help';
 import DietTableCalculator from './DietTableCalculator';
-
 
 class ExerciceForm extends Component {
 
@@ -56,7 +57,7 @@ class ExerciceForm extends Component {
     }
 
 
-    handleSubmit( event ) {
+    // handleSubmit( event ) {
       // event.preventDefault();
       // const url = `${urlConfig.baseUrl}/foods`;
       // const config = urlConfig.axiosConfig;
@@ -76,7 +77,7 @@ class ExerciceForm extends Component {
       //             this.props.onSubmitted(false);
       //     })
       //     .catch(() => this.props.onSubmitted(false));
-    }
+    // }
 
 
     getFoods() {
@@ -145,10 +146,10 @@ class ExerciceForm extends Component {
 
     }
 
-    
+
     calculateDataTableData( current, accessor ) {
 
-      function round( num ) { return Math.round(num * 100) / 100; };
+      function round( num ) { return Math.round(num * 100) / 100; }
 
       if( accessor === 'desiredCalories' ) {
 
@@ -177,56 +178,76 @@ class ExerciceForm extends Component {
                 title="Registrar una dieta"
                 navigation="Dietas / Registro">
                 
+              <div>
+                <Card>
+                  <CardHeader
+                    title="Aviso"
+                    subtitle="Hola, aquí unas recomendaciones :D"
+                    avatar={<ActionHelp style={{marginTop: 10}}/>}
+                    // actAsExpander={true}
+                    // showExpandableButton={true}
+                  />
+                  {/* <CardActions>
+                    <FlatButton label="Action1" />
+                    <FlatButton label="Action2" />
+                  </CardActions> */}
+                  <CardText style={{ color: grey700, fontSize: 16 }}>
+                    En esta sección podrás seleccionar entre múltiples opciones de alimentos
+                    y elegir las que más te gusten para armar tu dieta personalizada ;D
+                  </CardText>
+                </Card>
 
-                <form onSubmit={this.handleSubmit}>
-                
-                <Tabs style={styles.tabs}>
+                  <form onSubmit={this.handleSubmit}>
+                  
+                  <Tabs style={styles.tabs}>
 
-                  <Tab 
-                    icon={<ActionShoppingBasket />}
-                    style={styles.tab} label="Alimentos disponibles">
-                    <div>
+                    <Tab 
+                      icon={<ActionShoppingBasket />}
+                      style={styles.tab} label="Alimentos disponibles">
+                      <div>
 
-                      <br/>
-                      
-                      <SelectableTable 
-                        elements={foods}
-                        selectedElements={selectedFoods}
-                        mainTableHeader="SELECCIONA LOS ALIMENTOS QUE DESEAS AGREGAR A TU DIETA :)"
-                        secondaryTableHeader="ALIMENTOS SELECCIONADOS"
-                        defaultPageSize={10}
-                        noDataTextMainTable="No hay datos actualmente :("
-                        noDataTextSecondaryTable="Selecciona un elemento de la otra tabla ;)"
-                        columns={selectableFoodColumns}
-                        onToggleRow={this.toggleRow}
-                      />
-                      
-                    </div>
-                  </Tab>
+                        <br/>
+                        
+                        <SelectableTable 
+                          elements={foods}
+                          selectedElements={selectedFoods}
+                          mainTableHeader="SELECCIONA LOS ALIMENTOS QUE DESEAS AGREGAR A TU DIETA :)"
+                          secondaryTableHeader="ALIMENTOS SELECCIONADOS"
+                          defaultPageSize={10}
+                          noDataTextMainTable="No hay datos actualmente :("
+                          noDataTextSecondaryTable="Selecciona un elemento de la otra tabla ;)"
+                          columns={selectableFoodColumns}
+                          onToggleRow={this.toggleRow}
+                          enableSecondaryTable={false}
+                        />
+                        
+                      </div>
+                    </Tab>
 
-                  <Tab style={styles.tab} label="Estos son tus alimentos seleccionados :)"
-                    icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}>
-                    <div>
+                    <Tab style={styles.tab} label="Estos son tus alimentos seleccionados para tu dieta :)"
+                      icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}>
+                      <div>
 
-                      <DietTableCalculator 
-                        selectedFoods={selectedFoods}
-                        onChangeTable={this.onChangeDataTableFields}
-                       />
-                       
-                      <h1> PONER TOTALES AQUÍ O EN OTRA TAB </h1>
+                        <DietTableCalculator 
+                          selectedFoods={selectedFoods}
+                          onChangeTable={this.onChangeDataTableFields}
+                        />
+                        
+                        <h1> PONER TOTALES AQUÍ O EN OTRA TAB </h1>
 
-                    </div>
-                  </Tab>
-                </Tabs>
+                      </div>
+                    </Tab>
+                  </Tabs>
 
-                <RaisedButton
-                    label="Registrar dieta"
-                    primary={true}
-                    type="submit"
-                    disabled={this.disableButton()}
-                    style={styles.button} />
+                  <RaisedButton
+                      label="Registrar dieta"
+                      primary={true}
+                      type="submit"
+                      disabled={this.disableButton()}
+                      style={styles.button} />
 
-                </form>
+                  </form>
+              </div>
 
             </PageBase>
         );

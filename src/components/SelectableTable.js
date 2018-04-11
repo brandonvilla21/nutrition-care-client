@@ -61,7 +61,7 @@ class SelectableTable extends Component {
 
         />
        </div>
-      )
+      );
        
     }
 
@@ -122,13 +122,12 @@ SelectableTable.propTypes = {
   onToggleRow:              PropTypes.func.isRequired,
   
   enableSecondaryTable:     PropTypes.bool.isRequired,
-  secondaryTableHeader:     PropTypes.string.isRequired,
-  noDataTextSecondaryTable: function(props, propName, componentName) {
+  noDataTextSecondaryTable: function(props, propName) {
     if ((props['enableSecondaryTable'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
         return new Error('Please provide a noDataTextSecondaryTable value!');
     }
   },
-  secondaryTableHeader: function(props, propName, componentName) {
+  secondaryTableHeader: function(props, propName) {
     if ((props['secondaryTableHeader'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
         return new Error('Please provide a secondaryTableHeader value!');
     }

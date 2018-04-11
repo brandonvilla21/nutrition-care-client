@@ -70,7 +70,7 @@ class DietTableCalculator extends Component {
                   ]
                 },
               ]}
-              defaultPageSize={5}
+              defaultPageSize={10}
               noDataText="SELECCIONA LOS ALIMENTOS EN LA TABLA ANTERIOR PARA CONTINUAR ;)"
             />
           </div>
