@@ -15,6 +15,7 @@ class CreateRutinePage extends Component {
         this.removeDay = this.removeDay.bind(this);
         this.clearRemovedDay = this.clearRemovedDay.bind(this);
         this.addExerciseToDay = this.addExerciseToDay.bind(this);
+        this.onChangeField = this.onChangeField.bind(this);
     }
 
     handleInput( event ) {
@@ -37,9 +38,14 @@ class CreateRutinePage extends Component {
         const newDays = days.filter( element => element.id !== day.id );
         this.setState({
             days: [...newDays]
-        });
-        this.setState({ removedDay: day});
+        }, () => this.removeExercisesFromDay( day ) );
 
+    }
+
+    removeExercisesFromDay( day ) {
+        if( day.exercises )
+            delete day.exercises
+        this.setState({ removedDay: day});
     }
 
     clearRemovedDay() {
@@ -73,6 +79,20 @@ class CreateRutinePage extends Component {
         });
     }
 
+    onChangeField(event, day, exercise ) {
+        console.log(event.target.name)
+        console.log(event.target.value)
+        const { name, value } = event.target;
+        const { days } = this.state;
+        let index = days.indexOf(day);
+        const dayToChange = days[index];
+        index = dayToChange.exercises.indexOf(exercise);
+        const exerciseToChange = dayToChange.exercises[index];
+
+        exerciseToChange[name] = value;
+        console.log(this.state.days)
+    }
+
     render() {
       return (
         <div>
@@ -87,7 +107,8 @@ class CreateRutinePage extends Component {
                     clearRemovedDay={this.clearRemovedDay}
                     description={this.state.description}
                     handleInput={this.handleInput}
-                    addExerciseToDay={this.addExerciseToDay} />
+                    addExerciseToDay={this.addExerciseToDay}
+                    onChangeField={this.onChangeField} />
             </PageBase>
         </div>
       );
