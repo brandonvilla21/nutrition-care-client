@@ -64,13 +64,13 @@ class GeneralInfoPage extends Component {
             fat_kilogram: parseFloat(fatKg),
             muscle_kilogram: parseFloat(muscleKg),
             progress_date: this.getDate()
-        };
+          };
         const config = urlConfig.axiosConfig;
         config.method = 'POST';
         if ( finished ) {
             axios.post(url, data, config)
                 .then( result => result)
-                .catch(err => err);
+                .catch(err => console.log("err", err));
         }
     }
 
