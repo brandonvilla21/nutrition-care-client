@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import TabsRoutine from '../../../components/Rutine/TabsRoutine';
 import PageBase from '../../../components/PageBase';
+import urlConfig from '../../../url-config';
+import axios from 'axios';
 
 class CreateRutinePage extends Component {
     constructor() {
@@ -92,7 +94,42 @@ class CreateRutinePage extends Component {
     }
 
     onSubmitRoutine() {
-        console.log(this.state.days);
+        const { description, days } = this.state;
+        const routineDetail = this.generateDetails(days);
+        const data = {
+            description,
+            routineDetail,
+        };
+        console.log(data);
+        const url = `${urlConfig.baseUrl}/routines`;
+        const config = urlConfig.axiosConfig;
+        config.method = 'POST';
+        console.log(config);
+        axios.post(url, data, config)
+            .then( response => {
+                if (response.status === 200) {
+                    console.log('Submited!')
+                } else
+                    console.log('Not')
+            })
+            .catch((err) => console.log('ERROR: ', err));
+
+
+    }
+    
+    generateDetails(days) {
+        let luls;
+        days.forEach( day =>
+            luls = day.exercises.map( exercise => {
+                return Object.assign({}, {
+                    day_id: day.id,
+                    exercise_id: exercise.id,
+                    series: exercise.series || '',
+                    reps: exercise.reps || '',
+                })
+            })
+        )
+        return luls;
     }
 
     render() {
