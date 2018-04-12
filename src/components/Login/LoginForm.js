@@ -40,6 +40,10 @@ class LoginForm extends Component {
             .then( res => {
                 if ( res.status == 200 ) {
                     this.setLoginLocalStorage(res.data);
+
+                    const user_id = jwtDecode(res.data.access_token).user_id;
+                    localStorage.setItem('user_id', JSON.stringify(user_id));
+                    
                     this.props.isLoggedIn(true);
                 } else
                     this.props.isLoggedIn(false);
@@ -49,7 +53,7 @@ class LoginForm extends Component {
 
     setLoginLocalStorage( data ) {
 
-      localStorage.setItem('access_token', JSON.stringify(data.access_token));
+      localStorage.setItem('access_token', data.access_token);
                     
       const decode = jwtDecode(data.access_token);
       const user = {
