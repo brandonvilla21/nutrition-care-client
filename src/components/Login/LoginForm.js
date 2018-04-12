@@ -37,7 +37,7 @@ class LoginForm extends Component {
         Axios.post(url, this.state, config)
             .then( res => {
                 if ( res.status == 200 ) {
-                    localStorage.setItem('access_token', JSON.stringify(res.data.access_token));
+                    localStorage.setItem('access_token', res.data.access_token);
                     
                     const user_id = jwtDecode(res.data.access_token).user_id;
                     localStorage.setItem('user_id', JSON.stringify(user_id));
