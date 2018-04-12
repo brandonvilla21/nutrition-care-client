@@ -30,8 +30,40 @@ class SelectableTable extends Component {
     const { 
       elements, selectedElements, mainTableHeader,
       secondaryTableHeader, defaultPageSize, noDataTextMainTable,
-      columns, noDataTextSecondaryTable
+      columns, noDataTextSecondaryTable, enableSecondaryTable
      } = this.props;
+
+    let secondaryTable = null;
+
+    if(enableSecondaryTable) {
+      secondaryTable = (
+       <div>
+        <br />
+        <br />
+        <ReactTable
+          filterable={false}
+          sortable={false}
+          data={selectedElements}
+          columns={[
+            {
+              Header: <Subheader inset={true}>{secondaryTableHeader}</Subheader>,
+              columns: [
+                ...columns
+              ]
+            }
+          ]
+
+
+          }
+          defaultPageSize={5}
+          className="-striped -highlight"
+          noDataText={noDataTextSecondaryTable}
+
+        />
+       </div>
+      );
+       
+    }
 
     return (
       <div>
@@ -73,29 +105,8 @@ class SelectableTable extends Component {
           noDataText={noDataTextMainTable}
         />
 
-        <br />
-        <br />
+        {secondaryTable}
 
-        <ReactTable
-          filterable={false}
-          sortable={false}
-          data={selectedElements}
-          columns={[
-            {
-              Header: <Subheader inset={true}>{secondaryTableHeader}</Subheader>,
-              columns: [
-                ...columns
-              ]
-            }
-          ]
-
-
-          }
-          defaultPageSize={5}
-          className="-striped -highlight"
-          noDataText={noDataTextSecondaryTable}
-
-        />
       </div>
     );
   }
@@ -105,12 +116,22 @@ SelectableTable.propTypes = {
   elements:                 PropTypes.array.isRequired,
   selectedElements:         PropTypes.array.isRequired,
   mainTableHeader:          PropTypes.string.isRequired,
-  secondaryTableHeader:     PropTypes.string.isRequired,
   defaultPageSize:          PropTypes.number.isRequired,
   noDataTextMainTable:      PropTypes.string.isRequired,
-  noDataTextSecondaryTable: PropTypes.string.isRequired,
   columns:                  PropTypes.array.isRequired,
-  onToggleRow:              PropTypes.func.isRequired
+  onToggleRow:              PropTypes.func.isRequired,
+  
+  enableSecondaryTable:     PropTypes.bool.isRequired,
+  noDataTextSecondaryTable: function(props, propName) {
+    if ((props['enableSecondaryTable'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
+        return new Error('Please provide a noDataTextSecondaryTable value!');
+    }
+  },
+  secondaryTableHeader: function(props, propName) {
+    if ((props['secondaryTableHeader'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
+        return new Error('Please provide a secondaryTableHeader value!');
+    }
+  },
 };
 
 export default SelectableTable;
