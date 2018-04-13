@@ -23,10 +23,11 @@ class DietTotalsCard extends Component {
       return(
 
           <div>
-            <Card>
+            <Card initiallyExpanded={true} style={{ marginTop: 14 }}>
               <CardHeader
                 title="Totales"
-                subtitle="Si deseas ver los totales, haz clic aquí"
+                subtitle="Total de macronutrientes y calorías en la dieta"
+                titleStyle={{ fontSize: 18 }}
                 avatar={<ActionTrendingFlat style={styles.iconActionTrandingStyles}/>}
                 actAsExpander={true}
                 showExpandableButton={true}
