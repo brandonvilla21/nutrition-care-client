@@ -28,6 +28,7 @@
     "font-awesome": "4.7.0",
     "history": "4.5.1",
     "jwt-decode": "2.2.0",
+    "lodash.debounce": "4.0.8",
     "material-ui": "0.17.0",
     "material-ui-image": "2.1.1",
     "moment": "2.21.0",

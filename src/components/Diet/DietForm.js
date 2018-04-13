@@ -12,6 +12,8 @@ import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
 import ActionHelp from 'material-ui/svg-icons/action/help';
 
+import debounce from 'lodash.debounce';
+
 import DietTableCalculator from './DietTableCalculator';
 import DietTotalsCard from './DietTotalsCard/DietTotalsCard';
 
@@ -36,6 +38,7 @@ class ExerciceForm extends Component {
         // this.disableButton = this.disableButton.bind(this);
         this.toggleRow = this.toggleRow.bind(this);
         this.onChangeDataTableFields = this.onChangeDataTableFields.bind(this);
+        this.onRecalculateTotals = debounce(this.onRecalculateTotals.bind(this), 250);
     }
 
 
@@ -58,9 +61,15 @@ class ExerciceForm extends Component {
       // console.log('snapshot: ', snapshot);
       // console.log('prevState: ', prevState);
       // console.log('prevProps: ', prevProps);
-      if (this.state.selectedFoods !== prevState.selectedFoods) { 
+      if (this.state.selectedFoods !== prevState.selectedFoods)
+        this.onRecalculateTotals();
+      
+    }
 
-        const selectedFoods = [ ...this.state.selectedFoods ];
+
+    onRecalculateTotals() {
+
+      const selectedFoods = [ ...this.state.selectedFoods ];
         console.log('selectedFoods: ', selectedFoods);
         
         // const totalCalories = selectedFoods
@@ -83,14 +92,7 @@ class ExerciceForm extends Component {
         const { totalCalories, totalCarbohydrates, totalFats, totalProteins } = totals;
 
         this.setState({ totalCalories, totalCarbohydrates, totalFats, totalProteins });
-        
 
-      }
-      
-      
-
-
-      
     }
 
  
@@ -281,8 +283,6 @@ class ExerciceForm extends Component {
                           selectedFoods={selectedFoods}
                           onChangeTable={this.onChangeDataTableFields}
                         />
-
-                        <br/>
 
                         <DietTotalsCard
                           totalCalories={totalCalories}
