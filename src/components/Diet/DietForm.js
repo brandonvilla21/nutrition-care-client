@@ -5,14 +5,15 @@ import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 // import axios from 'axios';
 import urlConfig from '../../url-config';
-import { blue500, grey700, indigo900, indigo100 } from 'material-ui/styles/colors';
+import { blue500, grey700 } from 'material-ui/styles/colors';
 import 'react-table/react-table.css';
 import SelectableTable from '../SelectableTable';
 import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
-import ActionTrendingFlat from 'material-ui/svg-icons/action/trending-flat';
 import ActionHelp from 'material-ui/svg-icons/action/help';
+
 import DietTableCalculator from './DietTableCalculator';
+import DietTotalsCard from './DietTotalsCard/DietTotalsCard';
 
 class ExerciceForm extends Component {
 
@@ -22,7 +23,12 @@ class ExerciceForm extends Component {
           user_id: '',
           foods: [],
           dietState: 'ACTIVO',
-          selectedFoods: []
+          selectedFoods: [],
+          totalCarbohydrates: 0,
+          totalProteins: 0,
+          totalFats: 0,
+          totalCalories: 0,
+          date: new Date()
         };
         
         this.handleChange = this.handleChange.bind(this);
@@ -172,7 +178,10 @@ class ExerciceForm extends Component {
 
 
     render() {
-        const { foods, selectedFoods } = this.state;
+        const { 
+          foods, selectedFoods, totalCalories, 
+          totalCarbohydrates, totalFats, totalProteins 
+        } = this.state;
 
         return(
             <PageBase
@@ -185,13 +194,7 @@ class ExerciceForm extends Component {
                     title="Aviso"
                     subtitle="Hola, aquí unas recomendaciones :D"
                     avatar={<ActionHelp style={{ marginTop: 10, color: grey700 }}/>}
-                    // actAsExpander={true}
-                    // showExpandableButton={true}
                   />
-                  {/* <CardActions>
-                    <FlatButton label="Action1" />
-                    <FlatButton label="Action2" />
-                  </CardActions> */}
                   <CardText style={{ color: grey700, fontSize: 16 }}>
                     En esta sección podrás seleccionar entre múltiples opciones de alimentos
                     y elegir las que más te gusten para armar tu dieta personalizada ;D
@@ -233,24 +236,15 @@ class ExerciceForm extends Component {
                           selectedFoods={selectedFoods}
                           onChangeTable={this.onChangeDataTableFields}
                         />
-                        
-                        <Card>
-                          <CardHeader
-                            title="Totales"
-                            subtitle="Si deseas ver los totales, haz clic aquí ;)"
-                            avatar={<ActionTrendingFlat style={styles.iconActionTrandingStyles}/>}
-                            actAsExpander={true}
-                            showExpandableButton={true}
-                          />
-                          {/* <CardActions>
-                            <FlatButton label="Action1" />
-                            <FlatButton label="Action2" />
-                          </CardActions> */}
-                          <CardText expandable={true} style={{ color: grey700, fontSize: 16 }}>
-                            En esta sección podrás seleccionar entre múltiples opciones de alimentos
-                            y elegir las que más te gusten para armar tu dieta personalizada ;D
-                          </CardText>
-                        </Card>
+
+                        <br/>
+
+                        <DietTotalsCard
+                          totalCalories={totalCalories}
+                          totalCarbohydrates={totalCarbohydrates}
+                          totalFats={totalFats}
+                          totalProteins={totalProteins}
+                        />
 
                       </div>
                     </Tab>
@@ -325,15 +319,7 @@ const styles = {
     },
     iconStyles: {
       marginRight: 24,
-    },
-    iconActionTrandingStyles: { 
-      marginTop: 10, 
-      color: indigo900, 
-      background: indigo100, 
-      border: `2px solid ${indigo100}`, 
-      borderRadius: '25px' 
     }
-
 };
 
 const INITIAL_GRAMS = 1;
