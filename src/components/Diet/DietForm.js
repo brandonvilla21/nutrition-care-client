@@ -33,13 +33,13 @@ class ExerciceForm extends Component {
         
         this.handleChange = this.handleChange.bind(this);
         // this.handleSubmit = this.handleSubmit.bind(this);
-        this.disableButton = this.disableButton.bind(this);
+        // this.disableButton = this.disableButton.bind(this);
         this.toggleRow = this.toggleRow.bind(this);
         this.onChangeDataTableFields = this.onChangeDataTableFields.bind(this);
     }
 
 
-    componentWillMount() {
+    componentDidMount() {
       this.getFoods()
           .then(foods => {
             foods.forEach( food => {
@@ -54,6 +54,46 @@ class ExerciceForm extends Component {
     }
 
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+      // console.log('snapshot: ', snapshot);
+      // console.log('prevState: ', prevState);
+      // console.log('prevProps: ', prevProps);
+      if (this.state.selectedFoods !== prevState.selectedFoods) { 
+
+        const selectedFoods = [ ...this.state.selectedFoods ];
+        console.log('selectedFoods: ', selectedFoods);
+        
+        // const totalCalories = selectedFoods
+        //                       .map( food => food.desiredCalories)
+        //                       .reduce((accumulator, currentValue) => accumulator + currentValue)
+
+        const totals = 
+          selectedFoods
+            .reduce((accumulator, currentFood, i) => {
+              return { 
+                totalCalories: this.roundNumber(currentFood.desiredCalories + accumulator.totalCalories),
+                totalCarbohydrates: this.roundNumber(currentFood.desiredCarbohydrates + accumulator.totalCarbohydrates ),
+                totalFats: this.roundNumber( currentFood.desiredFats + accumulator.totalFats ),
+                totalProteins: this.roundNumber( currentFood.desiredProteins + accumulator.totalProteins ),
+              }
+            },
+            { totalCalories: 0, totalCarbohydrates: 0, totalFats: 0, totalProteins: 0 }
+          );
+
+        const { totalCalories, totalCarbohydrates, totalFats, totalProteins } = totals;
+
+        this.setState({ totalCalories, totalCarbohydrates, totalFats, totalProteins });
+        
+
+      }
+      
+      
+
+
+      
+    }
+
+ 
     handleChange( event ) {
       const name = event.target.name;
       const value = event.target.value;
@@ -95,9 +135,9 @@ class ExerciceForm extends Component {
     }
 
     
-    disableButton() {
-        return true;
-    }
+    // disableButton() {
+    //     return true;
+    // }
     
 
     clearState() {
@@ -153,17 +193,17 @@ class ExerciceForm extends Component {
 
     }
 
+    roundNumber( num ) { return Math.round(num * 100) / 100; }
 
     calculateDataTableData( current, accessor ) {
 
-      function round( num ) { return Math.round(num * 100) / 100; }
 
       if( accessor === 'desiredCalories' ) {
 
-        current.desiredProteins = round((current.proteins / current.calories) * current[accessor]);
-        current.desiredCarbohydrates = round((current.carbohydrates / current.calories) * current[accessor]);
-        current.desiredFats = round((current.fats / current.calories) * current[accessor]);
-        current.desiredGrams = round((INITIAL_GRAMS / current.calories) * current[accessor]);
+        current.desiredProteins = this.roundNumber((current.proteins / current.calories) * current[accessor]);
+        current.desiredCarbohydrates = this.roundNumber((current.carbohydrates / current.calories) * current[accessor]);
+        current.desiredFats = this.roundNumber((current.fats / current.calories) * current[accessor]);
+        current.desiredGrams = this.roundNumber((INITIAL_GRAMS / current.calories) * current[accessor]);
 
       } else {//accessor is equals to desiredGrams
         
@@ -174,6 +214,11 @@ class ExerciceForm extends Component {
       
       }
 
+    }
+
+
+    calculateTotals() {
+      
     }
 
 
@@ -192,12 +237,12 @@ class ExerciceForm extends Component {
                 <Card>
                   <CardHeader
                     title="Aviso"
-                    subtitle="Hola, aquí unas recomendaciones :D"
+                    subtitle="Recomendaciones"
                     avatar={<ActionHelp style={{ marginTop: 10, color: grey700 }}/>}
                   />
                   <CardText style={{ color: grey700, fontSize: 16 }}>
                     En esta sección podrás seleccionar entre múltiples opciones de alimentos
-                    y elegir las que más te gusten para armar tu dieta personalizada ;D
+                    y elegir las que más te gusten para armar tu dieta personalizada ;)
                   </CardText>
                 </Card>
 
@@ -254,7 +299,7 @@ class ExerciceForm extends Component {
                       label="Registrar dieta"
                       primary={true}
                       type="submit"
-                      disabled={this.disableButton()}
+                      // disabled={this.disableButton()}
                       style={styles.button} />
 
                   </form>
