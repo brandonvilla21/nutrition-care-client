@@ -70,11 +70,6 @@ class ExerciceForm extends Component {
     onRecalculateTotals() {
 
       const selectedFoods = [ ...this.state.selectedFoods ];
-        console.log('selectedFoods: ', selectedFoods);
-        
-        // const totalCalories = selectedFoods
-        //                       .map( food => food.desiredCalories)
-        //                       .reduce((accumulator, currentValue) => accumulator + currentValue)
 
         const totals = 
           selectedFoods
@@ -195,8 +190,6 @@ class ExerciceForm extends Component {
 
     }
 
-    roundNumber( num ) { return Math.round(num * 100) / 100; }
-
     calculateDataTableData( current, accessor ) {
 
 
@@ -209,15 +202,16 @@ class ExerciceForm extends Component {
 
       } else {//accessor is equals to desiredGrams
         
-        current.desiredProteins = current.proteins * current[accessor];
-        current.desiredFats = current.fats * current[accessor];
-        current.desiredCarbohydrates = current.carbohydrates * current[accessor];
-        current.desiredCalories = current.calories * current.desiredGrams;
+        current.desiredProteins = this.roundNumber(current.proteins * current[accessor]);
+        current.desiredFats = this.roundNumber(current.fats * current[accessor]);
+        current.desiredCarbohydrates = this.roundNumber(current.carbohydrates * current[accessor]);
+        current.desiredCalories = this.roundNumber(current.calories * current.desiredGrams);
       
       }
 
     }
 
+    roundNumber( num ) { return Math.round(num * 100) / 100; }
 
     calculateTotals() {
       
@@ -237,12 +231,14 @@ class ExerciceForm extends Component {
                 
               <div>
                 <Card>
-                  <CardHeader
+                  <CardHeader 
                     title="Aviso"
                     subtitle="Recomendaciones"
+                    actAsExpander={true}
+                    showExpandableButton={true}
                     avatar={<ActionHelp style={{ marginTop: 10, color: grey700 }}/>}
                   />
-                  <CardText style={{ color: grey700, fontSize: 16 }}>
+                  <CardText expandable={true} style={{ color: grey700, fontSize: 16 }}>
                     En esta sección podrás seleccionar entre múltiples opciones de alimentos
                     y elegir las que más te gusten para armar tu dieta personalizada ;)
                   </CardText>
