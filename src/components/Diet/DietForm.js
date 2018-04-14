@@ -54,7 +54,7 @@ class ExerciceForm extends Component {
     }
 
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps, prevState) {
       if (this.state.selectedFoods !== prevState.selectedFoods)
         this.onRecalculateTotals();
       
@@ -67,13 +67,13 @@ class ExerciceForm extends Component {
 
         const totals = 
           selectedFoods
-            .reduce((accumulator, currentFood, i) => {
+            .reduce((accumulator, currentFood) => {
               return { 
                 totalCalories: this.roundNumber(currentFood.desiredCalories + accumulator.totalCalories),
                 totalCarbohydrates: this.roundNumber(currentFood.desiredCarbohydrates + accumulator.totalCarbohydrates ),
                 totalFats: this.roundNumber( currentFood.desiredFats + accumulator.totalFats ),
                 totalProteins: this.roundNumber( currentFood.desiredProteins + accumulator.totalProteins ),
-              }
+              };
             },
             { totalCalories: 0, totalCarbohydrates: 0, totalFats: 0, totalProteins: 0 }
           );
@@ -121,22 +121,19 @@ class ExerciceForm extends Component {
         totalCarbohydrates, totalProteins, totalFats,
         totalCalories, selectedFoods, register_date: this.getDate()
       };
-      console.log('data: ', data);
 
       axios.post(url, data, config)
           .then( response => {
-            console.log('response: ', response);
             if (response.status === 200) {
                   this.props.onSubmitted(true);
                   this.clearState();
-              } else {
-                console.log("gg");
+              } else 
                 this.props.onSubmitted(false);
-              }
+              
           })
           .catch(err => {
-            console.log('err: ', err);
-            this.props.onSubmitted(false)
+            this.props.onSubmitted(false);
+            throw err;
           });
     }
 

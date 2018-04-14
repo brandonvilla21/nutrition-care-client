@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-import { grey700, indigo900, indigo100, blue500, indigo50 } from 'material-ui/styles/colors';
+import { grey700, indigo900, blue500, indigo50 } from 'material-ui/styles/colors';
 import ActionTrendingFlat from 'material-ui/svg-icons/action/trending-flat';
 import { TextField } from 'material-ui';
 import './DietTotalsCard.scss';
@@ -96,6 +96,6 @@ const styles = {
       fontSize: 22,
       color: blue500
     }
-}
+};
   
 export default DietTotalsCard;
