@@ -19,6 +19,7 @@ const data = {
     { text: 'Áreas del cuerpo', icon: <Accessibility/>, link: '/body-areas' },
     { text: 'Mi Informacion', icon: <PermIdentity/>, link: '/user-info' },
     { text: 'Crear rutina', icon: <DirectionsRun/>, link: '/create-rutine' },
+    { text: 'Mis rutinas', icon: <DirectionsRun/>, link: '/my-routines' },
     { text: 'Crear dieta', icon: <AvLibraryAdd/>, link: '/create-diet' },
     // { text: 'Inicio', icon: <Assessment/>, link: '/dashboard' },
     // { text: 'Mis datos', icon: <PermIdentity/>, link: '/my-info' },

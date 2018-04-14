@@ -70,7 +70,7 @@ class GeneralInfoPage extends Component {
         if ( finished ) {
             axios.post(url, data, config)
                 .then( result => result)
-                .catch(err => console.log("err", err));
+                .catch(err => err);
         }
     }
 

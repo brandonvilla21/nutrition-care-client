@@ -3,6 +3,8 @@ import TabsRoutine from '../../../components/Rutine/TabsRoutine';
 import PageBase from '../../../components/PageBase';
 import urlConfig from '../../../url-config';
 import axios from 'axios';
+import { Dialog } from 'material-ui';
+import GoRoutinesButton from './GoRoutinesButton';
 
 class CreateRutinePage extends Component {
     constructor() {
@@ -10,7 +12,11 @@ class CreateRutinePage extends Component {
         this.state = {
             description: '',
             days: [],
-            removedDay: null
+            removedDay: null,
+            open: false,
+            modalMessage: '',
+            action: null,
+            modal: false
         };
         this.handleInput = this.handleInput.bind(this);
         this.selectedDays = this.selectedDays.bind(this);
@@ -19,6 +25,8 @@ class CreateRutinePage extends Component {
         this.addExerciseToDay = this.addExerciseToDay.bind(this);
         this.onChangeField = this.onChangeField.bind(this);
         this.onSubmitRoutine = this.onSubmitRoutine.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.goRoutines = this.goRoutines.bind(this);
     }
 
     handleInput( event ) {
@@ -100,44 +108,75 @@ class CreateRutinePage extends Component {
             description,
             routineDetail,
         };
-        console.log(data);
         const url = `${urlConfig.baseUrl}/routines`;
         const config = urlConfig.axiosConfig;
         config.method = 'POST';
-        console.log(config);
         axios.post(url, data, config)
             .then( response => {
                 if (response.status === 200) {
-                    console.log('Submited!')
+                    this.setState({ 
+                        modalMessage: '¡Rutina de ejercicio registrada correctamente!',
+                        action: <GoRoutinesButton goRoutines={this.goRoutines} />,
+                        modal: false, // should be true
+                    }, () => this.setState({open: true}));
                 } else
-                    console.log('Not')
+                    this.setState({ 
+                        modalMessage: 'Ha ocurrido un error inesperado, intentalo más tarde',
+                        open: true,
+                        modal: false,
+                    });
             })
-            .catch((err) => console.log('ERROR: ', err));
+            .catch(() => this.setState({ 
+                modalMessage: 'Ha ocurrido un error inesperado, intentalo más tarde',
+                open: true,
+                modal: false,
+            }));
 
 
     }
     
     generateDetails(days) {
-        let luls;
-        days.forEach( day =>
-            luls = day.exercises.map( exercise => {
-                return Object.assign({}, {
+        if ( !days || days.length === 0 )
+            return [];
+
+        const arrays = days.map( day =>
+            day.exercises.map( exercise =>
+                Object.assign({}, {
                     day_id: day.id,
                     exercise_id: exercise.id,
                     series: exercise.series || '',
                     reps: exercise.reps || '',
+                    description: exercise.description || '',
                 })
-            })
-        )
-        return luls;
+            )
+        );
+        
+        const routineDetail = [];
+        arrays.forEach( array => routineDetail.push(...array));
+        return routineDetail;
     }
 
+    handleClose() {
+        this.setState({ open: false });
+    }
+    goRoutines() {
+        this.handleClose();
+
+    }
     render() {
       return (
         <div>
+            <Dialog
+                title="Rutina de ejercicio"
+                actions={this.state.action}
+                modal={this.state.modal}
+                open={this.state.open}
+                onRequestClose={this.handleClose}
+            >
+                {this.state.modalMessage}
+            </Dialog>
             <PageBase
                 navigation="Aplicación / Crear Rutina">
-
                 <TabsRoutine
                     selectedDays={this.selectedDays}
                     days={this.state.days}
