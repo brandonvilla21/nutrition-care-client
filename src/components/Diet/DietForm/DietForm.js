@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import PageBase from '../../components/PageBase';
+import PageBase from '../../../components/PageBase';
 import { Tabs, Tab } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import axios from 'axios';
-import urlConfig from '../../url-config';
+import urlConfig from '../../../url-config';
 import { blue500, grey700 } from 'material-ui/styles/colors';
 import 'react-table/react-table.css';
-import SelectableTable from '../SelectableTable';
+import SelectableTable from '../../SelectableTable';
 import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
 import ActionHelp from 'material-ui/svg-icons/action/help';
@@ -121,7 +121,7 @@ class ExerciceForm extends Component {
         totalCarbohydrates, totalProteins, totalFats,
         totalCalories, selectedFoods, register_date: this.getDate()
       };
-
+      
       axios.post(url, data, config)
           .then( response => {
             if (response.status === 200) {

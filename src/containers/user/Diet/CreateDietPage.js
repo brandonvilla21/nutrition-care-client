@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import DietForm from '../../../components/Diet/DietForm';
+import DietForm from '../../../components/Diet/DietForm/DietForm';
 
 class CreateDietPage extends Component {
     constructor(props) {
