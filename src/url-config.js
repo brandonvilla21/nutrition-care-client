@@ -8,7 +8,8 @@ const urlConfig = {
     axiosConfig: {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token
+          'Authorization': token,
+          'Accept': 'application/json'
       }
     }
 };

@@ -39,7 +39,7 @@ class DietTotalsCard extends Component {
                   <TextField
                     floatingLabelStyle={styles.floatingLabelStyle}
                     name="totalProteins"
-                    floatingLabelText="Proteins"
+                    floatingLabelText="Proteínas"
                     readOnly
                     value={totalProteins}
                   />
@@ -47,7 +47,7 @@ class DietTotalsCard extends Component {
                   <TextField
                     floatingLabelStyle={styles.floatingLabelStyle}
                     name="totalCarbohydrates"
-                    floatingLabelText="Carbohydrates"
+                    floatingLabelText="Carbohidratos"
                     readOnly
                     value={totalCarbohydrates}
                   />
@@ -55,7 +55,7 @@ class DietTotalsCard extends Component {
                   <TextField
                     floatingLabelStyle={styles.floatingLabelStyle}
                     name="totalFats"
-                    floatingLabelText="Fats"
+                    floatingLabelText="Grasas"
                     readOnly
                     value={totalFats}
                   />
@@ -63,7 +63,7 @@ class DietTotalsCard extends Component {
                   <TextField
                     floatingLabelStyle={styles.floatingLabelStyle}
                     name="totalCalories"
-                    floatingLabelText="Calories"
+                    floatingLabelText="Calorías"
                     readOnly
                     value={totalCalories}
                   />

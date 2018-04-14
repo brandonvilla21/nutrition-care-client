@@ -3,7 +3,7 @@ import PageBase from '../../components/PageBase';
 import { Tabs, Tab } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-// import axios from 'axios';
+import axios from 'axios';
 import urlConfig from '../../url-config';
 import { blue500, grey700 } from 'material-ui/styles/colors';
 import 'react-table/react-table.css';
@@ -22,19 +22,16 @@ class ExerciceForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          user_id: '',
           foods: [],
-          dietState: 'ACTIVO',
           selectedFoods: [],
           totalCarbohydrates: 0,
           totalProteins: 0,
           totalFats: 0,
-          totalCalories: 0,
-          date: new Date()
+          totalCalories: 0
         };
         
         this.handleChange = this.handleChange.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         // this.disableButton = this.disableButton.bind(this);
         this.toggleRow = this.toggleRow.bind(this);
         this.onChangeDataTableFields = this.onChangeDataTableFields.bind(this);
@@ -58,9 +55,6 @@ class ExerciceForm extends Component {
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-      // console.log('snapshot: ', snapshot);
-      // console.log('prevState: ', prevState);
-      // console.log('prevProps: ', prevProps);
       if (this.state.selectedFoods !== prevState.selectedFoods)
         this.onRecalculateTotals();
       
@@ -101,28 +95,55 @@ class ExerciceForm extends Component {
     }
 
 
-    // handleSubmit( event ) {
-      // event.preventDefault();
-      // const url = `${urlConfig.baseUrl}/foods`;
-      // const config = urlConfig.axiosConfig;
-      // config.method = 'POST';
+    handleSubmit( event ) {
+      event.preventDefault();
+      const url = `${urlConfig.baseUrl}/diets`;
+      const config = urlConfig.axiosConfig;
+      config.method = 'POST';
 
+      const { 
+        totalCarbohydrates, totalProteins, totalFats,
+        totalCalories
+       } = this.state;
 
-      // const { name, base64_image, selectedFoods } = this.state;
-      // let data = { name, base64_image, selectedFoods };
+      const selectedFoods = [ ...this.state.selectedFoods ].map( food => {
+        return { 
+          food_id: food.id,
+          food_calories: food.desiredCalories,
+          food_carbohydrates: food.desiredCarbohydrates,
+          food_fats: food.desiredFats,
+          food_proteins: food.desiredProteins,
+          food_grams: food.desiredGrams
+        };
+      });
+        
+      const data = { 
+        totalCarbohydrates, totalProteins, totalFats,
+        totalCalories, selectedFoods, register_date: this.getDate()
+      };
+      console.log('data: ', data);
 
+      axios.post(url, data, config)
+          .then( response => {
+            console.log('response: ', response);
+            if (response.status === 200) {
+                  this.props.onSubmitted(true);
+                  this.clearState();
+              } else {
+                console.log("gg");
+                this.props.onSubmitted(false);
+              }
+          })
+          .catch(err => {
+            console.log('err: ', err);
+            this.props.onSubmitted(false)
+          });
+    }
 
-      // axios.post(url, data, config)
-      //     .then( response => {
-      //         if (response.status === 200) {
-      //             this.props.onSubmitted(true);
-      //             this.clearState();
-      //         } else
-      //             this.props.onSubmitted(false);
-      //     })
-      //     .catch(() => this.props.onSubmitted(false));
-    // }
-
+    getDate() {
+      const date = new Date();
+      return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+  }
 
     getFoods() {
         const url = `${urlConfig.baseUrl}/foods`;
