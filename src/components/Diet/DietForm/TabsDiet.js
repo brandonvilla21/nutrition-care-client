@@ -17,7 +17,8 @@ class TabsDiet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabIndex: 0
+      tabIndex: 0,
+      resetToggle: false
     };
 
     this.nextIndex = this.nextIndex.bind(this);
@@ -52,7 +53,8 @@ class TabsDiet extends Component {
 
 
   resetIndex() {
-    this.setState({ tabIndex: 0 });
+    this.setState({ tabIndex: 0, resetToggle: true }, 
+                  () => this.setState({ resetToggle: false }));
   }
 
   render () {
@@ -99,7 +101,8 @@ class TabsDiet extends Component {
               </CardText>
             </Card>
             
-            <SelectableTable 
+            <SelectableTable
+              resetToggle={this.state.resetToggle} 
               elements={foods}
               selectedElements={selectedFoods}
               mainTableHeader="SELECCIONA LOS ALIMENTOS QUE DESEAS AGREGAR A TU DIETA :)"

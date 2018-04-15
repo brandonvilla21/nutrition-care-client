@@ -17,12 +17,18 @@ class SelectableTable extends Component {
       
     const newSelected = Object.assign({}, this.state.selected);
     newSelected[original.id] = !this.state.selected[original.id];
-    this.setState({
-      selected: newSelected,
-    });
+    
+    this.setState({ selected: newSelected });
 
     this.props.onToggleRow(original);
 
+  }
+
+
+  componentWillReceiveProps(nextProps, prevState) {
+    if(this.props.resetToggle === true) {
+      this.setState({ selected: {} })
+    }
   }
 
 
@@ -120,15 +126,16 @@ SelectableTable.propTypes = {
   noDataTextMainTable:      PropTypes.string.isRequired,
   columns:                  PropTypes.array.isRequired,
   onToggleRow:              PropTypes.func.isRequired,
+  resetToggle:              PropTypes.bool,
   
   enableSecondaryTable:     PropTypes.bool.isRequired,
   noDataTextSecondaryTable: function(props, propName) {
-    if ((props['enableSecondaryTable'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
+    if ((props['enableSecondaryTable'] === true && (props[propName] === undefined || typeof(props[propName]) !== 'string'))) {
         return new Error('Please provide a noDataTextSecondaryTable value!');
     }
   },
   secondaryTableHeader: function(props, propName) {
-    if ((props['secondaryTableHeader'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
+    if ((props['secondaryTableHeader'] === true && (props[propName] === undefined || typeof(props[propName]) !== 'string'))) {
         return new Error('Please provide a secondaryTableHeader value!');
     }
   },
