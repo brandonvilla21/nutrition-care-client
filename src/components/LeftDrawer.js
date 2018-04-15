@@ -2,9 +2,9 @@ import React,  { PropTypes } from 'react';
 import Drawer from 'material-ui/Drawer';
 import {spacing, typography} from 'material-ui/styles';
 import {white, blue500} from 'material-ui/styles/colors';
-import MenuItem from 'material-ui/MenuItem';
 import {Link} from 'react-router';
 import Avatar from 'material-ui/Avatar';
+import { ListItem } from 'material-ui';
 
 const LeftDrawer = (props) => {
   let { navDrawerOpen } = props;
@@ -61,15 +61,19 @@ const LeftDrawer = (props) => {
           <span style={styles.avatar.span}>{props.username}</span>
         </div>
         <div>
-          {props.menus.map((menu, index) =>
-            <MenuItem
-              key={index}
-              style={styles.menuItem}
-              primaryText={menu.text}
-              leftIcon={menu.icon}
-              containerElement={<Link to={menu.link}/>}
-            />
+          {props.menus.map((menu, index) => {
+            
+            return  (<ListItem
+                      key={index}
+                      style={styles.menuItem}
+                      primaryText={menu.text}
+                      leftIcon={menu.icon}
+                      containerElement={<Link to={menu.link}/>}
+                    />);
+
+          }
           )}
+
         </div>
     </Drawer>
   );
