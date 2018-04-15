@@ -19,7 +19,7 @@ const data = {
     { text: 'Áreas del cuerpo', icon: <Accessibility/>, link: '/body-areas' },
     { text: 'Mi Informacion', icon: <PermIdentity/>, link: '/user-info' },
     { text: 'Crear rutina', icon: <DirectionsRun/>, link: '/create-rutine' },
-    { text: 'Crear dieta', icon: <AvLibraryAdd/>, link: '/create-diet' },
+    { text: 'Dietas', icon: <AvLibraryAdd/>, link: '/diets' },
     // { text: 'Inicio', icon: <Assessment/>, link: '/dashboard' },
     // { text: 'Mis datos', icon: <PermIdentity/>, link: '/my-info' },
     // { text: 'Agregar alimento', icon: <Web/>, link: '/form' },
