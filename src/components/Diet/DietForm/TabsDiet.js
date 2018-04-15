@@ -23,6 +23,7 @@ class TabsDiet extends Component {
     this.nextIndex = this.nextIndex.bind(this);
     this.prevIndex = this.prevIndex.bind(this);
     this.blockTapTabs = this.blockTapTabs.bind(this);
+    this.resetIndex = this.resetIndex.bind(this);
     
   }
 
@@ -49,6 +50,10 @@ class TabsDiet extends Component {
     return this.props.selectedFoods.length < 1;
   }
 
+
+  resetIndex() {
+    this.setState({ tabIndex: 0 });
+  }
 
   render () {
 
@@ -209,7 +214,7 @@ class TabsDiet extends Component {
                   style={styles.raisedButtonNextStyle}
                   label="Guardar"
                   primary={true}
-                  onClick={this.props.onSubmitDiet} />
+                  onClick={this.props.onSubmitDiet.bind(this, this.resetIndex)} />
               </div>  
             
             </div>

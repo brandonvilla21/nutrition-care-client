@@ -7,7 +7,9 @@ class CreateDietPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          submitted: false
+          submitted: false,
+          isThereAnError: false,
+          errorMessage: ''
         };
 
         this.handleClose = this.handleClose.bind(this);
@@ -15,11 +17,27 @@ class CreateDietPage extends Component {
     }
     
     handleClose() {
-      this.setState({ submitted: false });
+      this.setState({ 
+        submitted: false,
+        isThereAnError: false,
+        errorMessage: ''
+      });
     }
 
-    isSubmitted( submitted ) {
-      this.setState({ submitted });
+    isSubmitted({ submitted = false, err = false, errorMessage = '' }) {
+      if( err ) {
+        this.setState({ 
+          isThereAnError: err,
+          submitted,
+          errorMessage
+         });
+      } else {
+        this.setState({ 
+          isThereAnError: err,
+          submitted,
+          errorMessage,
+         });
+      }
     }
 
     render() {
@@ -40,7 +58,18 @@ class CreateDietPage extends Component {
               open={this.state.submitted}
               onRequestClose={this.handleClose}
             >
-              El ejercicio ha sido registrado con éxito.
+              La dieta ha sido registrado con éxito.
+            </Dialog>
+
+            <Dialog
+              title="Aviso"
+              actions={actions}
+              modal={false}
+              open={this.state.isThereAnError}
+              onRequestClose={this.handleClose}
+            >
+              Hubo un error al registrar la dieta. Intentalo más tarde :( <br/><br/>
+              Error: {this.state.errorMessage}
             </Dialog>
           
           <DietForm onSubmitted={this.isSubmitted} />

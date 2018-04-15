@@ -29,17 +29,7 @@ class ExerciceForm extends Component {
 
 
     componentDidMount() {
-      this.getFoods()
-          .then(foods => {
-            foods.forEach( food => {
-              food.desiredGrams = INITIAL_GRAMS;
-              food.desiredProteins = food.proteins;
-              food.desiredFats = food.fats;
-              food.desiredCarbohydrates = food.carbohydrates;
-              food.desiredCalories = food.calories;
-            });
-            this.setState({ foods });
-          });
+      this.getFoods().then(foods => this.setState({ foods }));
     }
 
 
@@ -84,7 +74,7 @@ class ExerciceForm extends Component {
     }
 
 
-    onSubmitDiet( ) {
+    onSubmitDiet( resetIndex ) {
       const url = `${urlConfig.baseUrl}/diets`;
       const config = urlConfig.axiosConfig;
       config.method = 'POST';
@@ -109,26 +99,32 @@ class ExerciceForm extends Component {
         totalCarbohydrates, totalProteins, totalFats,
         totalCalories, selectedFoods, register_date: this.getDate()
       };
-      
+
       axios.post(url, data, config)
           .then( response => {
             if (response.status === 200) {
-                  this.props.onSubmitted(true);
-                  this.clearState();
+                  this.props.onSubmitted({ submitted: true, err: false });
+                  this.resetState();
+                  resetIndex();
               } else 
-                this.props.onSubmitted(false);
+                this.props.onSubmitted({ submitted: false, err: true });
               
           })
           .catch(err => {
-            this.props.onSubmitted(false);
-            throw err;
+            console.log('err: ', err);
+            this.props.onSubmitted({ 
+              submitted: false, 
+              err: true, 
+              errorMessage: err.response.data.message
+            });
+            throw err.response.data.message;
           });
     }
 
 
     getDate() {
       const date = new Date();
-      return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
     }
 
 
@@ -136,18 +132,31 @@ class ExerciceForm extends Component {
         const url = `${urlConfig.baseUrl}/foods`;
         return fetch(url)
             .then( data => data.json())
-            .then( response => response.data);
+            .then( response => response.data)
+            .then( foods => {
+              foods.forEach( food => {
+                food.desiredGrams = INITIAL_GRAMS;
+                food.desiredProteins = food.proteins;
+                food.desiredFats = food.fats;
+                food.desiredCarbohydrates = food.carbohydrates;
+                food.desiredCalories = food.calories;
+              });
+
+              return foods;
+            });
     }
 
 
-    clearState() {
-        this.setState({
-          user_id: '',
-          foods: [],
-          dietState: '',
-          selectedFoods: [],
-          selected: {}
-        });
+    resetState() {
+
+      this.setState({
+        selectedFoods: [],
+        totalCarbohydrates: 0,
+        totalProteins: 0,
+        totalFats: 0,
+        totalCalories: 0
+      });
+
     }
 
 
