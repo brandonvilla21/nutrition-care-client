@@ -1,39 +1,33 @@
 import React, { Component, PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import DialogContent from './DialogContent';
 
 class ExerciseDialog extends Component {
     constructor(props) {
-        super(props);
-
-        
+        super(props);        
     }
 
     render() {
+        const { handleClose, onResponse, open } = this.props;
         const actions = [
             <FlatButton
                 key={0}
-                label="Cancel"
-                primary={true}
-                onClick={this.props.handleClose}
-            />,
-            <FlatButton
-                key={1}
-                label="Submit"
-                primary={true}
-                onClick={this.props.handleClose}
+                label="Cancelar"
+                onClick={handleClose}
             />,
         ];
 
         return (
             <div>
                 <Dialog
-                    title="Dialog With Custom Width"
+                    title="Selecciona un ejercicio"
                     actions={actions}
                     modal={true}
-                    open={this.props.open}
+                    open={open}
+                    autoScrollBodyContent={true}
                 >
-                    This dialog spans the entire width of the screen.
+                    <DialogContent onResponse={onResponse} />
                 </Dialog>
             </div>
         );
@@ -42,7 +36,8 @@ class ExerciseDialog extends Component {
 
 ExerciseDialog.propTypes = {
     open: PropTypes.bool,
-    handleClose: PropTypes.func
+    handleClose: PropTypes.func,
+    onResponse: PropTypes.func
 };
 
 export default ExerciseDialog;

@@ -17,7 +17,7 @@ class GeneralInfo extends Component {
                 hintText="Desripción"
                 floatingLabelText="Ingrese una descripción de la rutina"
                 multiLine={true}
-                rows={2}
+                rows={1}
                 fullWidth={true}
                 name="description"
                 value={this.props.description}
