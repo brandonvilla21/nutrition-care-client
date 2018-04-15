@@ -1,21 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import PageBase from '../../../components/PageBase';
-import { Tabs, Tab } from 'material-ui';
-import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import axios from 'axios';
 import urlConfig from '../../../url-config';
-import { blue500, grey700 } from 'material-ui/styles/colors';
+import { grey700 } from 'material-ui/styles/colors';
 import 'react-table/react-table.css';
-import SelectableTable from '../../SelectableTable';
-import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
-import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
 import ActionHelp from 'material-ui/svg-icons/action/help';
 
+import TabsDiet from './TabsDiet';
 import debounce from 'lodash.debounce';
-
-import DietTableCalculator from './DietTableCalculator';
-import DietTotalsCard from './DietTotalsCard/DietTotalsCard';
 
 class ExerciceForm extends Component {
 
@@ -31,8 +24,7 @@ class ExerciceForm extends Component {
         };
         
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        // this.disableButton = this.disableButton.bind(this);
+        this.onSubmitDiet = this.onSubmitDiet.bind(this);
         this.toggleRow = this.toggleRow.bind(this);
         this.onChangeDataTableFields = this.onChangeDataTableFields.bind(this);
         this.onRecalculateTotals = debounce(this.onRecalculateTotals.bind(this), 250);
@@ -95,8 +87,7 @@ class ExerciceForm extends Component {
     }
 
 
-    handleSubmit( event ) {
-      event.preventDefault();
+    onSubmitDiet( ) {
       const url = `${urlConfig.baseUrl}/diets`;
       const config = urlConfig.axiosConfig;
       config.method = 'POST';
@@ -137,10 +128,12 @@ class ExerciceForm extends Component {
           });
     }
 
+
     getDate() {
       const date = new Date();
       return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
-  }
+    }
+
 
     getFoods() {
         const url = `${urlConfig.baseUrl}/foods`;
@@ -149,11 +142,6 @@ class ExerciceForm extends Component {
             .then( response => response.data);
     }
 
-    
-    // disableButton() {
-    //     return true;
-    // }
-    
 
     clearState() {
         this.setState({
@@ -208,6 +196,7 @@ class ExerciceForm extends Component {
 
     }
 
+
     calculateDataTableData( current, accessor ) {
 
 
@@ -229,11 +218,8 @@ class ExerciceForm extends Component {
 
     }
 
-    roundNumber( num ) { return Math.round(num * 100) / 100; }
 
-    calculateTotals() {
-      
-    }
+    roundNumber( num ) { return Math.round(num * 100) / 100; }
 
 
     render() {
@@ -262,61 +248,19 @@ class ExerciceForm extends Component {
                   </CardText>
                 </Card>
 
-                  <form onSubmit={this.handleSubmit}>
-                  
-                  <Tabs style={styles.tabs}>
+                  <TabsDiet 
+                    foods={foods}
+                    selectedFoods={selectedFoods}
+                    totalCalories={totalCalories}
+                    totalCarbohydrates={totalCarbohydrates}
+                    totalFats={totalFats}
+                    totalProteins={totalProteins}
+                    selectableFoodColumns={selectableFoodColumns}
+                    toggleRow={this.toggleRow}
+                    onChangeDataTableFields={this.onChangeDataTableFields}
+                    onSubmitDiet={this.onSubmitDiet}
+                  />
 
-                    <Tab 
-                      icon={<ActionShoppingBasket />}
-                      style={styles.tab} label="Alimentos disponibles">
-                      <div>
-
-                        <br/>
-                        
-                        <SelectableTable 
-                          elements={foods}
-                          selectedElements={selectedFoods}
-                          mainTableHeader="SELECCIONA LOS ALIMENTOS QUE DESEAS AGREGAR A TU DIETA :)"
-                          secondaryTableHeader="ALIMENTOS SELECCIONADOS"
-                          defaultPageSize={10}
-                          noDataTextMainTable="No hay datos actualmente :("
-                          noDataTextSecondaryTable="Selecciona un elemento de la otra tabla ;)"
-                          columns={selectableFoodColumns}
-                          onToggleRow={this.toggleRow}
-                          enableSecondaryTable={false}
-                        />
-                        
-                      </div>
-                    </Tab>
-
-                    <Tab style={styles.tab} label="Estos son tus alimentos seleccionados para tu dieta :)"
-                      icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}>
-                      <div>
-
-                        <DietTableCalculator 
-                          selectedFoods={selectedFoods}
-                          onChangeTable={this.onChangeDataTableFields}
-                        />
-
-                        <DietTotalsCard
-                          totalCalories={totalCalories}
-                          totalCarbohydrates={totalCarbohydrates}
-                          totalFats={totalFats}
-                          totalProteins={totalProteins}
-                        />
-
-                      </div>
-                    </Tab>
-                  </Tabs>
-
-                  <RaisedButton
-                      label="Registrar dieta"
-                      primary={true}
-                      type="submit"
-                      // disabled={this.disableButton()}
-                      style={styles.button} />
-
-                  </form>
               </div>
 
             </PageBase>
@@ -360,26 +304,6 @@ const selectableFoodColumns = [
     maxWidth: 150    
   }
 ];
-
-const styles = {
-    button: {
-        margin: 10,
-        float: 'right'
-    },
-    tab: {
-      backgroundColor: blue500,
-      inkBarStyle: {
-        backgroundColor: 'white'
-      }
-    },
-    tabs: {
-      borderRadius: '10px red',
-      paddingTop: '18px'
-    },
-    iconStyles: {
-      marginRight: 24,
-    }
-};
 
 const INITIAL_GRAMS = 1;
 
