@@ -1,11 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import PageBase from '../../../components/PageBase';
-import {Card, CardHeader, CardText} from 'material-ui/Card';
 import axios from 'axios';
 import urlConfig from '../../../url-config';
-import { grey700 } from 'material-ui/styles/colors';
 import 'react-table/react-table.css';
-import ActionHelp from 'material-ui/svg-icons/action/help';
 
 import TabsDiet from './TabsDiet';
 import debounce from 'lodash.debounce';
@@ -234,20 +231,6 @@ class ExerciceForm extends Component {
                 navigation="Dietas / Registro">
                 
               <div>
-                <Card>
-                  <CardHeader 
-                    title="Aviso"
-                    subtitle="Recomendaciones"
-                    actAsExpander={true}
-                    showExpandableButton={true}
-                    avatar={<ActionHelp style={{ marginTop: 10, color: grey700 }}/>}
-                  />
-                  <CardText expandable={true} style={{ color: grey700, fontSize: 16 }}>
-                    En esta sección podrás seleccionar entre múltiples opciones de alimentos
-                    y elegir las que más te gusten para armar tu dieta personalizada ;)
-                  </CardText>
-                </Card>
-
                   <TabsDiet 
                     foods={foods}
                     selectedFoods={selectedFoods}
@@ -260,7 +243,6 @@ class ExerciceForm extends Component {
                     onChangeDataTableFields={this.onChangeDataTableFields}
                     onSubmitDiet={this.onSubmitDiet}
                   />
-
               </div>
 
             </PageBase>

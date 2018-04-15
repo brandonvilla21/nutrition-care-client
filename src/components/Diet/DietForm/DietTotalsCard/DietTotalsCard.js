@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-import { grey700, indigo900, blue500, indigo50 } from 'material-ui/styles/colors';
+import { grey700, blue500, indigo50 } from 'material-ui/styles/colors';
 import ActionTrendingFlat from 'material-ui/svg-icons/action/trending-flat';
 import { TextField } from 'material-ui';
 import './DietTotalsCard.scss';
@@ -87,7 +87,7 @@ DietTotalsCard.propTypes = {
 const styles = {
     iconActionTrandingStyles: { 
       marginTop: 10, 
-      color: indigo900, 
+      color: blue500, 
       background: indigo50, 
       border: `2px solid ${indigo50}`, 
       borderRadius: '25px' 

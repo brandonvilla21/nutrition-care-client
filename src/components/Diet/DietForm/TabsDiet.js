@@ -1,14 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { Tabs, Tab, RaisedButton } from 'material-ui';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+import ActionHelp from 'material-ui/svg-icons/action/help';
 import SelectableTable from '../../SelectableTable';
 import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
 import DietTableCalculator from './DietTableCalculator';
 import CheckCircle from 'material-ui/svg-icons/action/check-circle';
 
-import { blue500 } from 'material-ui/styles/colors';
+import { blue500, grey700 } from 'material-ui/styles/colors';
 
 import DietTotalsCard from './DietTotalsCard/DietTotalsCard';
+
 class TabsDiet extends Component {
 
   constructor(props) {
@@ -70,7 +73,26 @@ class TabsDiet extends Component {
           style={styles.tab} label="Alimentos disponibles">
           <div>
 
-            <br/>
+            <Card style={styles.recomendationStyles}>
+              <CardHeader 
+                title="Aviso"
+                subtitle="Recomendaciones"
+                actAsExpander={true}
+                showExpandableButton={true}
+                avatar={<ActionHelp style={styles.actionHelpStyle}/>}
+              />
+              <CardText expandable={true} style={{ color: grey700, fontSize: 16 }}>
+                <ul>
+                  <li>
+                    Selecciona los alimentos que quieras incorporar en tu nueva dieta.
+                  </li>
+                  <li>
+                    Puedes seleccionar todos los alimentos que quieras en la tabla de alimentos
+                    de abajo.
+                  </li>
+                </ul>
+              </CardText>
+            </Card>
             
             <SelectableTable 
               elements={foods}
@@ -97,10 +119,31 @@ class TabsDiet extends Component {
         </Tab>
 
         <Tab 
-          style={styles.tab} label="Estos son tus alimentos seleccionados para tu dieta :)"
+          style={styles.tab} label="Alimentos seleccionados"
           value={1}
           icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}>
           <div>
+
+            <Card style={styles.recomendationStyles}>
+              <CardHeader 
+                title="Aviso"
+                subtitle="Recomendaciones"
+                actAsExpander={true}
+                showExpandableButton={true}
+                avatar={<ActionHelp style={styles.actionHelpStyle}/>}
+              />
+              <CardText expandable={true} style={{ color: grey700, fontSize: 16 }}>
+                <ul>
+                  <li>
+                    Elige los gramos o calorías que deseas agregar para cada alimento de la tabla
+                  </li>
+                  <li>
+                    Ten en cuenta el valor total de cada uno de los macronutrientes de la tabla,
+                    así como también de las calorías totales.
+                  </li>
+                </ul>
+              </CardText>
+            </Card>
 
             <DietTableCalculator 
               selectedFoods={selectedFoods}
@@ -213,6 +256,13 @@ const styles = {
   raisedButtonPrevStyle: {
     marginTop: 20,
     float: 'left'
+  },
+  actionHelpStyle: {
+    marginTop: 10, 
+    color: grey700
+  },
+  recomendationStyles: {
+    margin: '10px 0px 10px 0px'
   }
 };
 
