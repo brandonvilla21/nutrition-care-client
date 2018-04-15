@@ -36,7 +36,7 @@ export default (
       <Route path="create-body-areas" component={CreateBodyAreaPage}/>
       <Route path="create-rutine" component={CreateRutinePage}/>
       <Route path="diets" component={DietPage}/>
-      <Route path='create-diet' component={CreateDietPage} />
+      <Route path="create-diet" component={CreateDietPage} />
       {/* <Route path="type-routines" component={TypeRoutinePage}/> */}
       {/* <Route path="create-type-routine" component={CreateTypeRoutinePage}/> */}
       <Route path="*" component={NotFoundPage}/>

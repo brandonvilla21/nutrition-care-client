@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import { Route, IndexRoute } from 'react-router';
 import { Link } from 'react-router';
 import PageBase from '../../../components/PageBase';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
 import urlConfig from '../../../url-config';
-import { grey500, green600 } from 'material-ui/styles/colors';
+import { blue500, green600 } from 'material-ui/styles/colors';
 import axios from 'axios';
 import 'react-table/react-table.css';
 import ReactTable from 'react-table';
-import { FloatingActionButton } from 'material-ui';
-import CreateDietPage from './CreateDietPage';
+import { FloatingActionButton, IconButton } from 'material-ui';
+import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import filterCaseInsensitive from '../../../shared/tableFiltering';
 
 class DietPage extends Component {
@@ -60,7 +58,23 @@ class DietPage extends Component {
               filterable
               defaultFilterMethod={filterCaseInsensitive}
               columns={[
-                ...columns
+                ...columns,
+                {
+                  Header: "Editar",
+                  id: "text",
+                  accessor: "",
+                  filterable: false,
+                  sortable: false,
+                  Cell: () => {
+                    return (
+                      <IconButton iconStyle={styles.editIconStyle}
+                      >
+                        <EditorModeEdit />
+                      </IconButton>
+                    );
+                  },
+                  maxWidth: 70
+                },
               ]}
               defaultPageSize={10}
               noDataText="No hay datos registrados"
@@ -115,5 +129,9 @@ const styles = {
       left: 'auto',
       position: 'fixed',
       zIndex: 1
+  },
+  editIconStyle: {
+    color: blue500, 
+    borderRadius: '25px'
   }
 };
