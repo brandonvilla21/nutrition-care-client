@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import { Link } from 'react-router';
 import DietForm from '../../../components/Diet/DietForm/DietForm';
 
 class CreateDietPage extends Component {
@@ -44,10 +45,18 @@ class CreateDietPage extends Component {
       const actions = [
           <FlatButton
               key={0}
-              label="Aceptar"
+              label="Registrar otra dieta"
               primary={true}
               onClick={this.handleClose}
-          />
+          />,
+          <Link to="/diets">
+            <FlatButton
+              key={0}
+              label="Finalizar"
+              primary={true}
+              onClick={this.handleClose}
+            />
+          </Link>
       ];
       return (
         <div>

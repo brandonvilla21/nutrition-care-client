@@ -54,6 +54,11 @@ class TabsDiet extends Component {
   }
 
 
+  disableSaveButton() {
+    return this.props.description === '';
+  }
+
+
   resetIndex() {
     this.setState({ tabIndex: 0, resetToggle: true }, 
                   () => this.setState({ resetToggle: false }));
@@ -244,6 +249,7 @@ class TabsDiet extends Component {
                     style={styles.raisedButtonNextStyle}
                     label="Guardar"
                     primary={true}
+                    disabled={this.disableSaveButton()}
                     onClick={this.props.onSubmitDiet.bind(this, this.resetIndex)} />
                 </div> 
 

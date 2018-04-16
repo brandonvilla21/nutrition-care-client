@@ -156,7 +156,8 @@ class ExerciceForm extends Component {
         totalCarbohydrates: 0,
         totalProteins: 0,
         totalFats: 0,
-        totalCalories: 0
+        totalCalories: 0,
+        description: ''
       });
 
     }

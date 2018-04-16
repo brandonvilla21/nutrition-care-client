@@ -116,7 +116,8 @@ const columns = [
       {
         Header: "Descripción",
         accessor: "description",
-        minWidth: 150
+        minWidth: 150,
+        style: { whiteSpace: 'normal' },
       },
     ]
   },
