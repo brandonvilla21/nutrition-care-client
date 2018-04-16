@@ -16,7 +16,7 @@ import Moment from 'react-moment';
 import axios from 'axios';
 import urlConfig from '../../../url-config';
 
-class GeneralInfoPage extends Component {
+class CreateProgressPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -207,4 +207,4 @@ class GeneralInfoPage extends Component {
     }
 }
 
-export default GeneralInfoPage;
+export default CreateProgressPage;
