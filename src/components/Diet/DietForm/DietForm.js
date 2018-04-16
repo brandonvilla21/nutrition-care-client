@@ -4,7 +4,7 @@ import axios from 'axios';
 import urlConfig from '../../../url-config';
 import 'react-table/react-table.css';
 
-import TabsDiet from './TabsDiet';
+import TabsDiet from './TabsDiet/TabsDiet';
 import debounce from 'lodash.debounce';
 
 class ExerciceForm extends Component {
@@ -17,7 +17,8 @@ class ExerciceForm extends Component {
           totalCarbohydrates: 0,
           totalProteins: 0,
           totalFats: 0,
-          totalCalories: 0
+          totalCalories: 0,
+          description: ''
         };
         
         this.handleChange = this.handleChange.bind(this);
@@ -37,6 +38,16 @@ class ExerciceForm extends Component {
       if (this.state.selectedFoods !== prevState.selectedFoods)
         this.onRecalculateTotals();
       
+    }
+
+
+    handleChange( event ) {
+      const name = event.target.name;
+      const value = event.target.value;
+
+      this.setState({
+          [name]: value
+      });
     }
 
 
@@ -63,16 +74,6 @@ class ExerciceForm extends Component {
 
     }
 
- 
-    handleChange( event ) {
-      const name = event.target.name;
-      const value = event.target.value;
-
-      this.setState({
-          [name]: value
-      });
-    }
-
 
     onSubmitDiet( resetIndex ) {
       const url = `${urlConfig.baseUrl}/diets`;
@@ -81,9 +82,9 @@ class ExerciceForm extends Component {
 
       const { 
         totalCarbohydrates, totalProteins, totalFats,
-        totalCalories
-       } = this.state;
-
+        totalCalories, description,
+      } = this.state;
+      
       const selectedFoods = [ ...this.state.selectedFoods ].map( food => {
         return { 
           food_id: food.id,
@@ -91,13 +92,15 @@ class ExerciceForm extends Component {
           food_carbohydrates: food.desiredCarbohydrates,
           food_fats: food.desiredFats,
           food_proteins: food.desiredProteins,
-          food_grams: food.desiredGrams
+          food_grams: food.desiredGrams,
+          food_description: food.description,
         };
       });
         
       const data = { 
         totalCarbohydrates, totalProteins, totalFats,
-        totalCalories, selectedFoods, register_date: this.getDate()
+        totalCalories, selectedFoods, register_date: this.getDate(),
+        description,
       };
 
       axios.post(url, data, config)
@@ -230,7 +233,8 @@ class ExerciceForm extends Component {
     render() {
         const { 
           foods, selectedFoods, totalCalories, 
-          totalCarbohydrates, totalFats, totalProteins 
+          totalCarbohydrates, totalFats, totalProteins ,
+          description,
         } = this.state;
 
         return(
@@ -248,8 +252,10 @@ class ExerciceForm extends Component {
                     totalProteins={totalProteins}
                     selectableFoodColumns={selectableFoodColumns}
                     toggleRow={this.toggleRow}
+                    description={description}
                     onChangeDataTableFields={this.onChangeDataTableFields}
                     onSubmitDiet={this.onSubmitDiet}
+                    onChange={this.handleChange}
                   />
               </div>
 

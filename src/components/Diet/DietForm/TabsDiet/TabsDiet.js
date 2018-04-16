@@ -2,15 +2,17 @@ import React, { Component, PropTypes } from 'react';
 import { Tabs, Tab, RaisedButton } from 'material-ui';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import ActionHelp from 'material-ui/svg-icons/action/help';
-import SelectableTable from '../../SelectableTable';
 import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
-import DietTableCalculator from './DietTableCalculator';
 import CheckCircle from 'material-ui/svg-icons/action/check-circle';
-
+import TextField from 'material-ui/TextField/TextField';
 import { blue500, grey700 } from 'material-ui/styles/colors';
 
-import DietTotalsCard from './DietTotalsCard/DietTotalsCard';
+import DietTotalsCard from './../DietTotalsCard/DietTotalsCard';
+import DietTableCalculator from './../DietTableCalculator';
+import SelectableTable from '../../../SelectableTable';
+
+import './TabsDiet.scss';
 
 class TabsDiet extends Component {
 
@@ -62,7 +64,7 @@ class TabsDiet extends Component {
     const { 
       foods, selectedFoods, totalCalories, 
       totalCarbohydrates, totalFats, totalProteins,
-      selectableFoodColumns
+      selectableFoodColumns, description, onChange
     } = this.props;
 
     return (
@@ -193,32 +195,61 @@ class TabsDiet extends Component {
             style={styles.tab}
           >
             <div>
-              <p>
-              Te pedimos que confirmes los datos antes de continuar. 
-              Cuando estés listo, da clic en 
-                  <strong> Guardar</strong>
-              </p>
-              <DietTotalsCard
-                totalCalories={totalCalories}
-                totalCarbohydrates={totalCarbohydrates}
-                totalFats={totalFats}
-                totalProteins={totalProteins}
-              />
-              <div style={styles.raisedButtonContainer}>
-                <RaisedButton
-                  style={styles.raisedButtonPrevStyle}
-                  label="Regresar"
-                  secondary={true}
-                  disabled={this.disableCalculateDietButton()}
-                  value={1}
-                  onClick={this.prevIndex} />
 
-                <RaisedButton
-                  style={styles.raisedButtonNextStyle}
-                  label="Guardar"
-                  primary={true}
-                  onClick={this.props.onSubmitDiet.bind(this, this.resetIndex)} />
-              </div>  
+            <TextField
+              floatingLabelStyle={styles.floatingLabelStyle}
+              name="description"
+              floatingLabelText="Agrega una descripción para tu dieta"
+              fullWidth={true}
+              value={description}
+              onChange={onChange}
+            />
+              <div className="final-grid">
+
+                <DietTotalsCard className="totals-card"
+                  totalCalories={totalCalories}
+                  totalCarbohydrates={totalCarbohydrates}
+                  totalFats={totalFats}
+                  totalProteins={totalProteins}
+                />
+
+                <Card className="recommendation-card" initiallyExpanded={true}>
+                  <CardHeader 
+                    title="Aviso"
+                    subtitle="Recomendaciones"
+                    actAsExpander={true}
+                    showExpandableButton={true}
+                    avatar={<ActionHelp style={styles.actionHelpStyle}/>}
+                  />
+                  <CardText expandable={true}>
+                    <strong>AQUÍ VAN LAS RECOMENDACIONES</strong>
+                  </CardText>
+              </Card>
+
+                <div>
+                  <p>
+                    Te pedimos que confirmes los datos antes de continuar. 
+                    Cuando estés listo, da clic en 
+                      <strong> Guardar</strong>
+                  </p>
+                  <RaisedButton
+                    style={styles.raisedButtonPrevStyle}
+                    label="Regresar"
+                    secondary={true}
+                    disabled={this.disableCalculateDietButton()}
+                    value={1}
+                    onClick={this.prevIndex} />
+
+                  <RaisedButton
+                    style={styles.raisedButtonNextStyle}
+                    label="Guardar"
+                    primary={true}
+                    onClick={this.props.onSubmitDiet.bind(this, this.resetIndex)} />
+                </div> 
+
+              </div>
+              
+               
             
             </div>
           </Tab>
@@ -237,9 +268,12 @@ TabsDiet.propTypes = {
   totalCarbohydrates: PropTypes.number.isRequired,
   totalProteins: PropTypes.number.isRequired,
   totalFats: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
   toggleRow: PropTypes.func.isRequired,
   onChangeDataTableFields: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   onSubmitDiet: PropTypes.func.isRequired,
+
 };
 
 
@@ -271,6 +305,9 @@ const styles = {
   },
   recomendationStyles: {
     margin: '10px 0px 10px 0px'
+  },
+  floatingLabelStyle: {
+    fontSize: 19,
   }
 };
 

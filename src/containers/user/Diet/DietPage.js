@@ -54,6 +54,7 @@ class DietPage extends Component {
                 </FloatingActionButton>
             </Link>
             <ReactTable
+              className="-striped -highlight"
               data={diets}
               filterable
               defaultFilterMethod={filterCaseInsensitive}
@@ -82,6 +83,7 @@ class DietPage extends Component {
           </div>
         </PageBase>
       );
+      
     }
 
   }
@@ -89,35 +91,60 @@ export default DietPage;
 
 const columns = [
   {
-    Header: "ID",
-    accessor: "id",
-    maxWidth: 100
+    Header: "Información general",
+    headerStyle: { 
+      fontSize: 16,
+      fontStyle: 'italic',
+      paddingBottom: 15
+    },
+    columns:[
+      {
+        Header: "ID",
+        accessor: "id",
+        maxWidth: 100
+      },
+      {
+        Header: "Fecha de registro",
+        accessor: "register_date",
+        minWidth: 120
+      },
+      {
+        Header: "Estado",
+        accessor: "status",
+        maxWidth: 120
+      },
+      {
+        Header: "Descripción",
+        accessor: "description",
+        minWidth: 150
+      },
+    ]
   },
   {
-    Header: "Carbohidratos",
-    accessor: "totalCarbohydrates",
-    minWidth: 120
-  },
-  {
-    Header: "Proteínas",
-    accessor: "totalProteins",
-    minWidth: 120
-  },
-  {
-    Header: "Grasas",
-    accessor: "totalFats",
-    minWidth: 120
-  },
-  {
-    Header: "Estado",
-    accessor: "status",
-    minWidth: 120
-  },
-  {
-    Header: "Fecha de registro",
-    accessor: "register_date",
-    minWidth: 120
-  },
+    Header: "Totales",
+    headerStyle: { 
+      fontSize: 16,
+      fontStyle: 'italic',
+      paddingBottom: 15
+    },
+    columns: [
+      {
+        Header: "Carbohidratos",
+        accessor: "totalCarbohydrates",
+        maxWidth: 120
+      },
+      {
+        Header: "Proteínas",
+        accessor: "totalProteins",
+        maxWidth: 120
+      },
+      {
+        Header: "Grasas",
+        accessor: "totalFats",
+        maxWidth: 120
+      },
+    ]
+  }
 ];
 
 const styles = {
