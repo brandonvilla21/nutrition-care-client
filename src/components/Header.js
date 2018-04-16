@@ -10,6 +10,15 @@ import ViewModule from 'material-ui/svg-icons/action/view-module';
 import { white } from 'material-ui/styles/colors';
 
 class Header extends React.Component {
+  constructor() {
+    super();
+    
+    this.clearLocalStorage = this.clearLocalStorage.bind(this);
+  }
+  
+  clearLocalStorage() {
+    localStorage.clear();
+  }
 
   render() {
     const {styles, handleChangeRequestNavDrawer} = this.props;
@@ -61,7 +70,7 @@ class Header extends React.Component {
                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
                             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                   >
-                    <MenuItem primaryText="Cerrar sesión" containerElement={<Link to="/login"/>}/>
+                    <MenuItem onClick={this.clearLocalStorage} primaryText="Cerrar sesión" containerElement={<Link to="/login"/>}/>
                   </IconMenu>
                 </div>
               }
