@@ -4,6 +4,7 @@ import { List, ListItem, Divider } from 'material-ui';
 import axios from 'axios';
 import urlConfig from '../../../url-config';
 import Moment from 'react-moment';
+import { Link } from 'react-router';
 
 class MyRoutinesPage extends Component {
     
@@ -34,8 +35,8 @@ class MyRoutinesPage extends Component {
             return (
                 <div key={routine.id}>
                     <ListItem
-                        href={`routine/${routine.id}`}
                         primaryText={routine.description}
+                        containerElement={<Link to={`routine/${routine.id}`}/>}
                         secondaryText={<Moment format="DD/MM/YYYY">{routine.created_at.date}</Moment>}/>
                     <Divider key={`div-${routine.id}`} />
                 </div>);
