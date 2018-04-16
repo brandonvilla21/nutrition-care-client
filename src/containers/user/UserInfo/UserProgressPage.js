@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import urlConfig from '../../../url-config';
 import axios from 'axios';
-import LinearChart from '../../../components/UserInfo/Progress/LinearChart';
+import LinearChart from '../../../components/Charts/LinearChart';
 import { typography } from 'material-ui/styles';
 import PageBase from '../../../components/PageBase';
 
