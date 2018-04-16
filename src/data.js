@@ -10,14 +10,13 @@ import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import DirectionsRun from 'material-ui/svg-icons/maps/directions-run';
 import AvLibraryAdd from 'material-ui/svg-icons/av/library-add';
 
-
 const data = {
   menus: [
     { text: 'Alimentos', icon: <Restaurant/>, link: '/food' },
     { text: 'Ejercicios', icon: <FitnessCenter/>, link: '/exercises' },
     // { text: 'Tipos de rutinas', icon: <Accessibility/>, link: '/type-routines' },
     { text: 'Áreas del cuerpo', icon: <Accessibility/>, link: '/body-areas' },
-    { text: 'Mi Informacion', icon: <PermIdentity/>, link: '/user-info' },
+    { text: 'Mi Informacion', icon: <PermIdentity/>, link: '/my-info' },
     { text: 'Crear rutina', icon: <DirectionsRun/>, link: '/create-rutine' },
     { text: 'Mis rutinas', icon: <DirectionsRun/>, link: '/my-routines' },
     { text: 'Crear dieta', icon: <AvLibraryAdd/>, link: '/create-diet' },
