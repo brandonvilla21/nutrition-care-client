@@ -80,7 +80,7 @@ class TabsDiet extends Component {
           style={styles.tab} label="Alimentos disponibles">
           <div>
 
-            <Card style={styles.recomendationStyles}>
+            <Card initiallyExpanded={true} style={styles.recomendationStyles}>
               <CardHeader 
                 title="Aviso"
                 subtitle="Recomendaciones"
@@ -132,7 +132,7 @@ class TabsDiet extends Component {
           icon={<AvPlaylistAddCheck style={styles.iconStyles} color={blue500} />}>
           <div>
 
-            <Card style={styles.recomendationStyles}>
+            <Card initiallyExpanded={true} style={styles.recomendationStyles}>
               <CardHeader 
                 title="Aviso"
                 subtitle="Recomendaciones"
@@ -143,7 +143,7 @@ class TabsDiet extends Component {
               <CardText expandable={true} style={{ color: grey700, fontSize: 16 }}>
                 <ul>
                   <li>
-                    Elige los gramos o calorías que deseas agregar para cada alimento de la tabla
+                    Elige los gramos o calorías que deseas agregar para cada alimento de la tabla.
                   </li>
                   <li>
                     Ten en cuenta el valor total de cada uno de los macronutrientes de la tabla,

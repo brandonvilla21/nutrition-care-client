@@ -111,7 +111,6 @@ class ExerciceForm extends Component {
               
           })
           .catch(err => {
-            console.log('err: ', err);
             this.props.onSubmitted({ 
               submitted: false, 
               err: true, 

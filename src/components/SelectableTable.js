@@ -13,6 +13,18 @@ class SelectableTable extends Component {
 
   }
 
+
+  componentWillReceiveProps() {
+    if(this.props.resetToggle === true) 
+      this.resetToogle();
+  }
+
+
+  resetToogle() {
+      this.setState({ selected: {} });
+  }
+
+
   handleStateCheckboxs(original) {
       
     const newSelected = Object.assign({}, this.state.selected);
@@ -22,13 +34,6 @@ class SelectableTable extends Component {
 
     this.props.onToggleRow(original);
 
-  }
-
-
-  componentWillReceiveProps(nextProps, prevState) {
-    if(this.props.resetToggle === true) {
-      this.setState({ selected: {} })
-    }
   }
 
 

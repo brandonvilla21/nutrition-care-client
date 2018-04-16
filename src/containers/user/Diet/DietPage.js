@@ -35,7 +35,7 @@ class DietPage extends Component {
       return axios.get(url, config)
           .then( response => response.data )
           .then( innerData => innerData.data )
-          .catch( err => { throw err; } );
+          .catch( err => { throw err.response.data; } );
   }
 
     render() {
