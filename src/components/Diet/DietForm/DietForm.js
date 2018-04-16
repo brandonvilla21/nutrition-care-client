@@ -1,39 +1,45 @@
 import React, { Component, PropTypes } from 'react';
-import PageBase from '../../components/PageBase';
+import PageBase from '../../../components/PageBase';
 import { Tabs, Tab } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-// import axios from 'axios';
-import urlConfig from '../../url-config';
-import { blue500, grey700, indigo900, indigo100 } from 'material-ui/styles/colors';
+import axios from 'axios';
+import urlConfig from '../../../url-config';
+import { blue500, grey700 } from 'material-ui/styles/colors';
 import 'react-table/react-table.css';
-import SelectableTable from '../SelectableTable';
+import SelectableTable from '../../SelectableTable';
 import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import AvPlaylistAddCheck from 'material-ui/svg-icons/av/playlist-add-check';
-import ActionTrendingFlat from 'material-ui/svg-icons/action/trending-flat';
 import ActionHelp from 'material-ui/svg-icons/action/help';
+
+import debounce from 'lodash.debounce';
+
 import DietTableCalculator from './DietTableCalculator';
+import DietTotalsCard from './DietTotalsCard/DietTotalsCard';
 
 class ExerciceForm extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-          user_id: '',
           foods: [],
-          dietState: 'ACTIVO',
-          selectedFoods: []
+          selectedFoods: [],
+          totalCarbohydrates: 0,
+          totalProteins: 0,
+          totalFats: 0,
+          totalCalories: 0
         };
         
         this.handleChange = this.handleChange.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
-        this.disableButton = this.disableButton.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        // this.disableButton = this.disableButton.bind(this);
         this.toggleRow = this.toggleRow.bind(this);
         this.onChangeDataTableFields = this.onChangeDataTableFields.bind(this);
+        this.onRecalculateTotals = debounce(this.onRecalculateTotals.bind(this), 250);
     }
 
 
-    componentWillMount() {
+    componentDidMount() {
       this.getFoods()
           .then(foods => {
             foods.forEach( food => {
@@ -48,6 +54,37 @@ class ExerciceForm extends Component {
     }
 
 
+    componentDidUpdate(prevProps, prevState) {
+      if (this.state.selectedFoods !== prevState.selectedFoods)
+        this.onRecalculateTotals();
+      
+    }
+
+
+    onRecalculateTotals() {
+
+      const selectedFoods = [ ...this.state.selectedFoods ];
+
+        const totals = 
+          selectedFoods
+            .reduce((accumulator, currentFood) => {
+              return { 
+                totalCalories: this.roundNumber(currentFood.desiredCalories + accumulator.totalCalories),
+                totalCarbohydrates: this.roundNumber(currentFood.desiredCarbohydrates + accumulator.totalCarbohydrates ),
+                totalFats: this.roundNumber( currentFood.desiredFats + accumulator.totalFats ),
+                totalProteins: this.roundNumber( currentFood.desiredProteins + accumulator.totalProteins ),
+              };
+            },
+            { totalCalories: 0, totalCarbohydrates: 0, totalFats: 0, totalProteins: 0 }
+          );
+
+        const { totalCalories, totalCarbohydrates, totalFats, totalProteins } = totals;
+
+        this.setState({ totalCalories, totalCarbohydrates, totalFats, totalProteins });
+
+    }
+
+ 
     handleChange( event ) {
       const name = event.target.name;
       const value = event.target.value;
@@ -58,28 +95,52 @@ class ExerciceForm extends Component {
     }
 
 
-    // handleSubmit( event ) {
-      // event.preventDefault();
-      // const url = `${urlConfig.baseUrl}/foods`;
-      // const config = urlConfig.axiosConfig;
-      // config.method = 'POST';
+    handleSubmit( event ) {
+      event.preventDefault();
+      const url = `${urlConfig.baseUrl}/diets`;
+      const config = urlConfig.axiosConfig;
+      config.method = 'POST';
 
+      const { 
+        totalCarbohydrates, totalProteins, totalFats,
+        totalCalories
+       } = this.state;
 
-      // const { name, base64_image, selectedFoods } = this.state;
-      // let data = { name, base64_image, selectedFoods };
+      const selectedFoods = [ ...this.state.selectedFoods ].map( food => {
+        return { 
+          food_id: food.id,
+          food_calories: food.desiredCalories,
+          food_carbohydrates: food.desiredCarbohydrates,
+          food_fats: food.desiredFats,
+          food_proteins: food.desiredProteins,
+          food_grams: food.desiredGrams
+        };
+      });
+        
+      const data = { 
+        totalCarbohydrates, totalProteins, totalFats,
+        totalCalories, selectedFoods, register_date: this.getDate()
+      };
+      
+      axios.post(url, data, config)
+          .then( response => {
+            if (response.status === 200) {
+                  this.props.onSubmitted(true);
+                  this.clearState();
+              } else 
+                this.props.onSubmitted(false);
+              
+          })
+          .catch(err => {
+            this.props.onSubmitted(false);
+            throw err;
+          });
+    }
 
-
-      // axios.post(url, data, config)
-      //     .then( response => {
-      //         if (response.status === 200) {
-      //             this.props.onSubmitted(true);
-      //             this.clearState();
-      //         } else
-      //             this.props.onSubmitted(false);
-      //     })
-      //     .catch(() => this.props.onSubmitted(false));
-    // }
-
+    getDate() {
+      const date = new Date();
+      return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+  }
 
     getFoods() {
         const url = `${urlConfig.baseUrl}/foods`;
@@ -89,9 +150,9 @@ class ExerciceForm extends Component {
     }
 
     
-    disableButton() {
-        return true;
-    }
+    // disableButton() {
+    //     return true;
+    // }
     
 
     clearState() {
@@ -147,32 +208,39 @@ class ExerciceForm extends Component {
 
     }
 
-
     calculateDataTableData( current, accessor ) {
 
-      function round( num ) { return Math.round(num * 100) / 100; }
 
       if( accessor === 'desiredCalories' ) {
 
-        current.desiredProteins = round((current.proteins / current.calories) * current[accessor]);
-        current.desiredCarbohydrates = round((current.carbohydrates / current.calories) * current[accessor]);
-        current.desiredFats = round((current.fats / current.calories) * current[accessor]);
-        current.desiredGrams = round((INITIAL_GRAMS / current.calories) * current[accessor]);
+        current.desiredProteins = this.roundNumber((current.proteins / current.calories) * current[accessor]);
+        current.desiredCarbohydrates = this.roundNumber((current.carbohydrates / current.calories) * current[accessor]);
+        current.desiredFats = this.roundNumber((current.fats / current.calories) * current[accessor]);
+        current.desiredGrams = this.roundNumber((INITIAL_GRAMS / current.calories) * current[accessor]);
 
       } else {//accessor is equals to desiredGrams
         
-        current.desiredProteins = current.proteins * current[accessor];
-        current.desiredFats = current.fats * current[accessor];
-        current.desiredCarbohydrates = current.carbohydrates * current[accessor];
-        current.desiredCalories = current.calories * current.desiredGrams;
+        current.desiredProteins = this.roundNumber(current.proteins * current[accessor]);
+        current.desiredFats = this.roundNumber(current.fats * current[accessor]);
+        current.desiredCarbohydrates = this.roundNumber(current.carbohydrates * current[accessor]);
+        current.desiredCalories = this.roundNumber(current.calories * current.desiredGrams);
       
       }
 
     }
 
+    roundNumber( num ) { return Math.round(num * 100) / 100; }
+
+    calculateTotals() {
+      
+    }
+
 
     render() {
-        const { foods, selectedFoods } = this.state;
+        const { 
+          foods, selectedFoods, totalCalories, 
+          totalCarbohydrates, totalFats, totalProteins 
+        } = this.state;
 
         return(
             <PageBase
@@ -181,20 +249,16 @@ class ExerciceForm extends Component {
                 
               <div>
                 <Card>
-                  <CardHeader
+                  <CardHeader 
                     title="Aviso"
-                    subtitle="Hola, aquí unas recomendaciones :D"
+                    subtitle="Recomendaciones"
+                    actAsExpander={true}
+                    showExpandableButton={true}
                     avatar={<ActionHelp style={{ marginTop: 10, color: grey700 }}/>}
-                    // actAsExpander={true}
-                    // showExpandableButton={true}
                   />
-                  {/* <CardActions>
-                    <FlatButton label="Action1" />
-                    <FlatButton label="Action2" />
-                  </CardActions> */}
-                  <CardText style={{ color: grey700, fontSize: 16 }}>
+                  <CardText expandable={true} style={{ color: grey700, fontSize: 16 }}>
                     En esta sección podrás seleccionar entre múltiples opciones de alimentos
-                    y elegir las que más te gusten para armar tu dieta personalizada ;D
+                    y elegir las que más te gusten para armar tu dieta personalizada ;)
                   </CardText>
                 </Card>
 
@@ -233,24 +297,13 @@ class ExerciceForm extends Component {
                           selectedFoods={selectedFoods}
                           onChangeTable={this.onChangeDataTableFields}
                         />
-                        
-                        <Card>
-                          <CardHeader
-                            title="Totales"
-                            subtitle="Si deseas ver los totales, haz clic aquí ;)"
-                            avatar={<ActionTrendingFlat style={styles.iconActionTrandingStyles}/>}
-                            actAsExpander={true}
-                            showExpandableButton={true}
-                          />
-                          {/* <CardActions>
-                            <FlatButton label="Action1" />
-                            <FlatButton label="Action2" />
-                          </CardActions> */}
-                          <CardText expandable={true} style={{ color: grey700, fontSize: 16 }}>
-                            En esta sección podrás seleccionar entre múltiples opciones de alimentos
-                            y elegir las que más te gusten para armar tu dieta personalizada ;D
-                          </CardText>
-                        </Card>
+
+                        <DietTotalsCard
+                          totalCalories={totalCalories}
+                          totalCarbohydrates={totalCarbohydrates}
+                          totalFats={totalFats}
+                          totalProteins={totalProteins}
+                        />
 
                       </div>
                     </Tab>
@@ -260,7 +313,7 @@ class ExerciceForm extends Component {
                       label="Registrar dieta"
                       primary={true}
                       type="submit"
-                      disabled={this.disableButton()}
+                      // disabled={this.disableButton()}
                       style={styles.button} />
 
                   </form>
@@ -325,15 +378,7 @@ const styles = {
     },
     iconStyles: {
       marginRight: 24,
-    },
-    iconActionTrandingStyles: { 
-      marginTop: 10, 
-      color: indigo900, 
-      background: indigo100, 
-      border: `2px solid ${indigo100}`, 
-      borderRadius: '25px' 
     }
-
 };
 
 const INITIAL_GRAMS = 1;

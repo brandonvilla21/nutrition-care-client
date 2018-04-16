@@ -70,7 +70,9 @@ class CreateProgressPage extends Component {
         if ( finished ) {
             axios.post(url, data, config)
                 .then( result => result)
-                .catch(err => err);
+                .catch(err => {
+                  throw err;
+                });
         }
     }
 

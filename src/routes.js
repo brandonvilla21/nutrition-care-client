@@ -14,6 +14,7 @@ import RegisterPage from './containers/session/RegisterPage';
 import CreateBodyAreaPage from './containers/admin/BodyArea/CreateBodyAreaPage';
 import BodyAreaPage from './containers/admin/BodyArea/BodyAreaPage';
 import CreateRutinePage from './containers/user/Rutine/CreateRutinePage';
+import DietPage from './containers/user/Diet/DietPage';
 import MyRoutinesPage from './containers/user/Rutine/MyRoutinesPage';
 import RoutinePage from './containers/user/Rutine/RoutinePage';
 import CreateDietPage from './containers/user/Diet/CreateDietPage';
@@ -38,11 +39,12 @@ export default (
       <Route path="body-areas" component={BodyAreaPage}/>
       <Route path="create-body-areas" component={CreateBodyAreaPage}/>
       <Route path="create-rutine" component={CreateRutinePage}/>
-      <Route path="create-diet" component={CreateDietPage}/>
       <Route path="my-routines" component={MyRoutinesPage}/>
       <Route path="routine/:id" component={RoutinePage}/>
       <Route path="my-progress" component={UserProgressPage}/>
       <Route path="my-info" component={UserInformationPage}/>
+      <Route path="diets" component={DietPage}/>
+      <Route path="create-diet" component={CreateDietPage}/>
       {/* <Route path="type-routines" component={TypeRoutinePage}/> */}
       {/* <Route path="create-type-routine" component={CreateTypeRoutinePage}/> */}
       <Route path="*" component={NotFoundPage}/>

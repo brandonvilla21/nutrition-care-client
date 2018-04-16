@@ -19,8 +19,8 @@ class UserProgressPage extends Component {
     const url = `${baseUrl}/userprogresses/currentUserProgresses`;
         
     axios.get(url)
-        .then( res => console.log(res))
-        .catch( err => err);
+      .then( res => console.log(res))
+      .catch( err => err);
   }
 
   render() {

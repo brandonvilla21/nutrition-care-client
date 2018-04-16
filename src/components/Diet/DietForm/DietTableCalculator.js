@@ -39,7 +39,8 @@ class DietTableCalculator extends Component {
                       Cell: ({ original }) => {
                         return (
                           <input
-                            min="0"
+                            min="0.0"
+                            step="any"
                             type="number"
                             value={original[EDITABLE_PROPERTY_ACCESORS.GRAMS]}
                             onChange={onChangeTable.bind(this, original, EDITABLE_PROPERTY_ACCESORS.GRAMS)}
@@ -57,7 +58,8 @@ class DietTableCalculator extends Component {
                       Cell: ({ original }) => {
                         return (
                           <input
-                            min="0"
+                            min="0.0"
+                            step="any"
                             type="number"
                             value={original[EDITABLE_PROPERTY_ACCESORS.CALORIES]}
                             onChange={onChangeTable.bind(this, original, EDITABLE_PROPERTY_ACCESORS.CALORIES)}
