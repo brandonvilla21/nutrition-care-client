@@ -17,7 +17,7 @@ class EditTabsDiet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabIndex: 0,
+      tabIndex: 1,
       resetToggle: false
     };
 
@@ -79,7 +79,7 @@ class EditTabsDiet extends Component {
         style={styles.tabs}
         >
 
-        <Tab 
+        {/* <Tab 
           icon={<ActionShoppingBasket />}
           value={0}
           style={styles.tab} label="Alimentos disponibles">
@@ -129,7 +129,7 @@ class EditTabsDiet extends Component {
                     onClick={this.nextIndex} />
             
           </div>
-        </Tab>
+        </Tab> */}
 
         <Tab 
           style={styles.tab} label="Alimentos seleccionados"

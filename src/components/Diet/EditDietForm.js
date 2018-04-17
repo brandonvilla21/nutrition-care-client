@@ -36,7 +36,16 @@ class DietForm extends Component {
 
 
     componentDidMount() {
-      this.getFoods().then(foods => this.setState({ foods }));
+      this.getDietToEdit().then(({ data }) => {
+        console.log("diet", data);
+        // const diet = data;
+
+        // const selectedFoods = diet.foods.map( food => {
+        //   return food.pivot
+        // })
+        // this.setState({ foods })
+        
+      });
 
       console.log("idToEdit", this.props.idToEdit);
 
@@ -99,22 +108,19 @@ class DietForm extends Component {
     }
 
 
-    getFoods() {
-        const url = `${urlConfig.baseUrl}/foods`;
-        return fetch(url)
-            .then( data => data.json())
-            .then( response => response.data)
-            .then( foods => {
-              foods.forEach( food => {
-                food.desiredGrams = 1;
-                food.desiredProteins = food.proteins;
-                food.desiredFats = food.fats;
-                food.desiredCarbohydrates = food.carbohydrates;
-                food.desiredCalories = food.calories;
-              });
+    getDietToEdit() {
 
-              return foods;
-            });
+
+      const { idToEdit } = this.props;
+      const url = `${urlConfig.baseUrl}/diets/${idToEdit}`;
+      const config = urlConfig.axiosConfig;
+      config.method = 'GET';
+
+      return axios.get(url, config)
+        .then( response => response.data)
+        .catch(err => {
+          throw err.response.data.message;
+        });
     }
 
 
@@ -197,7 +203,7 @@ DietForm.propTypes = {
     idToEdit: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number
-    ]),
+    ]).isRequired,
 };
 
 const selectableFoodColumns = [
