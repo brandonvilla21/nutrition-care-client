@@ -4,8 +4,14 @@ import axios from 'axios';
 import urlConfig from '../../url-config';
 import 'react-table/react-table.css';
 
-import TabsDiet from './TabsDiet/TabsDiet';
+import TabsDiet from './Components/TabsDiet/TabsDiet';
 import debounce from 'lodash.debounce';
+
+import { 
+  handleChange, onRecalculateTotals, roundNumber, toggleRow,
+  getDate, onChangeDataTableFields, 
+
+} from './diet-utils';
 
 class ExerciceForm extends Component {
 
@@ -21,11 +27,11 @@ class ExerciceForm extends Component {
           description: ''
         };
         
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChange = handleChange.bind(this);
+        this.onRecalculateTotals = debounce(onRecalculateTotals.bind(this), 250);
+        this.toggleRow = toggleRow.bind(this);
+        this.onChangeDataTableFields = onChangeDataTableFields.bind(this);
         this.onSubmitDiet = this.onSubmitDiet.bind(this);
-        this.toggleRow = this.toggleRow.bind(this);
-        this.onChangeDataTableFields = this.onChangeDataTableFields.bind(this);
-        this.onRecalculateTotals = debounce(this.onRecalculateTotals.bind(this), 250);
     }
 
 
@@ -38,40 +44,6 @@ class ExerciceForm extends Component {
       if (this.state.selectedFoods !== prevState.selectedFoods)
         this.onRecalculateTotals();
       
-    }
-
-
-    handleChange( event ) {
-      const name = event.target.name;
-      const value = event.target.value;
-
-      this.setState({
-          [name]: value
-      });
-    }
-
-
-    onRecalculateTotals() {
-
-      const selectedFoods = [ ...this.state.selectedFoods ];
-
-        const totals = 
-          selectedFoods
-            .reduce((accumulator, currentFood) => {
-              return { 
-                totalCalories: this.roundNumber(currentFood.desiredCalories + accumulator.totalCalories),
-                totalCarbohydrates: this.roundNumber(currentFood.desiredCarbohydrates + accumulator.totalCarbohydrates ),
-                totalFats: this.roundNumber( currentFood.desiredFats + accumulator.totalFats ),
-                totalProteins: this.roundNumber( currentFood.desiredProteins + accumulator.totalProteins ),
-              };
-            },
-            { totalCalories: 0, totalCarbohydrates: 0, totalFats: 0, totalProteins: 0 }
-          );
-
-        const { totalCalories, totalCarbohydrates, totalFats, totalProteins } = totals;
-
-        this.setState({ totalCalories, totalCarbohydrates, totalFats, totalProteins });
-
     }
 
 
@@ -124,12 +96,6 @@ class ExerciceForm extends Component {
     }
 
 
-    getDate() {
-      const date = new Date();
-      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    }
-
-
     getFoods() {
         const url = `${urlConfig.baseUrl}/foods`;
         return fetch(url)
@@ -137,7 +103,7 @@ class ExerciceForm extends Component {
             .then( response => response.data)
             .then( foods => {
               foods.forEach( food => {
-                food.desiredGrams = INITIAL_GRAMS;
+                food.desiredGrams = 1;
                 food.desiredProteins = food.proteins;
                 food.desiredFats = food.fats;
                 food.desiredCarbohydrates = food.carbohydrates;
@@ -147,6 +113,12 @@ class ExerciceForm extends Component {
               return foods;
             });
     }
+
+
+    getDate() {
+      const date = new Date();
+      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    };
 
 
     resetState() {
@@ -162,73 +134,26 @@ class ExerciceForm extends Component {
 
     }
 
-
-    toggleRow(original) {
-      
-      let selectedFoods = [
-        ...this.state.selectedFoods
-      ];
-      const elementIndex = selectedFoods.findIndex( element => element.id == original.id );
-      // check to see if the key exists
-      if (elementIndex >= 0) {
-        // it does exist so we will remove it using destructing
-        selectedFoods = [
-          ...selectedFoods.slice(0, elementIndex),
-          ...selectedFoods.slice(elementIndex + 1)
-        ];
-
-      } else {
-        // it does not exist so add it
-        selectedFoods.push(original);
-      }
-      // update the state
-      this.setState({ selectedFoods });
-
-    } 
-
-
-    onChangeDataTableFields(original, accessor, event) {
-
-      const value = event.target.value;
-      const selectedFoods = [ ...this.state.selectedFoods ];
-      const index = selectedFoods.findIndex( element => element.id == original.id );
-
-
-      selectedFoods[index][accessor] = Number(value);
-
-      //Calculate remaining columns.
-      const current = selectedFoods[index];
-
-      this.calculateDataTableData( current, accessor );
-      
-      this.setState({ selectedFoods });
-
-    }
-
-
+    
     calculateDataTableData( current, accessor ) {
 
-
       if( accessor === 'desiredCalories' ) {
-
-        current.desiredProteins = this.roundNumber((current.proteins / current.calories) * current[accessor]);
-        current.desiredCarbohydrates = this.roundNumber((current.carbohydrates / current.calories) * current[accessor]);
-        current.desiredFats = this.roundNumber((current.fats / current.calories) * current[accessor]);
-        current.desiredGrams = this.roundNumber((INITIAL_GRAMS / current.calories) * current[accessor]);
-
+    
+        current.desiredProteins = roundNumber((current.proteins / current.calories) * current[accessor]);
+        current.desiredCarbohydrates = roundNumber((current.carbohydrates / current.calories) * current[accessor]);
+        current.desiredFats = roundNumber((current.fats / current.calories) * current[accessor]);
+        current.desiredGrams = roundNumber((INITIAL_GRAMS / current.calories) * current[accessor]);
+    
       } else {//accessor is equals to desiredGrams
         
-        current.desiredProteins = this.roundNumber(current.proteins * current[accessor]);
-        current.desiredFats = this.roundNumber(current.fats * current[accessor]);
-        current.desiredCarbohydrates = this.roundNumber(current.carbohydrates * current[accessor]);
-        current.desiredCalories = this.roundNumber(current.calories * current.desiredGrams);
+        current.desiredProteins = roundNumber(current.proteins * current[accessor]);
+        current.desiredFats = roundNumber(current.fats * current[accessor]);
+        current.desiredCarbohydrates = roundNumber(current.carbohydrates * current[accessor]);
+        current.desiredCalories = roundNumber(current.calories * current.desiredGrams);
       
       }
-
+    
     }
-
-
-    roundNumber( num ) { return Math.round(num * 100) / 100; }
 
 
     render() {

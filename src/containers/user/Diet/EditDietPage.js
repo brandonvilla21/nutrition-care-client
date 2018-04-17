@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { Link } from 'react-router';
-import DietForm from '../../../components/Diet/DietForm';
+import EditDietForm from '../../../components/Diet/EditDietForm';
 
 
 class CreateDietPage extends Component {
@@ -18,6 +18,9 @@ class CreateDietPage extends Component {
         this.isSubmitted = this.isSubmitted.bind(this);
     }
 
+    componentDidMount() {
+      console.log("params", this.props.params);
+    }
     
     handleClose() {
       this.setState({ 
@@ -63,13 +66,13 @@ class CreateDietPage extends Component {
       return (
         <div>
             <Dialog
-              title="Dieta registrada"
+              title="Dieta editada"
               actions={actions}
               modal={false}
               open={this.state.submitted}
               onRequestClose={this.handleClose}
             >
-              La dieta ha sido registrado con éxito.
+              La dieta ha sido editada con éxito.
             </Dialog>
 
             <Dialog
@@ -79,11 +82,11 @@ class CreateDietPage extends Component {
               open={this.state.isThereAnError}
               onRequestClose={this.handleClose}
             >
-              Hubo un error al registrar la dieta. Intentalo más tarde :( <br/><br/>
+              Hubo un error al editar la dieta. Intentalo más tarde :( <br/><br/>
               Error: {this.state.errorMessage}
             </Dialog>
           
-          <DietForm onSubmitted={this.isSubmitted} />
+          <EditDietForm onSubmitted={this.isSubmitted} />
         </div>
       );
     }
