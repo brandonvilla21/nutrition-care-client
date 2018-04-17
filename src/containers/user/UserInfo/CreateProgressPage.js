@@ -80,6 +80,7 @@ class CreateProgressPage extends Component {
         const date = new Date();
         return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
     }
+
     handlePrev() {
         const {stepIndex} = this.state;
         if (!this.state.loading) {
