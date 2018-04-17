@@ -1,7 +1,12 @@
 import React, { PropTypes } from 'react';
 import { LineChart, Line, Tooltip, YAxis, XAxis, CartesianGrid } from 'recharts';
 import { blue400 } from 'material-ui/styles/colors';
-
+/**
+ * This chart component can be use it in case of needing
+ * data like this: [{name: 'something', dataKey: somevalue}, ...]
+ * 
+ * @param {props} props from Parent Component
+ */
 const LinearChart = (props) => {
     const dataKeyArray = props.data.map( e => e[props.dataKey] );
     const   min = Math.min( ...dataKeyArray ),
