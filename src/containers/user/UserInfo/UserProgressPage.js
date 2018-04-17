@@ -4,6 +4,10 @@ import axios from 'axios';
 import LinearChart from '../../../components/Charts/LinearChart';
 import { typography } from 'material-ui/styles';
 import PageBase from '../../../components/PageBase';
+import MyDocument from '../../../components/PDF/MyDocument';
+import 'regenerator-runtime/runtime';
+import ReactPDF from '@react-pdf/node';
+import { FlatButton } from 'material-ui';
 
 class UserProgressPage extends Component {
 
@@ -15,6 +19,7 @@ class UserProgressPage extends Component {
     };
     this.fetchUserProgress = this.fetchUserProgress.bind(this);
     this.weightData = this.weightData.bind(this);
+    this.download = this.download.bind(this);
   }
 
   componentDidMount() {
@@ -42,6 +47,11 @@ class UserProgressPage extends Component {
       return { peso: weight, name: progress_date };
     });
   }
+
+  download() {
+    ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
+
+  }
   
   render() {
     return (
@@ -58,6 +68,11 @@ class UserProgressPage extends Component {
             */}
             
             <LinearChart dataKey="peso" data={this.state.weightProgress} />
+            <br />
+            <div>
+              <p>Download</p>
+              <FlatButton  label="Download" onClick={this.download}/>
+            </div>
           </div>
         </div>
       </PageBase>
