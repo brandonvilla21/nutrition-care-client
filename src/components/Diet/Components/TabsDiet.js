@@ -8,11 +8,9 @@ import CheckCircle from 'material-ui/svg-icons/action/check-circle';
 import TextField from 'material-ui/TextField/TextField';
 import { blue500, grey700 } from 'material-ui/styles/colors';
 
-import DietTotalsCard from './../DietTotalsCard/DietTotalsCard';
-import DietTableCalculator from './../DietTableCalculator';
-import SelectableTable from '../../../SelectableTable';
-
-import './TabsDiet.scss';
+import DietTotalsCard from './DietTotalsCard/DietTotalsCard';
+import DietTableCalculator from './DietTableCalculator';
+import SelectableTable from '../../SelectableTable';
 
 class TabsDiet extends Component {
 
@@ -98,7 +96,7 @@ class TabsDiet extends Component {
               <CardText expandable={true} style={{ color: grey700, fontSize: 16 }}>
                 <ul>
                   <li>
-                    Selecciona los alimentos que quieras incorporar en tu nueva dieta.
+                    Selecciona los alimentos que quieras incorporar en tu dieta.
                   </li>
                   <li>
                     Puedes seleccionar todos los alimentos que quieras en la tabla de alimentos

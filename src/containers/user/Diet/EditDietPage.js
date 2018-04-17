@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { Link } from 'react-router';
 import EditDietForm from '../../../components/Diet/EditDietForm';
 
 
-class CreateDietPage extends Component {
+class EditDietPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +19,7 @@ class CreateDietPage extends Component {
     }
 
     componentDidMount() {
-      console.log("params", this.props.params);
+      
     }
     
     handleClose() {
@@ -86,10 +86,12 @@ class CreateDietPage extends Component {
               Error: {this.state.errorMessage}
             </Dialog>
           
-          <EditDietForm onSubmitted={this.isSubmitted} />
+          <EditDietForm
+            idToEdit={this.props.params.idToEdit} 
+            onSubmitted={this.isSubmitted} />
         </div>
       );
     }
 }
 
-export default CreateDietPage;
+export default EditDietPage;

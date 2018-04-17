@@ -18,6 +18,7 @@ import DietPage from './containers/user/Diet/DietPage';
 import MyRoutinesPage from './containers/user/Rutine/MyRoutinesPage';
 import RoutinePage from './containers/user/Rutine/RoutinePage';
 import CreateDietPage from './containers/user/Diet/CreateDietPage';
+import EditDietPage from './containers/user/Diet/EditDietPage';
 import DashboardPage from './containers/DashboardPage';
 import UserProgressPage from './containers/user/UserInfo/UserProgressPage';
 import UserInformationPage from './containers/user/UserInfo/UserInformationPage';
@@ -45,7 +46,7 @@ export default (
       <Route path="my-info" component={UserInformationPage}/>
       <Route path="diets" component={DietPage}/>
       <Route path="create-diet" component={CreateDietPage}/>
-      <Route path="create-diet/:id" component={CreateDietPage}/>
+      <Route path="edit-diet/:idToEdit" component={EditDietPage}/>
       {/* <Route path="type-routines" component={TypeRoutinePage}/> */}
       {/* <Route path="create-type-routine" component={CreateTypeRoutinePage}/> */}
       <Route path="*" component={NotFoundPage}/>

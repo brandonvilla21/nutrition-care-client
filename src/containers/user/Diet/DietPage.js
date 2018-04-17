@@ -68,13 +68,11 @@ class DietPage extends Component {
                   sortable: false,
                   Cell: ({original}) => {
                     return (
-                      <Link to={`create-diet/${original.id}`}>
+                      <Link to={`edit-diet/${original.id}`}>
                         <IconButton iconStyle={styles.editIconStyle}>
                           <EditorModeEdit />
                         </IconButton>
                     </Link>
-                      
-                      
                     );
                   },
                   maxWidth: 70

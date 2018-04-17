@@ -4,16 +4,16 @@ import axios from 'axios';
 import urlConfig from '../../url-config';
 import 'react-table/react-table.css';
 
-import TabsDiet from './Components/TabsDiet/TabsDiet';
+import TabsDiet from './Components/TabsDiet';
 import debounce from 'lodash.debounce';
 
 import { 
   handleChange, onRecalculateTotals, roundNumber, toggleRow,
-  getDate, onChangeDataTableFields, 
+  onChangeDataTableFields, 
 
 } from './diet-utils';
 
-class ExerciceForm extends Component {
+class DietForm extends Component {
 
     constructor(props) {
         super(props);
@@ -189,7 +189,7 @@ class ExerciceForm extends Component {
         );
     }
 }
-ExerciceForm.propTypes = {
+DietForm.propTypes = {
     onSubmitted: PropTypes.func
 };
 
@@ -229,4 +229,4 @@ const selectableFoodColumns = [
 
 const INITIAL_GRAMS = 1;
 
-export default ExerciceForm;
+export default DietForm;
