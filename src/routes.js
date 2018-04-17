@@ -45,6 +45,7 @@ export default (
       <Route path="my-info" component={UserInformationPage}/>
       <Route path="diets" component={DietPage}/>
       <Route path="create-diet" component={CreateDietPage}/>
+      <Route path="create-diet/:id" component={CreateDietPage}/>
       {/* <Route path="type-routines" component={TypeRoutinePage}/> */}
       {/* <Route path="create-type-routine" component={CreateTypeRoutinePage}/> */}
       <Route path="*" component={NotFoundPage}/>

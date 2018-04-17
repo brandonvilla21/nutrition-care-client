@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import PageBase from '../../../components/PageBase';
+import PageBase from '../../components/PageBase';
 import axios from 'axios';
-import urlConfig from '../../../url-config';
+import urlConfig from '../../url-config';
 import 'react-table/react-table.css';
 
 import TabsDiet from './TabsDiet/TabsDiet';

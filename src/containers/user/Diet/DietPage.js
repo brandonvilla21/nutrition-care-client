@@ -66,12 +66,15 @@ class DietPage extends Component {
                   accessor: "",
                   filterable: false,
                   sortable: false,
-                  Cell: () => {
+                  Cell: ({original}) => {
                     return (
-                      <IconButton iconStyle={styles.editIconStyle}
-                      >
-                        <EditorModeEdit />
-                      </IconButton>
+                      <Link to={`create-diet/${original.id}`}>
+                        <IconButton iconStyle={styles.editIconStyle}>
+                          <EditorModeEdit />
+                        </IconButton>
+                    </Link>
+                      
+                      
                     );
                   },
                   maxWidth: 70

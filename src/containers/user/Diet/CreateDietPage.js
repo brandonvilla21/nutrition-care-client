@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { Link } from 'react-router';
-import DietForm from '../../../components/Diet/DietForm/DietForm';
+import DietForm from '../../../components/Diet/DietForm';
+
 
 class CreateDietPage extends Component {
     constructor(props) {
@@ -15,6 +16,10 @@ class CreateDietPage extends Component {
 
         this.handleClose = this.handleClose.bind(this);
         this.isSubmitted = this.isSubmitted.bind(this);
+    }
+
+    componentDidMount() {
+      console.log("params", this.props.params);
     }
     
     handleClose() {

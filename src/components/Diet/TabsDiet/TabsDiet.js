@@ -10,7 +10,7 @@ import { blue500, grey700 } from 'material-ui/styles/colors';
 
 import DietTotalsCard from './../DietTotalsCard/DietTotalsCard';
 import DietTableCalculator from './../DietTableCalculator';
-import SelectableTable from '../../../SelectableTable';
+import SelectableTable from '../../SelectableTable';
 
 import './TabsDiet.scss';
 
