@@ -7,7 +7,7 @@ import PageBase from '../../../components/PageBase';
 // import MyDocument from '../../../components/PDF/MyDocument';
 // import 'regenerator-runtime/runtime';
 // import ReactPDF from '@react-pdf/node';
-import { FlatButton } from 'material-ui';
+// import { FlatButton } from 'material-ui';
 
 class UserProgressPage extends Component {
 
@@ -33,6 +33,7 @@ class UserProgressPage extends Component {
     axios.get(url, axiosConfig)
       .then( res => {
         const progresses = res.data.data;
+        console.log(res.data);
         this.setState({
           progresses: progresses,
           weightProgress: this.weightData(progresses),
@@ -59,8 +60,8 @@ class UserProgressPage extends Component {
       <PageBase
         title="Mi progreso">
 
-        <div className="row">
-          <div className="col-md-6">
+        <div style={styles.container} className="">
+          <div className="col-md-12">
             <p style={styles.title}>Progreso en relación a mi peso</p>
             {/*
               Mostrar un select para que elija visualizar la gráfica por:
@@ -71,8 +72,8 @@ class UserProgressPage extends Component {
             <LinearChart dataKey="peso" data={this.state.weightProgress} />
             <br />
             <div>
-              <p>Download</p>
-              <FlatButton  label="Download" onClick={this.download}/>
+              {/* <p>Download</p>
+              <FlatButton  label="Download" onClick={this.download}/> */}
             </div>
           </div>
         </div>
@@ -83,6 +84,9 @@ class UserProgressPage extends Component {
 }
 
 const styles = {
+  container: {
+    // padding: 10,
+  },
   paper: {
     padding: 20,
   },
