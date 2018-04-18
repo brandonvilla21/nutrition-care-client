@@ -60,10 +60,10 @@ class DietForm extends Component {
       const selectedFoods = [ ...this.state.selectedFoods ].map( food => {
         return { 
           food_id: food.id,
-          desiredCalories: food.desiredCalories,
-          desiredCarbohydrates: food.desiredCarbohydrates,
-          desiredFats: food.desiredFats,
-          desiredProteins: food.desiredProteins,
+          calories: food.calories,
+          carbohydrates: food.carbohydrates,
+          fats: food.fats,
+          proteins: food.proteins,
           desiredGrams: food.desiredGrams,
           description: food.description,
         };
