@@ -13,10 +13,6 @@ class SelectableTable extends Component {
 
   }
 
-  componentDidMount() {
-    console.log(this.props.initialSelection);
-  }
-
 
   componentWillReceiveProps() {
     if(this.props.resetToggle === true) 
@@ -136,7 +132,6 @@ SelectableTable.propTypes = {
   columns:                  PropTypes.array.isRequired,
   onToggleRow:              PropTypes.func.isRequired,
   resetToggle:              PropTypes.bool,
-  initialSelection:         PropTypes.array,
   
   enableSecondaryTable:     PropTypes.bool.isRequired,
   noDataTextSecondaryTable: function(props, propName) {

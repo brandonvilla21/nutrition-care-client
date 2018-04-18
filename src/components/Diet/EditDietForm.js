@@ -24,7 +24,7 @@ class DietForm extends Component {
           totalProteins: 0,
           totalFats: 0,
           totalCalories: 0,
-          description: ''
+          description: '',
         };
         
         this.handleChange = handleChange.bind(this);
@@ -41,11 +41,8 @@ class DietForm extends Component {
       const currentFoodsOnDietPromise = this.setDietFoodsToEdit();
       const getFoodsPromise = this.getFoods();
 
-      const foodsPromise = this.removeRepeatedFoods(currentFoodsOnDietPromise, getFoodsPromise);
-
-      foodsPromise.then(foods => {
-        this.setState({ foods });
-      })
+      this.removeRepeatedFoods(currentFoodsOnDietPromise, getFoodsPromise)
+        .then(foods => this.setState({ foods }));
 
     }
 
@@ -54,9 +51,6 @@ class DietForm extends Component {
 
       if (this.state.selectedFoods !== prevState.selectedFoods)
         this.onRecalculateTotals();
-
-      if (this.state.foods !== prevState.foods) {}
-        // console.log("foods", this.state.foods)
       
     }
 
@@ -92,14 +86,14 @@ class DietForm extends Component {
               
           }
           //--------------------------------------
-            
-          const uniqueFoods = foodsFromAPI.filter( food => !repeatedFoodIdsToRemove.includes(food.id));
-          
-          return uniqueFoods;
+
+          //Unique foods.
+          return foodsFromAPI.filter( food => !repeatedFoodIdsToRemove.includes(food.id));
 
         });
 
     }
+
 
   /**
    * 
@@ -126,13 +120,13 @@ class DietForm extends Component {
           food.id = food.food_id;
         });
 
-        this.setState({ selectedFoods, description: diet.description, })
+        this.setState({ selectedFoods, description: diet.description, });
         
 
         //Return an array of objects which contains 'id' and 'description'
         //of every food from the Diet details.
         return selectedFoods.map( food => {
-          return { id: food.food_id, description: food.description, }
+          return { id: food.food_id, description: food.description, };
         });
 
       });
@@ -303,7 +297,5 @@ const selectableFoodColumns = [
     maxWidth: 150    
   }
 ];
-
-const INITIAL_GRAMS = 1;
 
 export default DietForm;

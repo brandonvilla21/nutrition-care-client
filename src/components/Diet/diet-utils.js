@@ -12,7 +12,7 @@ export function handleChange( event ) {
   this.setState({
       [name]: value
   });
-};
+}
 
 
 /**
@@ -45,7 +45,7 @@ export function onRecalculateTotals() {
 
     this.setState({ totalCalories, totalCarbohydrates, totalFats, totalProteins });
 
-};
+}
 
 /**
  * 
@@ -149,4 +149,4 @@ export function calculateDataTableData( current, accessor ) {
  * @param num - Number to round.
  * @returns number - Rounded number.
  */
-export function roundNumber( num ) { return Math.round(num * 100) / 100; };
+export function roundNumber( num ) { return Math.round(num * 100) / 100; }

@@ -8,7 +8,7 @@ import TabsDiet from './Components/TabsDiet';
 import debounce from 'lodash.debounce';
 
 import { 
-  handleChange, onRecalculateTotals, roundNumber, toggleRow,
+  handleChange, onRecalculateTotals, toggleRow,
   onChangeDataTableFields, calculateDataTableData,
 } from './diet-utils';
 
@@ -133,7 +133,7 @@ class DietForm extends Component {
     getDate() {
       const date = new Date();
       return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    };
+    }
 
 
     /**
@@ -225,7 +225,5 @@ const selectableFoodColumns = [
     maxWidth: 150    
   }
 ];
-
-const INITIAL_GRAMS = 1;
 
 export default DietForm;

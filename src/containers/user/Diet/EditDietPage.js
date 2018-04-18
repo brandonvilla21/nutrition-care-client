@@ -48,9 +48,8 @@ class EditDietPage extends Component {
 
     render() {
       const actions = [
-          <Link to="/diets">
+          <Link key={0} to="/diets">
             <FlatButton
-              key={0}
               label="Finalizar"
               primary={true}
               onClick={this.handleClose}
@@ -87,5 +86,10 @@ class EditDietPage extends Component {
       );
     }
 }
+
+EditDietPage.propTypes = {
+  params: PropTypes.object.isRequired,
+};
+
 
 export default EditDietPage;

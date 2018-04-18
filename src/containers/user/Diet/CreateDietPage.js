@@ -45,18 +45,14 @@ class CreateDietPage extends Component {
 
     render() {
       const actions = [
-          <FlatButton
-              key={0}
+          <FlatButton key={0}
               label="Registrar otra dieta"
-              modal={true}
               primary={true}
               onClick={this.handleClose}
           />,
-          <Link to="/diets">
+          <Link to="/diets" key={1}>
             <FlatButton
-              key={0}
               label="Finalizar"
-              modal={true}
               primary={true}
               onClick={this.handleClose}
             />
