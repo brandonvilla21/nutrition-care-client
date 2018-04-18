@@ -156,7 +156,6 @@ class DietForm extends Component {
       } = this.state;
       
       const selectedFoods = [ ...this.state.selectedFoods ];
-      console.log('selectedFoods: ', selectedFoods);
         
       const data = { 
         totalCarbohydrates, totalProteins, totalFats,
@@ -167,7 +166,6 @@ class DietForm extends Component {
           .then( response => {
             if (response.status === 200) {
                   this.props.onSubmitted({ submitted: true, err: false });
-                  this.resetState();
                   resetIndex();
               } else 
                 this.props.onSubmitted({ submitted: false, err: true });
@@ -204,10 +202,11 @@ class DietForm extends Component {
         });
     }
 
+
   /**
    * 
    * Get all the current foods from the API and prepares them
-   * properly for the component.
+   * properly for the EditDietForm component.
    * @author Marcos Barrera del Río <elyomarcos@gmail.com>
    */
     getFoods() {
@@ -227,24 +226,6 @@ class DietForm extends Component {
 
           return foods;
         });
-    }
-
-  /**
-   * 
-   * Reset the component state.
-   * @author Marcos Barrera del Río <elyomarcos@gmail.com>
-   */
-    resetState() {
-
-      this.setState({
-        selectedFoods: [],
-        totalCarbohydrates: 0,
-        totalProteins: 0,
-        totalFats: 0,
-        totalCalories: 0,
-        description: ''
-      });
-
     }
 
     

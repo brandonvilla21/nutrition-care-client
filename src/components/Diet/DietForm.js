@@ -46,7 +46,13 @@ class DietForm extends Component {
       
     }
 
-
+  /**
+   * 
+   * Gathers and sends all the the proper data to handle the create concerns for
+   * the diet and its selected foods.
+   * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+   * @param resetIndex - A callback to reset the Tabs' index when needed.
+   */
     onSubmitDiet( resetIndex ) {
       const url = `${urlConfig.baseUrl}/diets`;
       const config = urlConfig.axiosConfig;
@@ -95,7 +101,12 @@ class DietForm extends Component {
           });
     }
 
-
+  /**
+   * 
+   * Get all the current foods from the API and prepares them
+   * properly for the DietForm component.
+   * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+   */
     getFoods() {
         const url = `${urlConfig.baseUrl}/foods`;
         return fetch(url)
@@ -114,13 +125,22 @@ class DietForm extends Component {
             });
     }
 
-
+    /**
+     * 
+     * Generate the today's date on the needed format for the API.
+     * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+     */
     getDate() {
       const date = new Date();
       return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
     };
 
 
+    /**
+     * 
+     * Reset the component state.
+     * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+     */
     resetState() {
 
       this.setState({
