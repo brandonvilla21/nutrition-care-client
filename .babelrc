@@ -7,7 +7,9 @@
   "env": {
     "development": {
       "presets": [
-        "react-hmre"
+        "react-hmre",
+        "es2015",
+        "stage-0"
       ]
     },
     "production": {
