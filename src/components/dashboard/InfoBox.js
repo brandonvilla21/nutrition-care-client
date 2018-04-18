@@ -72,7 +72,10 @@ InfoBox.propTypes = {
   color: PropTypes.string,
   title: PropTypes.string,
   value: PropTypes.string,
-  action: PropTypes.func
+  action: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.object
+  ]),
 };
 
 export default InfoBox;
