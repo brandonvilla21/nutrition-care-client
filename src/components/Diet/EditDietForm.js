@@ -41,9 +41,9 @@ class DietForm extends Component {
       const currentFoodsOnDietPromise = this.setDietFoodsToEdit();
       const getFoodsPromise = this.getFoods();
 
-      const foodsToSelect = this.removeRepeatedFoods(currentFoodsOnDietPromise, getFoodsPromise);
+      const foodsPromise = this.removeRepeatedFoods(currentFoodsOnDietPromise, getFoodsPromise);
 
-      foodsToSelect.then(foods => {
+      foodsPromise.then(foods => {
         this.setState({ foods });
       })
 
@@ -163,24 +163,24 @@ class DietForm extends Component {
         totalCalories, selectedFoods, description,
       };
       
-      // axios.put(url, data, config)
-      //     .then( response => {
-      //       if (response.status === 200) {
-      //             this.props.onSubmitted({ submitted: true, err: false });
-      //             this.resetState();
-      //             resetIndex();
-      //         } else 
-      //           this.props.onSubmitted({ submitted: false, err: true });
+      axios.put(url, data, config)
+          .then( response => {
+            if (response.status === 200) {
+                  this.props.onSubmitted({ submitted: true, err: false });
+                  this.resetState();
+                  resetIndex();
+              } else 
+                this.props.onSubmitted({ submitted: false, err: true });
               
-      //     })
-      //     .catch(err => {
-      //       this.props.onSubmitted({ 
-      //         submitted: false, 
-      //         err: true, 
-      //         errorMessage: err.response.data.message
-      //       });
-      //       throw err.response.data.message;
-      //     });
+          })
+          .catch(err => {
+            this.props.onSubmitted({ 
+              submitted: false, 
+              err: true, 
+              errorMessage: err.response.data.message
+            });
+            throw err.response.data.message;
+          });
     }
 
   /**
@@ -222,6 +222,7 @@ class DietForm extends Component {
             food.desiredFats = food.fats;
             food.desiredCarbohydrates = food.carbohydrates;
             food.desiredCalories = food.calories;
+            food.food_id = food.id;
           });
 
           return foods;

@@ -79,7 +79,7 @@ class EditTabsDiet extends Component {
         style={styles.tabs}
         >
 
-        {/* <Tab 
+        <Tab 
           icon={<ActionShoppingBasket />}
           value={0}
           style={styles.tab} label="Alimentos disponibles">
@@ -129,7 +129,7 @@ class EditTabsDiet extends Component {
                     onClick={this.nextIndex} />
             
           </div>
-        </Tab> */}
+        </Tab>
 
         <Tab 
           style={styles.tab} label="Alimentos seleccionados"
@@ -171,13 +171,13 @@ class EditTabsDiet extends Component {
             />
 
             <div>
-              {/* <RaisedButton
+              <RaisedButton
                       style={styles.raisedButtonPrevStyle}
-                      label="Regresar"
+                      label="Agregar más alimentos a la dieta"
                       secondary={true}
                       disabled={this.disableCalculateDietButton()}
                       value={1}
-                      onClick={this.prevIndex} /> */}
+                      onClick={this.prevIndex} />
 
               <RaisedButton
                       style={styles.raisedButtonNextStyle}
