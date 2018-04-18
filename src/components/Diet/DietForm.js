@@ -9,8 +9,7 @@ import debounce from 'lodash.debounce';
 
 import { 
   handleChange, onRecalculateTotals, roundNumber, toggleRow,
-  onChangeDataTableFields, 
-
+  onChangeDataTableFields, calculateDataTableData,
 } from './diet-utils';
 
 class DietForm extends Component {
@@ -31,6 +30,7 @@ class DietForm extends Component {
         this.onRecalculateTotals = debounce(onRecalculateTotals.bind(this), 250);
         this.toggleRow = toggleRow.bind(this);
         this.onChangeDataTableFields = onChangeDataTableFields.bind(this);
+        this.calculateDataTableData = calculateDataTableData.bind(this);
         this.onSubmitDiet = this.onSubmitDiet.bind(this);
     }
 

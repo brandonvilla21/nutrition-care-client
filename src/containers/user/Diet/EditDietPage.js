@@ -48,12 +48,6 @@ class EditDietPage extends Component {
 
     render() {
       const actions = [
-          <FlatButton
-              key={0}
-              label="Registrar otra dieta"
-              primary={true}
-              onClick={this.handleClose}
-          />,
           <Link to="/diets">
             <FlatButton
               key={0}
@@ -68,7 +62,7 @@ class EditDietPage extends Component {
             <Dialog
               title="Dieta editada"
               actions={actions}
-              modal={false}
+              modal={true}
               open={this.state.submitted}
               onRequestClose={this.handleClose}
             >

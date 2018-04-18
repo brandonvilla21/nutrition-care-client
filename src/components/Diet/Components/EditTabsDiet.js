@@ -58,7 +58,7 @@ class EditTabsDiet extends Component {
 
 
   resetIndex() {
-    this.setState({ tabIndex: 0, resetToggle: true }, 
+    this.setState({ tabIndex: 1, resetToggle: true }, 
                   () => this.setState({ resetToggle: false }));
   }
 
@@ -171,13 +171,13 @@ class EditTabsDiet extends Component {
             />
 
             <div>
-              <RaisedButton
+              {/* <RaisedButton
                       style={styles.raisedButtonPrevStyle}
                       label="Regresar"
                       secondary={true}
                       disabled={this.disableCalculateDietButton()}
                       value={1}
-                      onClick={this.prevIndex} />
+                      onClick={this.prevIndex} /> */}
 
               <RaisedButton
                       style={styles.raisedButtonNextStyle}
@@ -245,7 +245,7 @@ class EditTabsDiet extends Component {
 
                   <RaisedButton
                     style={styles.raisedButtonNextStyle}
-                    label="Guardar"
+                    label="Editar dieta"
                     primary={true}
                     disabled={this.disableSaveButton()}
                     onClick={this.props.onSubmitDiet.bind(this, this.resetIndex)} />

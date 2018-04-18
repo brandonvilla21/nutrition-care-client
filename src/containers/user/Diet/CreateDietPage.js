@@ -48,6 +48,7 @@ class CreateDietPage extends Component {
           <FlatButton
               key={0}
               label="Registrar otra dieta"
+              modal={true}
               primary={true}
               onClick={this.handleClose}
           />,
@@ -55,6 +56,7 @@ class CreateDietPage extends Component {
             <FlatButton
               key={0}
               label="Finalizar"
+              modal={true}
               primary={true}
               onClick={this.handleClose}
             />
@@ -65,7 +67,7 @@ class CreateDietPage extends Component {
             <Dialog
               title="Dieta registrada"
               actions={actions}
-              modal={false}
+              modal={true}
               open={this.state.submitted}
               onRequestClose={this.handleClose}
             >
@@ -75,7 +77,7 @@ class CreateDietPage extends Component {
             <Dialog
               title="Aviso"
               actions={actions}
-              modal={false}
+              modal={true}
               open={this.state.isThereAnError}
               onRequestClose={this.handleClose}
             >

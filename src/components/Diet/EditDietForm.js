@@ -9,7 +9,7 @@ import debounce from 'lodash.debounce';
 
 import { 
   handleChange, onRecalculateTotals, roundNumber, toggleRow,
-  onChangeDataTableFields, 
+  onChangeDataTableFields, calculateDataTableData,
 
 } from './diet-utils';
 
@@ -31,23 +31,31 @@ class DietForm extends Component {
         this.onRecalculateTotals = debounce(onRecalculateTotals.bind(this), 250);
         this.toggleRow = toggleRow.bind(this);
         this.onChangeDataTableFields = onChangeDataTableFields.bind(this);
+        this.calculateDataTableData = calculateDataTableData.bind(this);
         this.onSubmitDiet = this.onSubmitDiet.bind(this);
     }
 
 
     componentDidMount() {
       this.getDietToEdit().then(({ data }) => {
-        console.log("diet", data);
-        // const diet = data;
+        const diet = data;
 
-        // const selectedFoods = diet.foods.map( food => {
-        //   return food.pivot
-        // })
-        // this.setState({ foods })
+        const selectedFoods = diet.foods.map( food => food.pivot);
+        selectedFoods.forEach( food => {
+          food.desiredCalories = roundNumber(food.calories * food.desiredGrams);
+          food.desiredCarbohydrates = roundNumber(food.carbohydrates * food.desiredGrams);
+          food.desiredFats = roundNumber(food.fats * food.desiredGrams);
+          food.desiredProteins = roundNumber(food.proteins * food.desiredGrams);
+          
+          //Only to reuse the second table from the DietForm without any problem with the
+          //column id.
+          food.id = food.food_id;
+        });
+
+        this.setState({ selectedFoods, description: diet.description, })
         
       });
 
-      console.log("idToEdit", this.props.idToEdit);
 
     }
 
@@ -60,34 +68,23 @@ class DietForm extends Component {
 
 
     onSubmitDiet( resetIndex ) {
-      const url = `${urlConfig.baseUrl}/diets`;
+      const url = `${urlConfig.baseUrl}/diets/${this.props.idToEdit}`;
       const config = urlConfig.axiosConfig;
-      config.method = 'POST';
+      config.method = 'PUT';
 
       const { 
         totalCarbohydrates, totalProteins, totalFats,
         totalCalories, description,
       } = this.state;
       
-      const selectedFoods = [ ...this.state.selectedFoods ].map( food => {
-        return { 
-          food_id: food.id,
-          food_calories: food.desiredCalories,
-          food_carbohydrates: food.desiredCarbohydrates,
-          food_fats: food.desiredFats,
-          food_proteins: food.desiredProteins,
-          food_grams: food.desiredGrams,
-          food_description: food.description,
-        };
-      });
+      const selectedFoods = [ ...this.state.selectedFoods ];
         
       const data = { 
         totalCarbohydrates, totalProteins, totalFats,
-        totalCalories, selectedFoods, register_date: this.getDate(),
-        description,
+        totalCalories, selectedFoods, description,
       };
-
-      axios.post(url, data, config)
+      
+      axios.put(url, data, config)
           .then( response => {
             if (response.status === 200) {
                   this.props.onSubmitted({ submitted: true, err: false });
@@ -110,8 +107,7 @@ class DietForm extends Component {
 
     getDietToEdit() {
 
-
-      const { idToEdit } = this.props;
+      const idToEdit = this.props.idToEdit;
       const url = `${urlConfig.baseUrl}/diets/${idToEdit}`;
       const config = urlConfig.axiosConfig;
       config.method = 'GET';
@@ -122,13 +118,6 @@ class DietForm extends Component {
           throw err.response.data.message;
         });
     }
-
-
-    getDate() {
-      const date = new Date();
-      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    };
-
 
     resetState() {
 
@@ -144,27 +133,6 @@ class DietForm extends Component {
     }
 
     
-    calculateDataTableData( current, accessor ) {
-
-      if( accessor === 'desiredCalories' ) {
-    
-        current.desiredProteins = roundNumber((current.proteins / current.calories) * current[accessor]);
-        current.desiredCarbohydrates = roundNumber((current.carbohydrates / current.calories) * current[accessor]);
-        current.desiredFats = roundNumber((current.fats / current.calories) * current[accessor]);
-        current.desiredGrams = roundNumber((INITIAL_GRAMS / current.calories) * current[accessor]);
-    
-      } else {//accessor is equals to desiredGrams
-        
-        current.desiredProteins = roundNumber(current.proteins * current[accessor]);
-        current.desiredFats = roundNumber(current.fats * current[accessor]);
-        current.desiredCarbohydrates = roundNumber(current.carbohydrates * current[accessor]);
-        current.desiredCalories = roundNumber(current.calories * current.desiredGrams);
-      
-      }
-    
-    }
-
-
     render() {
         const { 
           foods, selectedFoods, totalCalories, 
