@@ -37,7 +37,81 @@ class DietForm extends Component {
 
 
     componentDidMount() {
-      this.getDietToEdit().then(({ data }) => {
+
+      const currentFoodsOnDietPromise = this.setDietFoodsToEdit();
+      const getFoodsPromise = this.getFoods();
+
+      const foodsToSelect = this.removeRepeatedFoods(currentFoodsOnDietPromise, getFoodsPromise);
+
+      foodsToSelect.then(foods => {
+        this.setState({ foods });
+      })
+
+    }
+
+
+    componentDidUpdate(prevProps, prevState) {
+
+      if (this.state.selectedFoods !== prevState.selectedFoods)
+        this.onRecalculateTotals();
+
+      if (this.state.foods !== prevState.foods) {}
+        // console.log("foods", this.state.foods)
+      
+    }
+
+
+  /**
+   * 
+   * Removes all the repeated foods from the this.state.foods array 
+   * that are duplicate based on the existing from the Diet's details.
+   * It removes only the food that have repited 'id' and 'description'
+   * at the same time.
+   * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+   * @returns Promise {<Array<Object>>} - An array without duplicated foods.
+   */
+    removeRepeatedFoods( currentFoodsOnDietPromise, getFoodsPromise ) {
+      
+      return Promise.all([currentFoodsOnDietPromise, getFoodsPromise])
+        .then(([foodsToCompare, foodsFromAPI]) => {
+
+          const repeatedFoodIdsToRemove = [];
+
+          //Find the repeated foods checking the 'id' and 'description'
+          const lengthFoodsFromAPI = foodsFromAPI.length;
+          for (let i = 0; i < lengthFoodsFromAPI; i++) {
+
+            const lengthFoodsToCompare = foodsToCompare.length;
+            for (let x = 0; x < lengthFoodsToCompare; x++) {
+              if( foodsFromAPI[i].id === foodsToCompare[x].id && 
+                foodsFromAPI[i].description === foodsToCompare[x].description) {
+                repeatedFoodIdsToRemove.push(foodsToCompare[x].id);
+                break;
+              }
+            }
+              
+          }
+          //--------------------------------------
+            
+          const uniqueFoods = foodsFromAPI.filter( food => !repeatedFoodIdsToRemove.includes(food.id));
+          
+          return uniqueFoods;
+
+        });
+
+    }
+
+  /**
+   * 
+   * Prepares and set all the foods from the current diet that is being
+   * edited.
+   * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+   * @returns Promise {<Array<number>>} - Return an array of objects which
+   * contains 'id' and 'description'
+   * of every food from the Diet details.
+   */
+    setDietFoodsToEdit() {
+      return this.getDietToEdit().then(({ data }) => {
         const diet = data;
 
         const selectedFoods = diet.foods.map( food => food.pivot);
@@ -54,19 +128,23 @@ class DietForm extends Component {
 
         this.setState({ selectedFoods, description: diet.description, })
         
+
+        //Return an array of objects which contains 'id' and 'description'
+        //of every food from the Diet details.
+        return selectedFoods.map( food => {
+          return { id: food.food_id, description: food.description, }
+        });
+
       });
-
-
     }
 
-
-    componentDidUpdate(prevProps, prevState) {
-      if (this.state.selectedFoods !== prevState.selectedFoods)
-        this.onRecalculateTotals();
-      
-    }
-
-
+  /**
+   * 
+   * Gathers and sends all the the proper data to handle the edit concerns for
+   * the diet and its selected foods.
+   * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+   * @param resetIndex - A callback to reset the Tabs' index when needed.
+   */
     onSubmitDiet( resetIndex ) {
       const url = `${urlConfig.baseUrl}/diets/${this.props.idToEdit}`;
       const config = urlConfig.axiosConfig;
@@ -78,33 +156,40 @@ class DietForm extends Component {
       } = this.state;
       
       const selectedFoods = [ ...this.state.selectedFoods ];
+      console.log('selectedFoods: ', selectedFoods);
         
       const data = { 
         totalCarbohydrates, totalProteins, totalFats,
         totalCalories, selectedFoods, description,
       };
       
-      axios.put(url, data, config)
-          .then( response => {
-            if (response.status === 200) {
-                  this.props.onSubmitted({ submitted: true, err: false });
-                  this.resetState();
-                  resetIndex();
-              } else 
-                this.props.onSubmitted({ submitted: false, err: true });
+      // axios.put(url, data, config)
+      //     .then( response => {
+      //       if (response.status === 200) {
+      //             this.props.onSubmitted({ submitted: true, err: false });
+      //             this.resetState();
+      //             resetIndex();
+      //         } else 
+      //           this.props.onSubmitted({ submitted: false, err: true });
               
-          })
-          .catch(err => {
-            this.props.onSubmitted({ 
-              submitted: false, 
-              err: true, 
-              errorMessage: err.response.data.message
-            });
-            throw err.response.data.message;
-          });
+      //     })
+      //     .catch(err => {
+      //       this.props.onSubmitted({ 
+      //         submitted: false, 
+      //         err: true, 
+      //         errorMessage: err.response.data.message
+      //       });
+      //       throw err.response.data.message;
+      //     });
     }
 
-
+  /**
+   * 
+   * Get the diet to edit with all its relationships
+   * based on the idToEdit param that is being passed
+   * as a prop from the parent component
+   * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+   */
     getDietToEdit() {
 
       const idToEdit = this.props.idToEdit;
@@ -119,6 +204,35 @@ class DietForm extends Component {
         });
     }
 
+  /**
+   * 
+   * Get all the current foods from the API and prepares them
+   * properly for the component.
+   * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+   */
+    getFoods() {
+      const url = `${urlConfig.baseUrl}/foods`;
+      return fetch(url)
+        .then( data => data.json())
+        .then( response => response.data)
+        .then( foods => {
+          foods.forEach( food => {
+            food.desiredGrams = 1;
+            food.desiredProteins = food.proteins;
+            food.desiredFats = food.fats;
+            food.desiredCarbohydrates = food.carbohydrates;
+            food.desiredCalories = food.calories;
+          });
+
+          return foods;
+        });
+    }
+
+  /**
+   * 
+   * Reset the component state.
+   * @author Marcos Barrera del Río <elyomarcos@gmail.com>
+   */
     resetState() {
 
       this.setState({

@@ -134,27 +134,6 @@ class DietForm extends Component {
 
     }
 
-    
-    calculateDataTableData( current, accessor ) {
-
-      if( accessor === 'desiredCalories' ) {
-    
-        current.desiredProteins = roundNumber((current.proteins / current.calories) * current[accessor]);
-        current.desiredCarbohydrates = roundNumber((current.carbohydrates / current.calories) * current[accessor]);
-        current.desiredFats = roundNumber((current.fats / current.calories) * current[accessor]);
-        current.desiredGrams = roundNumber((INITIAL_GRAMS / current.calories) * current[accessor]);
-    
-      } else {//accessor is equals to desiredGrams
-        
-        current.desiredProteins = roundNumber(current.proteins * current[accessor]);
-        current.desiredFats = roundNumber(current.fats * current[accessor]);
-        current.desiredCarbohydrates = roundNumber(current.carbohydrates * current[accessor]);
-        current.desiredCalories = roundNumber(current.calories * current.desiredGrams);
-      
-      }
-    
-    }
-
 
     render() {
         const { 

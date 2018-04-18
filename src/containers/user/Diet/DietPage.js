@@ -102,7 +102,7 @@ const columns = [
       {
         Header: "ID",
         accessor: "id",
-        maxWidth: 100
+        maxWidth: 70
       },
       {
         Header: "Fecha de registro",
@@ -143,6 +143,11 @@ const columns = [
       {
         Header: "Grasas",
         accessor: "totalFats",
+        maxWidth: 120
+      },
+      {
+        Header: "Calorías",
+        accessor: "totalCalories",
         maxWidth: 120
       },
     ]
