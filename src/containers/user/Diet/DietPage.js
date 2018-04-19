@@ -3,19 +3,22 @@ import { Link } from 'react-router';
 import PageBase from '../../../components/PageBase';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import urlConfig from '../../../url-config';
-import { blue500, green600 } from 'material-ui/styles/colors';
+import { blue500, green600, blueGrey200 } from 'material-ui/styles/colors';
 import axios from 'axios';
 import 'react-table/react-table.css';
 import ReactTable from 'react-table';
-import { FloatingActionButton, IconButton } from 'material-ui';
+import { FloatingActionButton, IconButton, Dialog, RaisedButton, FlatButton } from 'material-ui';
 import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 import filterCaseInsensitive from '../../../shared/tableFiltering';
 
 class DietPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            diets: []
+            diets: [],
+            openDeleteDialog: false,
+            dietToDelete: {},
         };
     }
 
@@ -27,6 +30,60 @@ class DietPage extends Component {
         this.setState({ diets });
       });
     }
+
+
+    handleDeleteDietDialogClose() {
+      this.setState({ openDeleteDialog: false, dietToDelete:{} });
+    }
+
+
+    handleDeleteDietDialogOpen( dietToDelete ) {
+      this.setState({ openDeleteDialog: true, dietToDelete });
+    }
+
+    
+    deleteDiet() {
+
+      this.deleteDietFromArray();
+      this.deleteDietFromAPI();
+    }
+
+
+    deleteDietFromArray() {
+
+      let diets = [ ...this.state.diets ];
+      const index = diets.findIndex( element => element.id == this.state.dietToDelete.id );
+
+      diets = [ ...diets.slice(0, index), ...diets.slice(index + 1) ];
+
+      this.setState({ diets });
+
+      this.handleDeleteDietDialogClose();
+
+    }
+
+
+    deleteDietFromAPI() {
+
+        // const { diets } = this.state;
+        // const url = `${urlConfig.baseUrl}/diets/${diets.id}`;
+        // const config = urlConfig.axiosConfig;
+        // config.method = 'DELETE';
+  
+        // axios.delete(url, config)
+        //     .then( response => {
+        //       if (response.status === 200) {
+        //           console.log("todo bien, joven")
+        //         } else 
+        //             console.log("paso algo malo, joven")
+        //     })
+        //     .catch(err => {
+        //       console.log("paso algo muy malo en el catch, joven")
+        //       throw err.response.data.message;
+        //     });
+      
+    }
+
 
     getOwnDiets() {
       const url = `${urlConfig.baseUrl}/diets/userDiets`;
@@ -61,7 +118,7 @@ class DietPage extends Component {
               columns={[
                 ...columns,
                 {
-                  Header: "Editar",
+                  // Header: "Editar",
                   id: "text",
                   accessor: "",
                   filterable: false,
@@ -77,10 +134,56 @@ class DietPage extends Component {
                   },
                   maxWidth: 70
                 },
+                {
+                  Header: "",
+                  id: "text",
+                  accessor: "",
+                  filterable: false,
+                  sortable: false,
+                  Cell: ({original}) => {
+                    return (
+                        <IconButton 
+                          onClick={this.handleDeleteDietDialogOpen.bind(this, original)}
+                          iconStyle={styles.deleteIconStyle}>
+                            
+                            <ActionDelete />
+                        
+                        </IconButton>
+                    );
+                  },
+                  maxWidth: 70
+                },
               ]}
               defaultPageSize={10}
               noDataText="No hay datos registrados"
             />
+
+            <Dialog
+              title="AVISO"
+              actions={[
+
+                <RaisedButton
+                  label="Cancelar"
+                  secondary={true}
+                  key={1} 
+                  onClick={this.handleDeleteDietDialogClose.bind(this)}
+                  />,
+
+                <FlatButton 
+                  label="Eliminar" 
+                  secondary={true}
+                  key={0}
+                  onClick={this.deleteDiet.bind(this)}
+                  />,
+                
+              ]}
+              modal={true}
+              open={this.state.openDeleteDialog}
+            >
+              ¿Estás seguro de eliminar esta dieta? Si lo haces, es muy probable
+              que no puedas recuperarla más adelante.
+            </Dialog>
+
           </div>
         </PageBase>
       );
@@ -166,6 +269,10 @@ const styles = {
   },
   editIconStyle: {
     color: blue500, 
+    borderRadius: '25px'
+  },
+  deleteIconStyle: {
+    color: blueGrey200, 
     borderRadius: '25px'
   }
 };

@@ -199,7 +199,6 @@ class EditTabsDiet extends Component {
                   // style={styles.raisedButtonNextStyle}
                   label="Cancelar"
                   secondary={true}
-                  disabled={this.disableCalculateDietButton()}
                   key={1} onClick={this.handleCloseEliminationModal.bind(this)}
                   />,
 
