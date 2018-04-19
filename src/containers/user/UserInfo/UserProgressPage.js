@@ -4,10 +4,8 @@ import axios from 'axios';
 import LinearChart from '../../../components/Charts/LinearChart';
 import { typography } from 'material-ui/styles';
 import PageBase from '../../../components/PageBase';
-// import MyDocument from '../../../components/PDF/MyDocument';
-// import 'regenerator-runtime/runtime';
-// import ReactPDF from '@react-pdf/node';
-// import { FlatButton } from 'material-ui';
+import { FlatButton } from 'material-ui';
+import PDFMake from '../../../components/PDF/PDFMake';
 
 class UserProgressPage extends Component {
 
@@ -19,7 +17,7 @@ class UserProgressPage extends Component {
     };
     this.fetchUserProgress = this.fetchUserProgress.bind(this);
     this.weightData = this.weightData.bind(this);
-    this.download = this.download.bind(this);
+    this.save = this.save.bind(this);
   }
 
   componentDidMount() {
@@ -33,7 +31,6 @@ class UserProgressPage extends Component {
     axios.get(url, axiosConfig)
       .then( res => {
         const progresses = res.data.data;
-        console.log(res.data);
         this.setState({
           progresses: progresses,
           weightProgress: this.weightData(progresses),
@@ -49,10 +46,14 @@ class UserProgressPage extends Component {
     });
   }
 
-  download() {
-    // ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`)
-    //   .then( res => console.log(res))
-    //   .catch( err => console.log(err))
+  save() {
+    const pdfMake = PDFMake.make();
+    const user = JSON.parse(localStorage.getItem('user'));
+    const  { progresses } = this.state;
+
+    const docDefinition = PDFMake.docDefinitionUserProgress(user, 184, progresses);
+
+    PDFMake.open(pdfMake, docDefinition);
   }
   
   render() {
@@ -72,8 +73,7 @@ class UserProgressPage extends Component {
             <LinearChart dataKey="peso" data={this.state.weightProgress} />
             <br />
             <div>
-              {/* <p>Download</p>
-              <FlatButton  label="Download" onClick={this.download}/> */}
+              <FlatButton  label="Download" onClick={this.save}/>
             </div>
           </div>
         </div>
