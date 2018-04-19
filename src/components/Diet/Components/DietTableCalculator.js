@@ -111,7 +111,7 @@ class DietTableCalculator extends Component {
 }
 
 DietTableCalculator.propTypes = {
-  handleOpenEliminationModal: PropTypes.func.isRequired,
+  handleOpenEliminationModal: PropTypes.func,
   onChangeTable: PropTypes.func.isRequired,
   selectedFoods: PropTypes.array.isRequired,
   onEdit:        PropTypes.bool,
