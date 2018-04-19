@@ -216,7 +216,7 @@ class TabsDiet extends Component {
                   totalProteins={totalProteins}
                 />
 
-                <Card className="recommendation-card" initiallyExpanded={true}>
+                {/* <Card className="recommendation-card" initiallyExpanded={true}>
                   <CardHeader 
                     title="Aviso"
                     subtitle="Recomendaciones"
@@ -227,7 +227,7 @@ class TabsDiet extends Component {
                   <CardText expandable={true}>
                     <strong>AQUÍ VAN LAS RECOMENDACIONES</strong>
                   </CardText>
-              </Card>
+              </Card> */}
 
                 <div>
                   <p>
