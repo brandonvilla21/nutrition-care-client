@@ -39,6 +39,7 @@
     "moment": "2.21.0",
     "moment-timezone": "0.5.14",
     "pdfkit": "0.8.3",
+    "pdfmake": "0.1.36",
     "react": "15.4.2",
     "react-collapsible": "2.0.4",
     "react-dom": "15.4.2",
