@@ -34,7 +34,14 @@ export default {
     })
   ],
   module: {
+    preLoaders: [
+      {test: /\.json$/, loader: 'json-loader'},
+    ],
     loaders: [
+      {
+        test: /(pdfkit|linebreak|fontkit|unicode|brotli|png-js).*\.js$/,
+        loader: 'transform-loader?brfs',
+      },
       {test: /\.js$/, exclude: /node_modules/, loaders: ['babel']},
       {test: /\.eot(\?v=\d+.\d+.\d+)?$/, loader: 'file'},
       {test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url?limit=10000&mimetype=application/font-woff"},
@@ -44,6 +51,9 @@ export default {
       {test: /\.ico$/, loader: 'file?name=[name].[ext]'},
       {test: /(\.css|\.scss)$/, loaders: ['style', 'css?sourceMap', 'postcss', 'sass?sourceMap']}
     ]
+  },
+  node: {
+    fs: 'empty'
   },
   postcss: ()=> [autoprefixer]
 };
