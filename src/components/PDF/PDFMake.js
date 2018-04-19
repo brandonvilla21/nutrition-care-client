@@ -1,5 +1,6 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import urlConfig from '../../url-config';
 
 const PDFMake = {};
 /**
@@ -77,29 +78,20 @@ PDFMake.docDefinitionUserProgress = (username, height, progresses) => {
             alignment: 'justify',
             columns: [
               {
-                width: 300,
-                text: 'LOGO DE NUTRITION CARE APP'
-                // image: urlConfig.logo_base64
+                width: 150,
+                image: urlConfig.logo_base64
               },
               {
+                style: 'reportTitleCont',
                 text: [
-                  { text: 'REPORTE:\n', bold: true },
-                  { text: 'Resumen de progreso.\n' },
-                ]
-              }
-            ]
-          },
-          {
-            alignment: 'justify',
-            style: 'userData',
-            columns: [
-              {
-                text: [
-                  { text: 'Datos del usuario\n', bold: true },
+                  { text: 'NOMBRE DE REPORTE:\n', bold: true },
+                  { text: 'Resumen de progreso.\n\n' },
+
+                  { text: 'DATOS DE USUARIO\n', bold: true },
                   { text: `ID: ${username.id}.\n` },
                   { text: `Nombre: ${username.name}.\n` },
                   { text: `Email: ${username.email}.\n` },
-                  { text: `Altura: ${height} cm.\n` },
+                  { text: `Altura: ${height} cm.\n` },  
                 ]
               }
             ]
@@ -107,6 +99,7 @@ PDFMake.docDefinitionUserProgress = (username, height, progresses) => {
           {
             // Optional
             layout: 'lightHorizontalLines',
+            style: 'tableStyle',            
             table: {
               // How many rows will be trated as headers
               headerRows: 1,
@@ -145,13 +138,19 @@ PDFMake.docDefinitionUserProgress = (username, height, progresses) => {
           },
           footer: {
             fontSize: 12,
-              bold: false,
-              color: 'gray',
-              margin: [10, 10, 10, 10]
+            bold: false,
+            color: 'gray',
+            margin: [10, 10, 10, 10]
           },
           userData: {
-            margin: [0, 10, 0, 10]
+            margin: [0, 50, 0, 10]
           },
+          reportTitleCont: {
+            margin: [100, 0, 0, 0]
+          },
+          tableStyle: {
+            margin: [0, 35, 0, 0]
+          }
         }
     };
 };
