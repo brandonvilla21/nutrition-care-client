@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'react-table/react-table.css';
 import ReactTable from 'react-table';
-import { Subheader } from 'material-ui';
-
+import { Subheader, FlatButton } from 'material-ui';
 
 class DietTableCalculator extends Component {
 
@@ -10,13 +9,83 @@ class DietTableCalculator extends Component {
         super(props);
     }
 
-
     componentWillMount() { }
-
 
     render() {
       
-      const { onChangeTable, selectedFoods } = this.props;
+      const { 
+        onChangeTable, selectedFoods,
+        handleOpenEliminationModal, onEdit,
+       } = this.props;
+
+      //Just for edit porpuses.
+      let finalColumns = [
+        ...selectedFoodColumns,
+        {
+          Header: "Gramos",
+          id: "text",
+          accessor: "",
+          filterable: false,
+          sortable: false,
+          Cell: ({ original }) => {
+            return (
+              <input
+                min="0.0"
+                step="any"
+                type="number"
+                value={original[EDITABLE_PROPERTY_ACCESORS.GRAMS]}
+                onChange={onChangeTable.bind(this, original, EDITABLE_PROPERTY_ACCESORS.GRAMS)}
+              />
+            );
+          },
+          width: 200
+        },
+        {
+          Header: "Calorías",
+          id: "text",
+          accessor: "",
+          filterable: false,
+          sortable: false,
+          Cell: ({ original }) => {
+            return (
+              <input
+                min="0.0"
+                step="any"
+                type="number"
+                value={original[EDITABLE_PROPERTY_ACCESORS.CALORIES]}
+                onChange={onChangeTable.bind(this, original, EDITABLE_PROPERTY_ACCESORS.CALORIES)}
+              />
+            );
+          },
+          width: 200
+        },
+      ];
+
+      if(onEdit === true) {
+
+        finalColumns = [
+          ...finalColumns,
+          {
+            Header: "Eliminar",
+            id: "text",
+            accessor: "",
+            filterable: false,
+            sortable: false,
+            Cell: ({original}) => {
+              return (
+                <FlatButton 
+                  label="X" 
+                  secondary={true}
+                  onClick={handleOpenEliminationModal.bind(this, original)}
+                />
+              );
+            },
+            minWidth: 70,
+            maxWidth: 100,
+          },
+        ];
+
+      }
 
       return(
 
@@ -29,46 +98,7 @@ class DietTableCalculator extends Component {
                 {
                   Header: <Subheader inset={true}>INTRODUCE LOS GRAMOS DE CADA UNO DE LOS ALIMENTOS QUE SELECCIONASTE</Subheader>,
                   columns: [
-                    ...selectedFoodColumns,
-                    {
-                      Header: "Gramos",
-                      id: "text",
-                      accessor: "",
-                      filterable: false,
-                      sortable: false,
-                      Cell: ({ original }) => {
-                        return (
-                          <input
-                            min="0.0"
-                            step="any"
-                            type="number"
-                            value={original[EDITABLE_PROPERTY_ACCESORS.GRAMS]}
-                            onChange={onChangeTable.bind(this, original, EDITABLE_PROPERTY_ACCESORS.GRAMS)}
-                          />
-                        );
-                      },
-                      width: 200
-                    },
-                    {
-                      Header: "Calorías",
-                      id: "text",
-                      accessor: "",
-                      filterable: false,
-                      sortable: false,
-                      Cell: ({ original }) => {
-                        return (
-                          <input
-                            min="0.0"
-                            step="any"
-                            type="number"
-                            value={original[EDITABLE_PROPERTY_ACCESORS.CALORIES]}
-                            onChange={onChangeTable.bind(this, original, EDITABLE_PROPERTY_ACCESORS.CALORIES)}
-                          />
-                        );
-                      },
-                      width: 200
-                    },
-
+                    ...finalColumns
                   ]
                 },
               ]}
@@ -81,8 +111,10 @@ class DietTableCalculator extends Component {
 }
 
 DietTableCalculator.propTypes = {
-  onChangeTable: PropTypes.func,
-  selectedFoods: PropTypes.array
+  handleOpenEliminationModal: PropTypes.func.isRequired,
+  onChangeTable: PropTypes.func.isRequired,
+  selectedFoods: PropTypes.array.isRequired,
+  onEdit:        PropTypes.bool,
 };
 
 
