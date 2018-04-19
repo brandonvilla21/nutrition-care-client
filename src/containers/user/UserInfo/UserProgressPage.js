@@ -73,7 +73,7 @@ class UserProgressPage extends Component {
             <LinearChart dataKey="peso" data={this.state.weightProgress} />
             <br />
             <div>
-              <FlatButton  label="Download" onClick={this.save}/>
+                <FlatButton  label="Download" onClick={this.save}/>
             </div>
           </div>
         </div>
