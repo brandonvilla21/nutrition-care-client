@@ -17,6 +17,8 @@ class SelectableTable extends Component {
   componentWillReceiveProps() {
     if(this.props.resetToggle === true) 
       this.resetToogle();
+
+
   }
 
 

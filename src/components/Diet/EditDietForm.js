@@ -33,6 +33,7 @@ class DietForm extends Component {
         this.onChangeDataTableFields = onChangeDataTableFields.bind(this);
         this.calculateDataTableData = calculateDataTableData.bind(this);
         this.onSubmitDiet = this.onSubmitDiet.bind(this);
+        this.removeFoodRow = this.removeFoodRow.bind(this);
     }
 
 
@@ -222,6 +223,17 @@ class DietForm extends Component {
         });
     }
 
+
+    removeFoodRow( selectedRow ) {
+      
+      const selectedFoods = [ ...this.state.selectedFoods ];
+      const index = selectedFoods.findIndex( element => element.id == selectedRow.id );
+
+      selectedFoods.splice(index, 1);
+
+      this.setState({ selectedFoods });
+    }
+
     
     render() {
         const { 
@@ -249,6 +261,7 @@ class DietForm extends Component {
                     onChangeDataTableFields={this.onChangeDataTableFields}
                     onSubmitDiet={this.onSubmitDiet}
                     onChange={this.handleChange}
+                    removeFoodRow={this.removeFoodRow}
                   />
               </div>
 

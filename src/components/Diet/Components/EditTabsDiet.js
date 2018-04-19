@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Tabs, Tab, RaisedButton } from 'material-ui';
+import { Tabs, Tab, RaisedButton, Dialog, FlatButton } from 'material-ui';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import ActionHelp from 'material-ui/svg-icons/action/help';
 import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
@@ -18,14 +18,39 @@ class EditTabsDiet extends Component {
     super(props);
     this.state = {
       tabIndex: 1,
-      resetToggle: false
+      resetToggle: false,
+      openModalElimination: false,
     };
 
     this.nextIndex = this.nextIndex.bind(this);
     this.prevIndex = this.prevIndex.bind(this);
     this.blockTapTabs = this.blockTapTabs.bind(this);
     this.resetIndex = this.resetIndex.bind(this);
-    
+    this.handleCloseEliminationModal = this.handleCloseEliminationModal.bind(this);
+    this.handleOpenEliminationModal = this.handleOpenEliminationModal.bind(this);
+    this.handleRemoveRow = this.handleRemoveRow.bind(this);
+  }
+
+  handleCloseEliminationModal() {
+    this.setState({
+      openModalElimination: false, 
+      selectedFoodToEliminate: {},
+    });
+  }
+
+  handleOpenEliminationModal( elementToEliminate ) {
+    this.setState({
+      openModalElimination: true,
+      selectedFoodToEliminate: elementToEliminate,
+    });
+  }
+
+  handleRemoveRow() {
+    this.props.removeFoodRow(this.state.selectedFoodToEliminate);
+    this.setState({
+      openModalElimination: false, 
+      selectedFoodToEliminate: {},
+    });
   }
 
 
@@ -129,6 +154,7 @@ class EditTabsDiet extends Component {
                     onClick={this.nextIndex} />
             
           </div>
+    
         </Tab>
 
         <Tab 
@@ -158,10 +184,39 @@ class EditTabsDiet extends Component {
               </CardText>
             </Card>
 
-            <DietTableCalculator 
+            <DietTableCalculator
               selectedFoods={selectedFoods}
               onChangeTable={this.props.onChangeDataTableFields.bind(this)}
+              handleOpenEliminationModal={this.handleOpenEliminationModal}
+              onEdit={true}              
             />
+
+            <Dialog
+              title="AVISO"
+              actions={[
+
+                <RaisedButton
+                  // style={styles.raisedButtonNextStyle}
+                  label="Cancelar"
+                  secondary={true}
+                  disabled={this.disableCalculateDietButton()}
+                  key={1} onClick={this.handleCloseEliminationModal.bind(this)}
+                  />,
+
+                <FlatButton 
+                  label="Eliminar" 
+                  secondary={true}
+                  key={0}
+                  onClick={this.handleRemoveRow.bind(this)}/>,
+                
+              ]}
+              modal={true}
+              open={this.state.openModalElimination}
+              onRequestClose={this.handleCloseEliminationModal}
+            >
+              ¿Estás seguro de eliminar esta comida? Si lo haces, es muy probable
+              que no puedas recuperarla más adelante.
+            </Dialog>
 
             <DietTotalsCard
               totalCalories={totalCalories}
@@ -277,7 +332,7 @@ EditTabsDiet.propTypes = {
   onChangeDataTableFields: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSubmitDiet: PropTypes.func.isRequired,
-
+  removeFoodRow: PropTypes.func.isRequired,
 };
 
 
