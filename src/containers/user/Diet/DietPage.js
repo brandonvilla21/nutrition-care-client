@@ -43,8 +43,6 @@ class DietPage extends Component {
 
     
     deleteDiet() {
-
-      this.deleteDietFromArray();
       this.deleteDietFromAPI();
     }
 
@@ -58,29 +56,27 @@ class DietPage extends Component {
 
       this.setState({ diets });
 
-      this.handleDeleteDietDialogClose();
-
     }
 
 
     deleteDietFromAPI() {
 
-        // const { diets } = this.state;
-        // const url = `${urlConfig.baseUrl}/diets/${diets.id}`;
-        // const config = urlConfig.axiosConfig;
-        // config.method = 'DELETE';
+        const { dietToDelete } = this.state;
+        const url = `${urlConfig.baseUrl}/diets/setAsInactive/${dietToDelete.id}`;
+        const config = urlConfig.axiosConfig;
+        config.method = 'DELETE';
   
-        // axios.delete(url, config)
-        //     .then( response => {
-        //       if (response.status === 200) {
-        //           console.log("todo bien, joven")
-        //         } else 
-        //             console.log("paso algo malo, joven")
-        //     })
-        //     .catch(err => {
-        //       console.log("paso algo muy malo en el catch, joven")
-        //       throw err.response.data.message;
-        //     });
+        axios.delete(url, config)
+            .then( response => {
+              if (response.status === 200) {
+                this.deleteDietFromArray();
+                this.handleDeleteDietDialogClose();
+                // console.log('response: ', response);
+                }
+            })
+            .catch(err => {
+              throw err.response.data.message;
+            });
       
     }
 
