@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { Link } from 'react-router';
-import DietForm from '../../../components/Diet/DietForm';
+import EditDietForm from '../../../components/Diet/EditDietForm';
 
 
-class CreateDietPage extends Component {
+class EditDietPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,6 +18,9 @@ class CreateDietPage extends Component {
         this.isSubmitted = this.isSubmitted.bind(this);
     }
 
+    componentDidMount() {
+      
+    }
     
     handleClose() {
       this.setState({ 
@@ -45,12 +48,7 @@ class CreateDietPage extends Component {
 
     render() {
       const actions = [
-          <FlatButton key={0}
-              label="Registrar otra dieta"
-              primary={true}
-              onClick={this.handleClose}
-          />,
-          <Link to="/diets" key={1}>
+          <Link key={0} to="/diets">
             <FlatButton
               label="Finalizar"
               primary={true}
@@ -61,30 +59,37 @@ class CreateDietPage extends Component {
       return (
         <div>
             <Dialog
-              title="Dieta registrada"
+              title="Dieta editada"
               actions={actions}
               modal={true}
               open={this.state.submitted}
               onRequestClose={this.handleClose}
             >
-              La dieta ha sido registrado con éxito.
+              La dieta ha sido editada con éxito.
             </Dialog>
 
             <Dialog
               title="Aviso"
               actions={actions}
-              modal={true}
+              modal={false}
               open={this.state.isThereAnError}
               onRequestClose={this.handleClose}
             >
-              Hubo un error al registrar la dieta. Intentalo más tarde :( <br/><br/>
+              Hubo un error al editar la dieta. Intentalo más tarde :( <br/><br/>
               Error: {this.state.errorMessage}
             </Dialog>
           
-          <DietForm onSubmitted={this.isSubmitted} />
+          <EditDietForm
+            idToEdit={this.props.params.idToEdit} 
+            onSubmitted={this.isSubmitted} />
         </div>
       );
     }
 }
 
-export default CreateDietPage;
+EditDietPage.propTypes = {
+  params: PropTypes.object.isRequired,
+};
+
+
+export default EditDietPage;

@@ -13,13 +13,38 @@ class SelectableTable extends Component {
 
   }
 
+
+  componentWillReceiveProps() {
+    if(this.props.resetToggle === true) 
+      this.resetToogle();
+
+    if( this.props.manualRemovedFood && Object.keys(this.props.manualRemovedFood).length > 0) {
+
+      const currentSelected = Object.assign({}, this.state.selected);
+      this.setState({
+          selected: { ...currentSelected, ...this.props.manualRemovedFood }
+        }, 
+        () => this.props.clearManualRemovedFoodState());
+    }
+
+    // console.log("gg");
+    
+
+
+  }
+
+
+  resetToogle() {
+      this.setState({ selected: {} });
+  }
+
+
   handleStateCheckboxs(original) {
       
     const newSelected = Object.assign({}, this.state.selected);
     newSelected[original.id] = !this.state.selected[original.id];
-    this.setState({
-      selected: newSelected,
-    });
+    
+    this.setState({ selected: newSelected });
 
     this.props.onToggleRow(original);
 
@@ -113,22 +138,25 @@ class SelectableTable extends Component {
 }
 
 SelectableTable.propTypes = {
-  elements:                 PropTypes.array.isRequired,
-  selectedElements:         PropTypes.array.isRequired,
-  mainTableHeader:          PropTypes.string.isRequired,
-  defaultPageSize:          PropTypes.number.isRequired,
-  noDataTextMainTable:      PropTypes.string.isRequired,
-  columns:                  PropTypes.array.isRequired,
-  onToggleRow:              PropTypes.func.isRequired,
-  
+  elements:                    PropTypes.array.isRequired,
+  selectedElements:            PropTypes.array.isRequired,
+  columns:                     PropTypes.array.isRequired,
+  mainTableHeader:             PropTypes.string.isRequired,
+  noDataTextMainTable:         PropTypes.string.isRequired,
+  defaultPageSize:             PropTypes.number.isRequired,
+  onToggleRow:                 PropTypes.func.isRequired,
+  resetToggle:                 PropTypes.bool,
+  manualRemovedFood:           PropTypes.object,
+  clearManualRemovedFoodState: PropTypes.func,
+
   enableSecondaryTable:     PropTypes.bool.isRequired,
   noDataTextSecondaryTable: function(props, propName) {
-    if ((props['enableSecondaryTable'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
+    if ((props['enableSecondaryTable'] === true && (props[propName] === undefined || typeof(props[propName]) !== 'string'))) {
         return new Error('Please provide a noDataTextSecondaryTable value!');
     }
   },
   secondaryTableHeader: function(props, propName) {
-    if ((props['secondaryTableHeader'] == true && (props[propName] == undefined || typeof(props[propName]) != 'function'))) {
+    if ((props['secondaryTableHeader'] === true && (props[propName] === undefined || typeof(props[propName]) !== 'string'))) {
         return new Error('Please provide a secondaryTableHeader value!');
     }
   },

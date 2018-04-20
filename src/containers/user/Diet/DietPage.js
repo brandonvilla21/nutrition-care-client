@@ -3,19 +3,22 @@ import { Link } from 'react-router';
 import PageBase from '../../../components/PageBase';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import urlConfig from '../../../url-config';
-import { blue500, green600 } from 'material-ui/styles/colors';
+import { blue500, green600, blueGrey200 } from 'material-ui/styles/colors';
 import axios from 'axios';
 import 'react-table/react-table.css';
 import ReactTable from 'react-table';
-import { FloatingActionButton, IconButton } from 'material-ui';
+import { FloatingActionButton, IconButton, Dialog, RaisedButton, FlatButton } from 'material-ui';
 import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 import filterCaseInsensitive from '../../../shared/tableFiltering';
 
 class DietPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            diets: []
+            diets: [],
+            openDeleteDialog: false,
+            dietToDelete: {},
         };
     }
 
@@ -28,6 +31,56 @@ class DietPage extends Component {
       });
     }
 
+
+    handleDeleteDietDialogClose() {
+      this.setState({ openDeleteDialog: false, dietToDelete:{} });
+    }
+
+
+    handleDeleteDietDialogOpen( dietToDelete ) {
+      this.setState({ openDeleteDialog: true, dietToDelete });
+    }
+
+    
+    deleteDiet() {
+      this.deleteDietFromAPI();
+    }
+
+
+    deleteDietFromArray() {
+
+      let diets = [ ...this.state.diets ];
+      const index = diets.findIndex( element => element.id == this.state.dietToDelete.id );
+
+      diets = [ ...diets.slice(0, index), ...diets.slice(index + 1) ];
+
+      this.setState({ diets });
+
+    }
+
+
+    deleteDietFromAPI() {
+
+        const { dietToDelete } = this.state;
+        const url = `${urlConfig.baseUrl}/diets/setAsInactive/${dietToDelete.id}`;
+        const config = urlConfig.axiosConfig;
+        config.method = 'DELETE';
+  
+        axios.delete(url, config)
+            .then( response => {
+              if (response.status === 200) {
+                this.deleteDietFromArray();
+                this.handleDeleteDietDialogClose();
+                // console.log('response: ', response);
+                }
+            })
+            .catch(err => {
+              throw err.response.data.message;
+            });
+      
+    }
+
+
     getOwnDiets() {
       const url = `${urlConfig.baseUrl}/diets/userDiets`;
       const config = urlConfig.axiosConfig;
@@ -35,7 +88,7 @@ class DietPage extends Component {
       return axios.get(url, config)
           .then( response => response.data )
           .then( innerData => innerData.data )
-          .catch( err => { throw err; } );
+          .catch( err => { throw err.response.data; } );
   }
 
     render() {
@@ -54,23 +107,44 @@ class DietPage extends Component {
                 </FloatingActionButton>
             </Link>
             <ReactTable
+              className="-striped -highlight"
               data={diets}
               filterable
               defaultFilterMethod={filterCaseInsensitive}
               columns={[
                 ...columns,
                 {
-                  Header: "Editar",
+                  // Header: "Editar",
                   id: "text",
                   accessor: "",
                   filterable: false,
                   sortable: false,
-                  Cell: () => {
+                  Cell: ({original}) => {
                     return (
-                      <IconButton iconStyle={styles.editIconStyle}
-                      >
-                        <EditorModeEdit />
-                      </IconButton>
+                      <Link to={`edit-diet/${original.id}`}>
+                        <IconButton iconStyle={styles.editIconStyle}>
+                          <EditorModeEdit />
+                        </IconButton>
+                    </Link>
+                    );
+                  },
+                  maxWidth: 70
+                },
+                {
+                  Header: "",
+                  id: "text",
+                  accessor: "",
+                  filterable: false,
+                  sortable: false,
+                  Cell: ({original}) => {
+                    return (
+                        <IconButton 
+                          onClick={this.handleDeleteDietDialogOpen.bind(this, original)}
+                          iconStyle={styles.deleteIconStyle}>
+                            
+                            <ActionDelete />
+                        
+                        </IconButton>
                     );
                   },
                   maxWidth: 70
@@ -79,9 +153,37 @@ class DietPage extends Component {
               defaultPageSize={10}
               noDataText="No hay datos registrados"
             />
+
+            <Dialog
+              title="AVISO"
+              actions={[
+
+                <RaisedButton
+                  label="Cancelar"
+                  secondary={true}
+                  key={1} 
+                  onClick={this.handleDeleteDietDialogClose.bind(this)}
+                  />,
+
+                <FlatButton 
+                  label="Eliminar" 
+                  secondary={true}
+                  key={0}
+                  onClick={this.deleteDiet.bind(this)}
+                  />,
+                
+              ]}
+              modal={true}
+              open={this.state.openDeleteDialog}
+            >
+              ¿Estás seguro de eliminar esta dieta? Si lo haces, es muy probable
+              que no puedas recuperarla más adelante.
+            </Dialog>
+
           </div>
         </PageBase>
       );
+      
     }
 
   }
@@ -89,35 +191,66 @@ export default DietPage;
 
 const columns = [
   {
-    Header: "ID",
-    accessor: "id",
-    maxWidth: 100
+    Header: "Información general",
+    headerStyle: { 
+      fontSize: 16,
+      fontStyle: 'italic',
+      paddingBottom: 15
+    },
+    columns:[
+      {
+        Header: "ID",
+        accessor: "id",
+        maxWidth: 70
+      },
+      {
+        Header: "Fecha de registro",
+        accessor: "register_date",
+        minWidth: 120
+      },
+      {
+        Header: "Estado",
+        accessor: "status",
+        maxWidth: 120
+      },
+      {
+        Header: "Descripción",
+        accessor: "description",
+        minWidth: 150,
+        style: { whiteSpace: 'normal' },
+      },
+    ]
   },
   {
-    Header: "Carbohidratos",
-    accessor: "totalCarbohydrates",
-    minWidth: 120
-  },
-  {
-    Header: "Proteínas",
-    accessor: "totalProteins",
-    minWidth: 120
-  },
-  {
-    Header: "Grasas",
-    accessor: "totalFats",
-    minWidth: 120
-  },
-  {
-    Header: "Estado",
-    accessor: "status",
-    minWidth: 120
-  },
-  {
-    Header: "Fecha de registro",
-    accessor: "register_date",
-    minWidth: 120
-  },
+    Header: "Totales",
+    headerStyle: { 
+      fontSize: 16,
+      fontStyle: 'italic',
+      paddingBottom: 15
+    },
+    columns: [
+      {
+        Header: "Carbohidratos",
+        accessor: "totalCarbohydrates",
+        maxWidth: 120
+      },
+      {
+        Header: "Proteínas",
+        accessor: "totalProteins",
+        maxWidth: 120
+      },
+      {
+        Header: "Grasas",
+        accessor: "totalFats",
+        maxWidth: 120
+      },
+      {
+        Header: "Calorías",
+        accessor: "totalCalories",
+        maxWidth: 120
+      },
+    ]
+  }
 ];
 
 const styles = {
@@ -132,6 +265,10 @@ const styles = {
   },
   editIconStyle: {
     color: blue500, 
+    borderRadius: '25px'
+  },
+  deleteIconStyle: {
+    color: blueGrey200, 
     borderRadius: '25px'
   }
 };
