@@ -18,15 +18,13 @@ class SelectableTable extends Component {
     if(this.props.resetToggle === true) 
       this.resetToogle();
 
-    if(Object.keys(this.props.manualRemovedFood).length > 0) {
+    if( this.props.manualRemovedFood && Object.keys(this.props.manualRemovedFood).length > 0) {
 
       const currentSelected = Object.assign({}, this.state.selected);
-      // console.log('currentSelected: ', currentSelected);
       this.setState({
           selected: { ...currentSelected, ...this.props.manualRemovedFood }
         }, 
-        () => this.props.clearManualRemovedFoodState())
-      console.log("manual selection", this.props.manualRemovedFood);
+        () => this.props.clearManualRemovedFoodState());
     }
 
     // console.log("gg");
@@ -148,7 +146,7 @@ SelectableTable.propTypes = {
   defaultPageSize:             PropTypes.number.isRequired,
   onToggleRow:                 PropTypes.func.isRequired,
   resetToggle:                 PropTypes.bool,
-  manualSelection:             PropTypes.object,
+  manualRemovedFood:           PropTypes.object,
   clearManualRemovedFoodState: PropTypes.func,
 
   enableSecondaryTable:     PropTypes.bool.isRequired,
