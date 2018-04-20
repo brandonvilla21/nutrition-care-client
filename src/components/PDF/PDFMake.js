@@ -48,7 +48,7 @@ PDFMake.print = (pdfMake, docDefinition) => {
  * @param { number } height User's height
  * @param { Array } userProgress Array of user progress
  */
-PDFMake.docDefinitionUserProgress = (username, height, progresses) => {
+PDFMake.docDefinitionUserProgress = (username, height, progresses, chartImage) => {
   const date = new Date();
   const formatDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
 
@@ -128,6 +128,11 @@ PDFMake.docDefinitionUserProgress = (username, height, progresses) => {
                 ),
               ],
             }
+          },
+          {
+            width: '500',
+            margin: [0, 30, 0, 0],
+            image: chartImage,
           }
         ],
         styles: {
