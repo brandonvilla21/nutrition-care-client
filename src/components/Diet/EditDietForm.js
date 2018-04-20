@@ -25,6 +25,7 @@ class DietForm extends Component {
           totalFats: 0,
           totalCalories: 0,
           description: '',
+          manualRemovedFood: {},
         };
         
         this.handleChange = handleChange.bind(this);
@@ -34,6 +35,7 @@ class DietForm extends Component {
         this.calculateDataTableData = calculateDataTableData.bind(this);
         this.onSubmitDiet = this.onSubmitDiet.bind(this);
         this.removeFoodRow = this.removeFoodRow.bind(this);
+        this.clearManualRemovedFoodState = this.clearManualRemovedFoodState.bind(this);
     }
 
 
@@ -217,6 +219,7 @@ class DietForm extends Component {
             food.desiredCarbohydrates = food.carbohydrates;
             food.desiredCalories = food.calories;
             food.food_id = food.id;
+            food.foodFromFoodsTable = true;
           });
 
           return foods;
@@ -225,13 +228,30 @@ class DietForm extends Component {
 
 
     removeFoodRow( selectedRow ) {
+
+      if( selectedRow.foodFromFoodsTable === true )
+        this.removeFromFirstFoodsTableManually(selectedRow.id);
+
       
       const selectedFoods = [ ...this.state.selectedFoods ];
       const index = selectedFoods.findIndex( element => element.id == selectedRow.id );
 
       selectedFoods.splice(index, 1);
 
+      
+
       this.setState({ selectedFoods });
+    }
+
+
+    removeFromFirstFoodsTableManually( foodId ) {
+      const foodsToRemove = { [foodId]: false };
+      this.setState({ manualRemovedFood: foodsToRemove });
+    }
+
+
+    clearManualRemovedFoodState () {
+      this.setState({ manualRemovedFood: {} });
     }
 
     
@@ -239,7 +259,7 @@ class DietForm extends Component {
         const { 
           foods, selectedFoods, totalCalories, 
           totalCarbohydrates, totalFats, totalProteins ,
-          description,
+          description, manualRemovedFood,
         } = this.state;
 
         return(
@@ -262,6 +282,8 @@ class DietForm extends Component {
                     onSubmitDiet={this.onSubmitDiet}
                     onChange={this.handleChange}
                     removeFoodRow={this.removeFoodRow}
+                    manualRemovedFood={manualRemovedFood}
+                    clearManualRemovedFoodState={this.clearManualRemovedFoodState}
                   />
               </div>
 

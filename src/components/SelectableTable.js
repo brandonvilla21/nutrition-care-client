@@ -18,6 +18,20 @@ class SelectableTable extends Component {
     if(this.props.resetToggle === true) 
       this.resetToogle();
 
+    if(Object.keys(this.props.manualRemovedFood).length > 0) {
+
+      const currentSelected = Object.assign({}, this.state.selected);
+      // console.log('currentSelected: ', currentSelected);
+      this.setState({
+          selected: { ...currentSelected, ...this.props.manualRemovedFood }
+        }, 
+        () => this.props.clearManualRemovedFoodState())
+      console.log("manual selection", this.props.manualRemovedFood);
+    }
+
+    // console.log("gg");
+    
+
 
   }
 
@@ -126,15 +140,17 @@ class SelectableTable extends Component {
 }
 
 SelectableTable.propTypes = {
-  elements:                 PropTypes.array.isRequired,
-  selectedElements:         PropTypes.array.isRequired,
-  mainTableHeader:          PropTypes.string.isRequired,
-  defaultPageSize:          PropTypes.number.isRequired,
-  noDataTextMainTable:      PropTypes.string.isRequired,
-  columns:                  PropTypes.array.isRequired,
-  onToggleRow:              PropTypes.func.isRequired,
-  resetToggle:              PropTypes.bool,
-  
+  elements:                    PropTypes.array.isRequired,
+  selectedElements:            PropTypes.array.isRequired,
+  columns:                     PropTypes.array.isRequired,
+  mainTableHeader:             PropTypes.string.isRequired,
+  noDataTextMainTable:         PropTypes.string.isRequired,
+  defaultPageSize:             PropTypes.number.isRequired,
+  onToggleRow:                 PropTypes.func.isRequired,
+  resetToggle:                 PropTypes.bool,
+  manualSelection:             PropTypes.object,
+  clearManualRemovedFoodState: PropTypes.func,
+
   enableSecondaryTable:     PropTypes.bool.isRequired,
   noDataTextSecondaryTable: function(props, propName) {
     if ((props['enableSecondaryTable'] === true && (props[propName] === undefined || typeof(props[propName]) !== 'string'))) {

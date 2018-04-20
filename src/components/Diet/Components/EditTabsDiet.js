@@ -39,10 +39,20 @@ class EditTabsDiet extends Component {
   }
 
   handleOpenEliminationModal( elementToEliminate ) {
-    this.setState({
-      openModalElimination: true,
-      selectedFoodToEliminate: elementToEliminate,
-    });
+
+    if( elementToEliminate.foodFromFoodsTable === true ) {
+      
+      this.setState(
+        { selectedFoodToEliminate: elementToEliminate },
+        () => this.handleRemoveRow()
+      );
+      
+    } else {
+      this.setState({
+        openModalElimination: true,
+        selectedFoodToEliminate: elementToEliminate,
+      });
+    }
   }
 
   handleRemoveRow() {
@@ -143,6 +153,8 @@ class EditTabsDiet extends Component {
               columns={selectableFoodColumns}
               onToggleRow={this.props.toggleRow.bind(this)}
               enableSecondaryTable={false}
+              manualRemovedFood={this.props.manualRemovedFood}
+              clearManualRemovedFoodState={this.props.clearManualRemovedFoodState.bind(this)}
             />
 
             <RaisedButton
@@ -213,8 +225,9 @@ class EditTabsDiet extends Component {
               open={this.state.openModalElimination}
               onRequestClose={this.handleCloseEliminationModal}
             >
-              ¿Estás seguro de eliminar esta comida? Si lo haces, es muy probable
-              que no puedas recuperarla más adelante.
+              Esta comida está relacionada con tu dieta directamente, lo que significa
+              que si la eliminas, NO la podrás recuperar más adelante. 
+              ¿Estás seguro de eliminar esta comida?
             </Dialog>
 
             <DietTotalsCard
@@ -332,6 +345,8 @@ EditTabsDiet.propTypes = {
   onChange: PropTypes.func.isRequired,
   onSubmitDiet: PropTypes.func.isRequired,
   removeFoodRow: PropTypes.func.isRequired,
+  clearManualRemovedFoodState: PropTypes.func,
+  manualRemovedFood: PropTypes.object,
 };
 
 
