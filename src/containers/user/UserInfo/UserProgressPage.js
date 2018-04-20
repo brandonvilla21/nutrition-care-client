@@ -65,7 +65,7 @@ class UserProgressPage extends Component {
       return Object.assign({}, {
         [name]: progress[value],
         name: progress.progress_date,
-      })
+      });
     });
   }
   performPDFAction( action ) {
@@ -75,7 +75,7 @@ class UserProgressPage extends Component {
     
     this.getCanvasFromDiv()
       .then(canvas => {
-        const base64 = canvas.toDataURL()
+        const base64 = canvas.toDataURL();
         const docDefinition = PDFMake.docDefinitionUserProgress(user, 184, progresses, base64);
         switch(action) {
           case 'open': 
@@ -121,22 +121,22 @@ class UserProgressPage extends Component {
     const { chartSelected, dataChart, dataKey } = this.state;
     switch ( chartSelected ) {
       case 'Lineal':
-        return <LinearChart dataKey={dataKey} data={dataChart} />
+        return <LinearChart dataKey={dataKey} data={dataChart} />;
       case 'Area':
-        return <AreaChartP dataKey={dataKey} data={dataChart}/>
+        return <AreaChartP dataKey={dataKey} data={dataChart}/>;
       case 'Bar':
-        return <BarChartP dataKey={dataKey} data={dataChart}/>
+        return <BarChartP dataKey={dataKey} data={dataChart}/>;
       case 'Scatter':
-        return <PieChartP dataKey={dataKey} data={dataChart}/>
+        return <PieChartP dataKey={dataKey} data={dataChart}/>;
       case 'Donut':
-        return <DonutChartP dataKey={dataKey} data={dataChart}/>
+        return <DonutChartP dataKey={dataKey} data={dataChart}/>;
       default:
-        return <LinearChart dataKey={dataKey} data={dataChart} />
+        return <LinearChart dataKey={dataKey} data={dataChart} />;
     }
   }
 
   getCanvasFromDiv() {
-    return html2canvas(this.canvasDiv)
+    return html2canvas(this.canvasDiv);
   }
   render() {
     
@@ -177,9 +177,9 @@ class UserProgressPage extends Component {
                 <Divider />
                 <div style={styles.floatRight}>
                   <p style={styles.pdfTitle}>Operaciones PDF</p>
-                  <FlatButton primary={true} label="Abrir" onClick={() => {this.performPDFAction('open')}}/>
-                  <FlatButton primary={true} label="Descargar" onClick={() => {this.performPDFAction('download')}}/>
-                  <FlatButton primary={true} label="Imprimir" onClick={() => {this.performPDFAction('print')}}/>
+                  <FlatButton primary={true} label="Abrir" onClick={() => {this.performPDFAction('open');}}/>
+                  <FlatButton primary={true} label="Descargar" onClick={() => {this.performPDFAction('download');}}/>
+                  <FlatButton primary={true} label="Imprimir" onClick={() => {this.performPDFAction('print');}}/>
                 </div>
               </div>
             </div>

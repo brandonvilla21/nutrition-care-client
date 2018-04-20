@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { PieChart, Pie, Tooltip, YAxis, XAxis, CartesianGrid } from 'recharts';
+import { PieChart, Pie, Tooltip } from 'recharts';
 import { blue400 } from 'material-ui/styles/colors';
 import ReactResizeDetector from 'react-resize-detector';
 

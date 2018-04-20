@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import {
     Table,
     TableHeader,
@@ -9,6 +9,7 @@ import {
 
 const ProgressTable = (props) => {
     const { progresses, onHeaderClick } = props;
+    
     const renderRows = () => {
         return progresses.map( progress => 
             <TableRow key={progress.id}>
@@ -19,7 +20,8 @@ const ProgressTable = (props) => {
                 <TableRowColumn>{progress.fat_kilogram}</TableRowColumn>
             </TableRow>
         );
-    }
+    };
+
     return(
         <div>
             <Table>
@@ -31,16 +33,16 @@ const ProgressTable = (props) => {
                             Fecha
                         </TableHeaderColumn>
                         <TableHeaderColumn>
-                            <a style={styles.aStyle} onClick={() => {onHeaderClick('weight', 'Peso')}}>Peso</a>
+                            <a style={styles.aStyle} onClick={() => {onHeaderClick('weight', 'Peso');}}>Peso</a>
                         </TableHeaderColumn>
                         <TableHeaderColumn>
-                            <a style={styles.aStyle} onClick={() => {onHeaderClick('fat_percentage', '% de Grasa')}}>% de Grasa</a>
+                            <a style={styles.aStyle} onClick={() => {onHeaderClick('fat_percentage', '% de Grasa');}}>% de Grasa</a>
                         </TableHeaderColumn>
                         <TableHeaderColumn>
-                            <a style={styles.aStyle} onClick={() => {onHeaderClick('muscle_kilogram', 'Kg de Músculo')}}>Kg de Músculo</a>
+                            <a style={styles.aStyle} onClick={() => {onHeaderClick('muscle_kilogram', 'Kg de Músculo');}}>Kg de Músculo</a>
                         </TableHeaderColumn>
                         <TableHeaderColumn>
-                            <a style={styles.aStyle} onClick={() => {onHeaderClick('fat_kilogram', 'Kg de Grasa')}}>Kg de Grasa</a>
+                            <a style={styles.aStyle} onClick={() => {onHeaderClick('fat_kilogram', 'Kg de Grasa');}}>Kg de Grasa</a>
                         </TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
@@ -51,9 +53,16 @@ const ProgressTable = (props) => {
         </div>
     );
 };
+
 const styles = {
     aStyle: {
         cursor: 'pointer'
     }
-}
+};
+
+ProgressTable.propTypes = {
+    progresses: PropTypes.array,
+    onHeaderClick: PropTypes.func,
+};
+
 export default ProgressTable;
