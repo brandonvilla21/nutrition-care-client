@@ -7,6 +7,8 @@ import { Divider, Dialog } from 'material-ui';
 import { typography } from 'material-ui/styles';
 import { grey800 } from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton/FlatButton';
+import axios from 'axios';
+import urlConfig from '../../url-config';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -18,14 +20,31 @@ class LoginPage extends Component {
 
     this.handleLogIn = this.handleLogIn.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.firstTimeInApp = this.firstTimeInApp.bind(this);
+  }
+
+  firstTimeInApp() {
+ 
+    const config = urlConfig.axiosConfig;
+    const url = `${urlConfig.baseUrl}/userprogresses/currentUserProgresses`; 
+    axios.get(url, config)
+      .then( res => {
+        if ( res.data.data.length === 0 ) {
+          browserHistory.push('/first-progress');
+        } else {
+          browserHistory.push('/dashboard');
+        }
+      })
+      .catch(err => { throw err; });
   }
 
   handleLogIn( isLoggedIn ) {
     this.setState({ isLoggedIn }, () => {
-      if ( isLoggedIn )
-        browserHistory.push('/dashboard');
+      if ( isLoggedIn ) {
+        this.firstTimeInApp();
+      }
       else
-      this.setState({ showModal: true });
+        this.setState({ showModal: true });
     });
   }
 
