@@ -39,32 +39,32 @@ class LoginForm extends Component {
         Axios.post(url, this.state, config)
             .then( res => {
                 if ( res.status == 200 ) {
-                    localStorage.clear();
                     this.setLoginLocalStorage(res.data);
 
                     const user_id = jwtDecode(res.data.access_token).user_id;
                     localStorage.setItem('user_id', JSON.stringify(user_id));
-                    
+                
                     this.props.isLoggedIn(true);
                 } else
                     this.props.isLoggedIn(false);
             })
-            .catch( () => this.props.isLoggedIn(false));
+            .catch( err => { throw err; } );
     }
 
     setLoginLocalStorage( data ) {
+        // Save in config-url token to prevent use prev token
+        const auth = "Bearer " + data.access_token;
+        urlConfig.axiosConfig.headers.Authorization = auth;
 
-      localStorage.setItem('access_token', data.access_token);
-                    
-      const decode = jwtDecode(data.access_token);
-      const user = {
-        id: decode.user_id,
-        name: decode.user_name,
-        email: decode.user_email
-      };
-
-      localStorage.setItem('user', JSON.stringify(user));
-
+        localStorage.setItem('access_token', data.access_token);
+        const decode = jwtDecode(data.access_token);
+        const user = {
+            id: decode.user_id,
+            name: decode.user_name,
+            email: decode.user_email
+        };
+        localStorage.setItem('user', JSON.stringify(user));
+      
     }
 
     render() {
