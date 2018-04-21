@@ -22,11 +22,14 @@ import EditDietPage from './containers/user/Diet/EditDietPage';
 import DashboardPage from './containers/DashboardPage';
 import UserProgressPage from './containers/user/UserInfo/UserProgressPage';
 import UserInformationPage from './containers/user/UserInfo/UserInformationPage';
+import FirstProgressPage from './containers/FirstProgressPage';
 
 export default (
   <Route>
     <Route path="login" component={LoginPage}/>
     <Route path="register" component={RegisterPage}/>
+    <Route path="first-progress" component={FirstProgressPage}/>
+
     <Route path="/" component={App}>
       <IndexRoute component={DashboardPage}/>
       <Route path="dashboard" component={DashboardPage}/>
