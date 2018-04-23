@@ -7,6 +7,7 @@ import TextField from 'material-ui/TextField';
 import urlConfig from '../../url-config';
 import Axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import { Link } from 'react-router';
 
 class LoginForm extends Component {
 
@@ -48,7 +49,7 @@ class LoginForm extends Component {
                 } else
                     this.props.isLoggedIn(false);
             })
-            .catch( err => { throw err.response.data; } );
+            .catch( err => { throw err.response.data || err; } );
     }
 
     setLoginLocalStorage( data ) {
@@ -97,7 +98,7 @@ class LoginForm extends Component {
                 
                 <FlatButton
                     label="Registrarme"
-                    href="/register"
+                    containerElement={<Link to="/register" />}
                     style={styles.flatButton}
                     icon={<PersonAdd />} />
                 </div>

@@ -4,6 +4,7 @@ import Person from 'material-ui/svg-icons/social/person';
 import { grey500 } from 'material-ui/styles/colors';
 import urlConfig from '../../url-config';
 import Axios from 'axios';
+import { Link } from 'react-router';
 
 class RegisterForm extends Component {
     constructor(props) {
@@ -90,7 +91,7 @@ class RegisterForm extends Component {
                 <div style={styles.buttonsDiv}>
                   <FlatButton
                     label="Iniciar sesión"
-                    href="/login"
+                    containerElement={<Link to="/login" />}
                     style={styles.flatButton}
                     icon={<Person/>} />
                 </div>
