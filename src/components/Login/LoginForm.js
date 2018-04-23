@@ -48,7 +48,7 @@ class LoginForm extends Component {
                 } else
                     this.props.isLoggedIn(false);
             })
-            .catch( err => { throw err; } );
+            .catch( err => { throw err.response.data; } );
     }
 
     setLoginLocalStorage( data ) {

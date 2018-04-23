@@ -35,7 +35,7 @@ class LoginPage extends Component {
           browserHistory.push('/dashboard');
         }
       })
-      .catch(err => { throw err; });
+      .catch(err => { throw err.response.data; });
   }
 
   handleLogIn( isLoggedIn ) {
