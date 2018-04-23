@@ -37,7 +37,6 @@ if ( hostname === 'localhost' ) {
     urlConfig.imageDir = `${HOST}/uploads/exercises`;
     urlConfig.assets = `${HOST}/assets`;
 
-};
-
+}
 
 export default urlConfig;

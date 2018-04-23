@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { MuiThemeProvider } from 'material-ui/styles';
 import ThemeDefault from '../theme-default';
 import CreateProgressPage from './user/UserInfo/CreateProgressPage';
