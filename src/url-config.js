@@ -23,7 +23,7 @@ const urlConfig = {
 let HOST;
 let PORT;
 // Dev
-if ( hostname !== 'localhost' ) {
+if ( hostname === 'localhost' ) {
     
     HOST = 'http://localhost';
     PORT = '8000';
