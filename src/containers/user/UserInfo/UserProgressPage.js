@@ -68,6 +68,7 @@ class UserProgressPage extends Component {
       });
     });
   }
+
   performPDFAction( action ) {
     const pdfMake = PDFMake.make();
     const user = JSON.parse(localStorage.getItem('user'));
@@ -177,9 +178,9 @@ class UserProgressPage extends Component {
                 <Divider />
                 <div style={styles.floatRight}>
                   <p style={styles.pdfTitle}>Operaciones PDF</p>
-                  <FlatButton primary={true} label="Abrir" onClick={() => {this.performPDFAction('open');}}/>
-                  <FlatButton primary={true} label="Descargar" onClick={() => {this.performPDFAction('download');}}/>
-                  <FlatButton primary={true} label="Imprimir" onClick={() => {this.performPDFAction('print');}}/>
+                  <FlatButton primary={true} label="Abrir" onClick={this.performPDFAction.bind(this, 'open')}/>
+                  <FlatButton primary={true} label="Descargar" onClick={this.performPDFAction.bind(this, 'download')}/>
+                  <FlatButton primary={true} label="Imprimir" onClick={this.performPDFAction.bind(this, 'print')}/>
                 </div>
               </div>
             </div>
