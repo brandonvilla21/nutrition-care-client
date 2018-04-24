@@ -21,13 +21,27 @@ class FoodReportsPage extends Component {
       foods: [],
       dataChart: [],
       chartSelected: 'Donut',
-      dataKey: 'proteína',
+      endpointSelected: 'withMoreProtein',
       chartType: [
         { name: 'Lineal', value: 'Lineal' },
         { name: 'Área', value: 'Area' },
         { name: 'Barras', value: 'Bar' },
         { name: 'Pie', value: 'Scatter' },
         { name: 'Dona', value: 'Donut' },
+      ],
+      endpoints: [
+        { 
+          name: 'Reporte de alimentos con más proteínas', 
+          value: 'withMoreProtein',
+          dataKey: 'proteína',
+          propertyToGraph: 'proteins',
+        },
+        { 
+          name: 'Reporte de alimentos con más carbohidratos', 
+          value: 'withMoreCarbohydrates',
+          dataKey: 'carbohidratos',
+          propertyToGraph: 'carbohydrates',
+        },
       ],
     };
     this.getFoods = this.getFoods.bind(this);
@@ -44,11 +58,18 @@ class FoodReportsPage extends Component {
     this.getFoods();
   }
 
-  getFoods() {
-    const { baseUrl, axiosConfig } = urlConfig;
-    const url = `${baseUrl}/foods/withMoreProtein`;
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.endpointSelected !== prevState.endpointSelected)
+      this.getFoods()
     
-    axios.get(url, axiosConfig)
+  }
+
+  getFoods() {
+
+    const { endpointSelected } = this.state;
+    const { baseUrl, axiosConfig } = urlConfig;
+    const url = `${baseUrl}/foods/${endpointSelected}`;
+    return axios.get(url, axiosConfig)
       .then( res => {
         const foods = res.data.data;
 
@@ -59,14 +80,23 @@ class FoodReportsPage extends Component {
           food.proteins = this.roundNumber(food.proteins * 100);
         });
 
-        console.log('foods: ', foods);
+        //Get current selected endpoint object.
+        const currentEndpoint = [ ...this.state.endpoints ].find( endpoint => {
+          return endpoint.value === this.state.endpointSelected;
+        });
+
         this.setState({
           foods: foods,
-          dataChart: this.getChartData(foods, 'proteins', 'proteína'),
-          dataKey: 'proteína'
+          dataChart: this.getChartData(
+            foods, 
+            currentEndpoint.propertyToGraph, 
+            currentEndpoint.dataKey
+          ),
+          dataKey: currentEndpoint.dataKey
         });
-      })
+      })  
       .catch( err => {throw err;});
+
   }
 
   roundNumber( num ) { 
@@ -102,8 +132,8 @@ class FoodReportsPage extends Component {
     });
   }
 
-  handleChange(event, index, value) {
-    this.setState({ chartSelected: value });
+  handleChange( property, event, index, value ) {
+    this.setState({ [property]: value });
   }
 
   onHeaderClick(value, name) {
@@ -114,16 +144,18 @@ class FoodReportsPage extends Component {
     });
   }
 
-  menuItems() {
-    const { chartType } = this.state;
-    return chartType.map( (chart, index) => (
+  menuItems( accessorArray ) {
+    // console.log('accessorArray: ', accessorArray);
+
+    return this.state[accessorArray].map( (element, index) => (
        <MenuItem
         key={index}
         insetChildren={true}
-        value={chart.value}
-        primaryText={chart.name}
+        value={element.value}
+        primaryText={element.name}
       />
     ));
+    
   }
   
   renderChart() {
@@ -162,23 +194,41 @@ class FoodReportsPage extends Component {
       <PageBase
         title="Reportes de alimentos">
         <div>
+          <div className="col-md-12">
+            <FoodReportTable foods={this.state.foods}/>
+          </div>
+
+          <div className="row">
+
+            <div className="col-md-6 col-sm-12">
+              <SelectField
+                fullWidth={true}
+                name="chartSelected"
+                value={this.state.chartSelected}
+                floatingLabelText="Tipo de gráfica"
+                onChange={this.handleChange.bind(this,'chartSelected')}
+                >
+                  {this.menuItems('chartType')}
+                </SelectField>
+            </div>
+
+            <div className="col-md-6 col-sm-12">
+              <SelectField
+                fullWidth={true}
+                name="endpointSelected"
+                value={this.state.endpointSelected}
+                floatingLabelText="Reporte a seleccionar"
+                onChange={this.handleChange.bind(this, 'endpointSelected')}
+                >
+                  {this.menuItems('endpoints')}
+              </SelectField>
+            </div>
+
+          </div>
+
           <div className="row">
           </div>
           <div className="row">
-            <div className="col-md-12">
-              <FoodReportTable foods={this.state.foods}/>
-            </div>
-
-            <div className="col-md-12">
-              <SelectField
-                fullWidth={true}
-                value={this.state.chartSelected}
-                floatingLabelText="Tipo de gráfica"
-                onChange={this.handleChange}
-                >
-                  {this.menuItems()}
-                </SelectField>
-            </div>
 
             <div className="col-md-12" ref={(e) => {this.canvasDiv = e;}} style={styles.container}>
                 {this.renderChart()}
