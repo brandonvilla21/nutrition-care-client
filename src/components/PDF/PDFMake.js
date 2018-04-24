@@ -167,7 +167,7 @@ PDFMake.docDefinitionUserProgress = (username, height, progresses, chartImage) =
  * @param { number } 
  * @param { Array } 
  */
-PDFMake.docDefinitionFoods = ({ foods, chartImage }) => {
+PDFMake.docDefinitionFoods = ({ foods, chartImage, reportName }) => {
   const date = new Date();
   const formatDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
 
@@ -203,14 +203,9 @@ PDFMake.docDefinitionFoods = ({ foods, chartImage }) => {
               {
                 style: 'reportTitleCont',
                 text: [
+                  { text: `\n\n\n` },
                   { text: 'NOMBRE DE REPORTE:\n', bold: true },
-                  { text: 'Resumen de progreso.\n\n' },
-
-                  { text: 'DATOS DE USUARIO\n', bold: true },
-                  { text: `ID: .\n` },
-                  { text: `Nombre: .\n` },
-                  { text: `Email: .\n` },
-                  { text: `Altura: .\n` },  
+                  { text: `${reportName}.\n\n` },
                 ]
               }
             ]

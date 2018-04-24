@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import 'react-table/react-table.css';
 import ReactTable from 'react-table';
-import { Subheader, FlatButton } from 'material-ui';
 
 class FoodReportTable extends Component {
 

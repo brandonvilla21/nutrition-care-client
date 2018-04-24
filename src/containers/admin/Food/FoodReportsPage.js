@@ -96,7 +96,7 @@ class FoodReportsPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.columnOptionSelected !== prevState.columnOptionSelected)
-      this.getFoods()
+      this.getFoods();
     
   }
 
@@ -119,7 +119,7 @@ class FoodReportsPage extends Component {
           food.fats = this.roundNumber(food.fats * 100);
           food.proteins = this.roundNumber(food.proteins * 100);
         });
-
+        
         //Get current selected endpoint object.
         const currentOption = this.getCurrentSelectedOption();
 
@@ -152,14 +152,15 @@ class FoodReportsPage extends Component {
   performPDFAction( action ) {
     const pdfMake = PDFMake.make();
     const  { foods } = this.state;
-    
+    const currentSelection = this.getCurrentSelectedOption();
     
     this.getCanvasFromDiv()
       .then(canvas => {
         const base64 = canvas.toDataURL();
         const docDefinition = PDFMake.docDefinitionFoods({ 
           foods: foods, 
-          chartImage: base64
+          chartImage: base64,
+          reportName: currentSelection.name,
         });
 
         switch(action) {
@@ -263,9 +264,7 @@ class FoodReportsPage extends Component {
             </div>
 
           </div>
-
-          <div className="row">
-          </div>
+          
           <div className="row">
 
             <div className="col-md-12" ref={(e) => {this.canvasDiv = e;}} style={styles.container}>
