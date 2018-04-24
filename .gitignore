@@ -28,6 +28,9 @@ node_modules
 # Allow dist folder in order to upload it to Heroku
 #dist
 
+# Server app to serve static files from dist folder
+server
+    
 #Webstorm metadata
 .idea
 
