@@ -12,6 +12,8 @@ import BarChartP from '../../../components/Charts/BarChartP';
 import PieChartP from '../../../components/Charts/PieChartP';
 import DonutChartP from '../../../components/Charts/DonutChartP';
 import html2canvas from 'html2canvas';
+import debounce from 'lodash.debounce';
+
 
 class FoodReportsPage extends Component {
 
@@ -89,6 +91,8 @@ class FoodReportsPage extends Component {
     this.renderChart = this.renderChart.bind(this);
     this.getCanvasFromDiv = this.getCanvasFromDiv.bind(this);
     this.performPDFAction = this.performPDFAction.bind(this);
+    this.debounceGetFoods = debounce(this.getFoods.bind(this), 1000);
+    
   }
 
   componentDidMount() {
@@ -98,6 +102,10 @@ class FoodReportsPage extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.columnOptionSelected !== prevState.columnOptionSelected)
       this.getFoods();
+
+    if (this.state.limit !== prevState.limit)
+      this.debounceGetFoods();
+
     
   }
 
@@ -281,6 +289,7 @@ class FoodReportsPage extends Component {
                   floatingLabelText="Número de filas"
                   min="1"
                   max="20"
+                  required={true}
                   onChange={this.handleInputChange}
                   value={this.state.limit}
                 />
