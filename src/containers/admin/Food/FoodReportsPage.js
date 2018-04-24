@@ -20,8 +20,9 @@ class FoodReportsPage extends Component {
     this.state = {
       foods: [],
       dataChart: [],
-      chartSelected: 'Donut',
-      endpointSelected: 'withMoreProtein',
+      chartSelected: 'Lineal',
+      columnOptionSelected: 1,
+      limit: 15,
       chartType: [
         { name: 'Lineal', value: 'Lineal' },
         { name: 'Área', value: 'Area' },
@@ -29,18 +30,54 @@ class FoodReportsPage extends Component {
         { name: 'Pie', value: 'Scatter' },
         { name: 'Dona', value: 'Donut' },
       ],
-      endpoints: [
+      columnOptions: [
         { 
           name: 'Reporte de alimentos con más proteínas', 
-          value: 'withMoreProtein',
+          value: 1,
+          column: 'proteins',
+          order: 'desc',
           dataKey: 'proteína',
           propertyToGraph: 'proteins',
         },
         { 
           name: 'Reporte de alimentos con más carbohidratos', 
-          value: 'withMoreCarbohydrates',
+          value: 2,
+          column: 'carbohydrates',
+          order: 'desc',
           dataKey: 'carbohidratos',
           propertyToGraph: 'carbohydrates',
+        },
+        { 
+          name: 'Reporte de alimentos con más grasas', 
+          value: 3,
+          column: 'fats',
+          order: 'desc',
+          dataKey: 'grasas',
+          propertyToGraph: 'fats',
+        },
+        { 
+          name: 'Reporte de alimentos con menos proteínas', 
+          value: 4,
+          column: 'proteins',
+          order: 'asc',
+          dataKey: 'proteína',
+          propertyToGraph: 'proteins',
+        },
+        { 
+          name: 'Reporte de alimentos con menos carbohidratos', 
+          value: 5,
+          column: 'carbohydrates',
+          order: 'asc',
+          dataKey: 'carbohidratos',
+          propertyToGraph: 'carbohydrates',
+        },
+        { 
+          name: 'Reporte de alimentos con menos grasas', 
+          value: 6,
+          column: 'fats',
+          order: 'asc',
+          dataKey: 'grasas',
+          propertyToGraph: 'fats',
         },
       ],
     };
@@ -49,7 +86,6 @@ class FoodReportsPage extends Component {
     this.menuItems = this.menuItems.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.renderChart = this.renderChart.bind(this);
-    this.onHeaderClick = this.onHeaderClick.bind(this);
     this.getCanvasFromDiv = this.getCanvasFromDiv.bind(this);
     this.performPDFAction = this.performPDFAction.bind(this);
   }
@@ -59,17 +95,21 @@ class FoodReportsPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.endpointSelected !== prevState.endpointSelected)
+    if (this.state.columnOptionSelected !== prevState.columnOptionSelected)
       this.getFoods()
     
   }
 
   getFoods() {
 
-    const { endpointSelected } = this.state;
+    const { limit } = this.state;
+    const { order, column } = this.getCurrentSelectedOption();
+
     const { baseUrl, axiosConfig } = urlConfig;
-    const url = `${baseUrl}/foods/${endpointSelected}`;
-    return axios.get(url, axiosConfig)
+    const url = `${baseUrl}/foods/reports`;
+    const data = { column, order, limit };
+
+    return axios.post(url, data, axiosConfig)
       .then( res => {
         const foods = res.data.data;
 
@@ -81,21 +121,27 @@ class FoodReportsPage extends Component {
         });
 
         //Get current selected endpoint object.
-        const currentEndpoint = [ ...this.state.endpoints ].find( endpoint => {
-          return endpoint.value === this.state.endpointSelected;
-        });
+        const currentOption = this.getCurrentSelectedOption();
 
         this.setState({
           foods: foods,
           dataChart: this.getChartData(
             foods, 
-            currentEndpoint.propertyToGraph, 
-            currentEndpoint.dataKey
+            currentOption.propertyToGraph, 
+            currentOption.dataKey
           ),
-          dataKey: currentEndpoint.dataKey
+          dataKey: currentOption.dataKey
         });
       })  
       .catch( err => {throw err;});
+
+  }
+
+  getCurrentSelectedOption() {
+
+    return [ ...this.state.columnOptions ].find( endpoint => {
+      return endpoint.value === this.state.columnOptionSelected;
+    });
 
   }
 
@@ -113,7 +159,7 @@ class FoodReportsPage extends Component {
         const base64 = canvas.toDataURL();
         const docDefinition = PDFMake.docDefinitionFoods({ 
           foods: foods, 
-          chartImage: base64 
+          chartImage: base64
         });
 
         switch(action) {
@@ -134,14 +180,6 @@ class FoodReportsPage extends Component {
 
   handleChange( property, event, index, value ) {
     this.setState({ [property]: value });
-  }
-
-  onHeaderClick(value, name) {
-    const { foods } = this.state; 
-    this.setState({
-      dataChart: this.getChartData(foods, value, name),
-      dataKey: name
-    });
   }
 
   menuItems( accessorArray ) {
@@ -215,12 +253,12 @@ class FoodReportsPage extends Component {
             <div className="col-md-6 col-sm-12">
               <SelectField
                 fullWidth={true}
-                name="endpointSelected"
-                value={this.state.endpointSelected}
+                name="columnOptionSelected"
+                value={this.state.columnOptionSelected}
                 floatingLabelText="Reporte a seleccionar"
-                onChange={this.handleChange.bind(this, 'endpointSelected')}
+                onChange={this.handleChange.bind(this, 'columnOptionSelected')}
                 >
-                  {this.menuItems('endpoints')}
+                  {this.menuItems('columnOptions')}
               </SelectField>
             </div>
 
@@ -233,8 +271,8 @@ class FoodReportsPage extends Component {
             <div className="col-md-12" ref={(e) => {this.canvasDiv = e;}} style={styles.container}>
                 {this.renderChart()}
                 <p style={styles.chartTittle}>
-                  Representación gráfica de los alimentos con más
-                  <strong> {this.state.dataKey}</strong>
+                  Representación gráfica de 
+                  <strong> {this.getCurrentSelectedOption().name}</strong>
                 </p>
             </div>
           </div>

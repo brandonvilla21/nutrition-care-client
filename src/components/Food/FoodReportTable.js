@@ -25,7 +25,7 @@ class FoodReportTable extends Component {
               columns={[
                 ...selectedFoodColumns
               ]}
-              defaultPageSize={10}
+              defaultPageSize={5}
               noDataText="No hay alimentos por desplegar"
             />
           </div>
