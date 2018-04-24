@@ -23,6 +23,7 @@ import DashboardPage from './containers/DashboardPage';
 import UserProgressPage from './containers/user/UserInfo/UserProgressPage';
 import UserInformationPage from './containers/user/UserInfo/UserInformationPage';
 import FirstProgressPage from './containers/FirstProgressPage';
+import FoodReportsPage from './containers/admin/Food/FoodReportsPage';
 
 export default (
   <Route>
@@ -47,6 +48,7 @@ export default (
       <Route path="routine/:id" component={RoutinePage}/>
       <Route path="my-progress" component={UserProgressPage}/>
       <Route path="my-info" component={UserInformationPage}/>
+      <Route path="food-reports" component={FoodReportsPage}/>
       <Route path="diets" component={DietPage}/>
       <Route path="create-diet" component={CreateDietPage}/>
       <Route path="edit-diet/:idToEdit" component={EditDietPage}/>

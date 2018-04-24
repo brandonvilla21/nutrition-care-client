@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import globalStyles from '../../../styles';
 import Accessibility from 'material-ui/svg-icons/action/accessibility';
+import ActionShoppingBasket from 'material-ui/svg-icons/action/shopping-basket';
 import { pink600, green600 } from 'material-ui/styles/colors';
 import InfoBox from '../../../components/dashboard/InfoBox';
 import { RaisedButton } from 'material-ui';
@@ -40,6 +41,23 @@ class UserInformationPage extends Component {
                 />
             </div>
           </div>
+
+          <div className="row">
+            <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6 m-b-15 ">
+                <InfoBox Icon={ActionShoppingBasket}
+                        color={green600}
+                        title="Reportes de alimentos"
+                        value="Muestra gráficación y reportes alimentos"
+                        action={
+                            <RaisedButton
+                              containerElement={<Link to="/food-reports"/>}
+                              backgroundColor={green600}
+                              label="Reportes de alimentos"
+                        />}
+                />
+            </div>
+          </div>
+
         </div>
       );
     }
