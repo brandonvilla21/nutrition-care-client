@@ -4,7 +4,7 @@ import axios from 'axios';
 import LinearChart from '../../../components/Charts/LinearChart';
 import { typography } from 'material-ui/styles';
 import PageBase from '../../../components/PageBase';
-import { FlatButton, Divider, SelectField, MenuItem } from 'material-ui';
+import { FlatButton, Divider, SelectField, MenuItem, TextField } from 'material-ui';
 import PDFMake from '../../../components/PDF/PDFMake';
 import FoodReportTable from '../../../components/Food/FoodReportTable';
 import AreaChartP from '../../../components/Charts/AreaChartP';
@@ -84,7 +84,8 @@ class FoodReportsPage extends Component {
     this.getFoods = this.getFoods.bind(this);
     this.getChartData = this.getChartData.bind(this);
     this.menuItems = this.menuItems.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.renderChart = this.renderChart.bind(this);
     this.getCanvasFromDiv = this.getCanvasFromDiv.bind(this);
     this.performPDFAction = this.performPDFAction.bind(this);
@@ -179,8 +180,17 @@ class FoodReportsPage extends Component {
     });
   }
 
-  handleChange( property, event, index, value ) {
+  handleSelectChange( property, event, index, value ) {
     this.setState({ [property]: value });
+  }
+
+  handleInputChange( event ) {
+    const name = event.target.name;
+    const value = event.target.value;
+  
+    this.setState({
+        [name]: value
+    });
   }
 
   menuItems( accessorArray ) {
@@ -237,32 +247,46 @@ class FoodReportsPage extends Component {
             <FoodReportTable foods={this.state.foods}/>
           </div>
 
-          <div className="row">
+          <div className="col-md-12">
+            <div className="row">
 
-            <div className="col-md-6 col-sm-12">
-              <SelectField
-                fullWidth={true}
-                name="chartSelected"
-                value={this.state.chartSelected}
-                floatingLabelText="Tipo de gráfica"
-                onChange={this.handleChange.bind(this,'chartSelected')}
-                >
-                  {this.menuItems('chartType')}
+              <div className="col-md-4 col-sm-12">
+                <SelectField
+                  fullWidth={true}
+                  name="chartSelected"
+                  value={this.state.chartSelected}
+                  floatingLabelText="Tipo de gráfica"
+                  onChange={this.handleSelectChange.bind(this,'chartSelected')}
+                  >
+                    {this.menuItems('chartType')}
+                  </SelectField>
+              </div>
+
+              <div className="col-md-5 col-sm-11">
+                <SelectField
+                  fullWidth={true}
+                  name="columnOptionSelected"
+                  value={this.state.columnOptionSelected}
+                  floatingLabelText="Reporte a seleccionar"
+                  onChange={this.handleSelectChange.bind(this, 'columnOptionSelected')}
+                  >
+                    {this.menuItems('columnOptions')}
                 </SelectField>
-            </div>
+              </div>
 
-            <div className="col-md-6 col-sm-12">
-              <SelectField
-                fullWidth={true}
-                name="columnOptionSelected"
-                value={this.state.columnOptionSelected}
-                floatingLabelText="Reporte a seleccionar"
-                onChange={this.handleChange.bind(this, 'columnOptionSelected')}
-                >
-                  {this.menuItems('columnOptions')}
-              </SelectField>
-            </div>
+              <div className="col-md-1 col-sm-12">
+                <TextField
+                  name="limit"
+                  type="number"
+                  floatingLabelText="Número de filas"
+                  min="1"
+                  max="20"
+                  onChange={this.handleInputChange}
+                  value={this.state.limit}
+                />
+              </div>
 
+            </div>
           </div>
           
           <div className="row">
