@@ -20,15 +20,17 @@ coverage
 .lock-wscript
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
-#dist folder
-dist
+# Allow dist folder in order to upload it to Heroku
+#dist
 
+# Server app to serve static files from dist folder
+server
+    
 #Webstorm metadata
 .idea
 
