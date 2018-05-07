@@ -1,5 +1,5 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {grey900, blue500} from 'material-ui/styles/colors';
+import {white, blue500} from 'material-ui/styles/colors';
 
 const themeDefault = getMuiTheme({
   palette: {
@@ -10,7 +10,7 @@ const themeDefault = getMuiTheme({
   },
   drawer: {
     width: 230,
-    color: grey900
+    color: white
   },
   raisedButton: {
     primaryColor: blue500,
