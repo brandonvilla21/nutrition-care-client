@@ -1,7 +1,6 @@
 import React,  { PropTypes } from 'react';
 import Drawer from 'material-ui/Drawer';
-import {spacing, typography} from 'material-ui/styles';
-import {grey900, blue500} from 'material-ui/styles/colors';
+import {grey900} from 'material-ui/styles/colors';
 import {Link} from 'react-router';
 import { ListItem } from 'material-ui';
 
