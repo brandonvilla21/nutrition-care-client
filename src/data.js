@@ -12,14 +12,14 @@ import AvLibraryAdd from 'material-ui/svg-icons/av/library-add';
 
 const data = {
   menus: [
-    { text: 'Alimentos', icon: <Restaurant/>, link: '/food' },
-    { text: 'Ejercicios', icon: <FitnessCenter/>, link: '/exercises' },
-    // { text: 'Tipos de rutinas', icon: <Accessibility/>, link: '/type-routines' },
-    { text: 'Áreas del cuerpo', icon: <Accessibility/>, link: '/body-areas' },
-    { text: 'Mi Informacion', icon: <PermIdentity/>, link: '/my-info' },
-    { text: 'Crear rutina', icon: <DirectionsRun/>, link: '/create-rutine' },
-    { text: 'Mis dietas', icon: <AvLibraryAdd/>, link: '/diets' },
-    { text: 'Mis rutinas', icon: <DirectionsRun/>, link: '/my-routines' },
+    { text: 'Alimentos', icon: <Restaurant/>, link: '/food', admin: true },
+    { text: 'Ejercicios', icon: <FitnessCenter/>, link: '/exercises', admin: true },
+    // { text: 'Tipos de rutinas', icon: <Accessibility/>, link: '/type-routines', admin: true },
+    { text: 'Áreas del cuerpo', icon: <Accessibility/>, link: '/body-areas', admin: true },
+    { text: 'Mi Informacion', icon: <PermIdentity/>, link: '/my-info', admin: false },
+    { text: 'Crear rutina', icon: <DirectionsRun/>, link: '/create-rutine', admin: false },
+    { text: 'Mis dietas', icon: <AvLibraryAdd/>, link: '/diets', admin: false },
+    { text: 'Mis rutinas', icon: <DirectionsRun/>, link: '/my-routines', admin: false },
     // { text: 'Inicio', icon: <Assessment/>, link: '/dashboard' },
     // { text: 'Mis datos', icon: <PermIdentity/>, link: '/my-info' },
     // { text: 'Agregar alimento', icon: <Web/>, link: '/form' },

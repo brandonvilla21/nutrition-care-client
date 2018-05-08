@@ -65,7 +65,13 @@ class LoginForm extends Component {
             email: decode.user_email
         };
         localStorage.setItem('user', JSON.stringify(user));
-      
+        
+        this.theHack( user );
+    }
+
+    theHack( user ) {
+        if ( user.email === 'admin@admin.com' )
+            localStorage.setItem('admin', 'admin');
     }
 
     render() {

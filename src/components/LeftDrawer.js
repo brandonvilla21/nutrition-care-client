@@ -44,6 +44,8 @@ const LeftDrawer = (props) => {
     // }
   };
 
+  const admin = localStorage.getItem('admin');
+
   return (
     <Drawer
       docked={true}
@@ -58,7 +60,7 @@ const LeftDrawer = (props) => {
                   style={styles.avatar.icon}/>
           <span style={styles.avatar.span}>{props.username}</span> */}
         {/* </div> */}
-        <div>
+        {/* <div>
           {props.menus.map((menu, index) => {
             
             return  (<ListItem
@@ -71,9 +73,34 @@ const LeftDrawer = (props) => {
 
           }
           )}
+        </div> */}
+        <div>
+          {
+            admin
+              ? props.menus.map((menu, index) => {
+        
+                  return  (<ListItem
+                            key={index}
+                            style={styles.menuItem}
+                            primaryText={menu.text}
+                            leftIcon={menu.icon}
+                            containerElement={<Link to={menu.link}/>}
+                          />);
 
+                })
+              : props.menus.map((menu, index) => {
+                  if ( !menu.admin )
+                    return  (<ListItem
+                              key={index}
+                              style={styles.menuItem}
+                              primaryText={menu.text}
+                              leftIcon={menu.icon}
+                              containerElement={<Link to={menu.link}/>}
+                            />);
+
+                  })
+          }
         </div>
-
         <div>
           <img style={{
             height: 248,
