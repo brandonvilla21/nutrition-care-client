@@ -160,4 +160,118 @@ PDFMake.docDefinitionUserProgress = (username, height, progresses, chartImage) =
     };
 };
 
+
+/**
+ * 
+ * @param { Object } 
+ * @param { number } 
+ * @param { Array } 
+ */
+PDFMake.docDefinitionFoods = ({ foods, chartImage, reportName }) => {
+  const date = new Date();
+  const formatDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
+
+    return {
+        header: {
+          columns: [
+            { 
+              text: `Fecha: ${formatDate}`,
+              alignment: 'right',
+              style: 'header',
+            }
+          ]
+        },
+      
+        footer: {
+          columns: [
+            {
+              text: 'Nutrition Care Application',
+              alignment: 'left',
+              style: 'footer',
+            }
+          ]
+        },
+        
+        content: [
+          {
+            alignment: 'justify',
+            columns: [
+              {
+                width: 150,
+                image: urlConfig.logo_base64
+              },
+              {
+                style: 'reportTitleCont',
+                text: [
+                  { text: `\n\n\n` },
+                  { text: 'NOMBRE DE REPORTE:\n', bold: true },
+                  { text: `${reportName}.\n\n` },
+                ]
+              }
+            ]
+          },
+          {
+            // Optional
+            layout: 'lightHorizontalLines',
+            style: 'tableStyle',            
+            table: {
+              // How many rows will be trated as headers
+              headerRows: 1,
+              // Widths of headers
+              widths: [ 30, 'auto', 60, 80, 60, 50 ],
+              body: [
+                // Headers
+                [ 
+                  { text: 'ID', bold: true },
+                  { text: 'Descripción', bold: true },
+                  { text: 'Proteínas', bold: true },
+                  { text: 'Carbohídratos', bold: true },
+                  { text: 'Grasas', bold: true },
+                  { text: 'Calorías', bold: true },
+                ],
+                // Rows
+                ...foods.map( (food, i) => 
+                  [ 
+                    { text: food.id, fillColor: i % 2 == 0 ? '#EBEBEB' : null },
+                    { text: food.description, fillColor: i % 2 == 0 ? '#EBEBEB': null },
+                    { text: `${food.proteins} gr`, fillColor: i % 2 == 0 ? '#EBEBEB': null },
+                    { text: `${food.carbohydrates} gr`, fillColor: i % 2 == 0 ? '#EBEBEB': null },
+                    { text: `${food.fats} gr`, fillColor: i % 2 == 0 ? '#EBEBEB': null },
+                    { text: food.calories, fillColor: i % 2 == 0 ? '#EBEBEB': null }
+                  ]
+                ),
+              ],
+            }
+          },
+          {
+            width: '500',
+            margin: [0, 30, 0, 0],
+            image: chartImage,
+          }
+        ],
+        styles: {
+          header: {
+            fontSize: 12,
+            bold: true,
+            margin: [10, 10, 10, 10]
+          },
+          footer: {
+            fontSize: 12,
+            bold: false,
+            color: 'gray',
+            margin: [10, 10, 10, 10]
+          },
+          userData: {
+            margin: [0, 50, 0, 10]
+          },
+          reportTitleCont: {
+            margin: [100, 0, 0, 0]
+          },
+          tableStyle: {
+            margin: [0, 35, 0, 0]
+          }
+        }
+    };
+};
+
 export default PDFMake;
